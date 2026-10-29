@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Blox</title>
+<title>BloxZ</title>
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html,body{height:100%;margin:0;overflow:hidden;background:#7ec8ff;font-family:Gotham,"Source Sans Pro",system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff;user-select:none}
@@ -96,10 +96,10 @@ body.menu #hud,body.menu #hint,body.menu #toast{display:none}
 <div id="xh"></div><div id="hint"><span class="panel"><kbd>WASD</kbd> move · <kbd>Space</kbd> jump · drag mouse / <kbd>←</kbd><kbd>→</kbd> camera · <kbd>Esc</kbd> pause</span></div>
 
 <div class="ov" id="start">
-<nav id="nav"><div class="logo"><b></b>BLOX</div><span class="beta">SINGLE PLAYER BETA</span><span class="nl">Discover</span><span class="nl">Marketplace</span><span class="nl">Create</span><span class="nl">Bux</span><input id="srch" placeholder="Search"><span class="bux">◈ 1,000</span></nav>
-<div id="wrap"><aside id="side"><a class="si on" data-tab="home">🏠 Home</a><a class="si">👤 Profile</a><a class="si">✉️ Messages</a><a class="si">👥 Friends</a><a class="si" data-tab="avatar">🧍 Avatar</a><a class="si">🎒 Inventory</a><a class="si">🔁 Trade</a><a class="si">👪 Communities</a><a class="si">⭐ Blox Premium</a><a class="si">🛒 Blox Shop</a></aside>
+<nav id="nav"><div class="logo"><b></b>BloxZ</div><span class="beta">SINGLE PLAYER BETA</span><span class="nl">Discover</span><span class="nl">Marketplace</span><span class="nl">Create</span><span class="nl">Bux</span><input id="srch" placeholder="Search"><span class="bux">◈ 1,000</span></nav>
+<div id="wrap"><aside id="side"><a class="si on" data-tab="home">🏠 Home</a><a class="si">👤 Profile</a><a class="si">✉️ Messages</a><a class="si">👥 Friends</a><a class="si" data-tab="avatar">🧍 Avatar</a><a class="si">🎒 Inventory</a><a class="si">🔁 Trade</a><a class="si">👪 Communities</a><a class="si">⭐ BloxZ Premium</a><a class="si">🛒 BloxZ Shop</a></aside>
 <main id="mainc">
-<section id="t-home"><div class="ban"><b>Single Player BETA.</b> Blox is a single-player prototype right now. Anything marked with <span style="color:#ff3b3b;font-weight:900">✖</span> (multiplayer, friends, chat, marketplace, inventory and more) is not available yet.</div><div class="greet"><div class="mini"><i></i></div><h2>Hello, Player</h2></div>
+<section id="t-home"><div class="ban"><b>Single Player BETA.</b> BloxZ is a single-player prototype right now. Anything marked with <span style="color:#ff3b3b;font-weight:900">✖</span> (multiplayer, friends, chat, marketplace, inventory and more) is not available yet.</div><div class="greet"><div class="mini"><i></i></div><h2>Hello, Player</h2></div>
 <h3>Friends</h3><div class="row"><div class="fr"><div></div>Add friends</div><div class="fr"><div></div>Builder_01</div><div class="fr"><div></div>SkyJumper</div><div class="fr"><div></div>CubeFan</div></div>
 <h3>Recommended For You</h3><div class="row">
 <div class="gc" id="demoCard"><div class="th thd"><i style="left:20px;bottom:20px;background:#4caf50"></i><i style="left:60px;bottom:50px;background:#42a5f5"></i><i style="left:96px;bottom:84px;background:#ab47bc"></i><i style="left:62px;bottom:118px;background:#ff7043"></i></div><div class="nm">DEMO</div><div class="st">Parkour</div></div>
@@ -110,8 +110,8 @@ body.menu #hud,body.menu #hint,body.menu #toast{display:none}
 <section id="t-avatar" hidden><h2 style="margin:0">Avatar</h2><div class="av"><div id="figw"><div id="fig"><div class="fh"><i></i><i></i><b></b></div><div class="ft"></div><div class="fal"></div><div class="far"></div><div class="fll"></div><div class="flr"></div></div></div>
 <div><h3 style="margin-top:0">Skin Tone &amp; Colors</h3><div class="pt" id="pt"></div><div id="pal"></div><input type="color" id="cust" title="Custom color"><button class="btn alt" id="rst" style="max-width:200px">Reset avatar</button></div></div></section>
 </main></div></div>
-<div class="ov hide" id="pause"><div class="card"><h2>Paused</h2><p>Reset points: checkpoints save your progress.</p><button class="btn" id="resume">Resume</button><button class="btn alt" id="respawn">Respawn at checkpoint</button><button class="btn alt" id="restart">Restart tower</button><button class="btn alt" id="leave">Leave to Blox home</button></div></div>
-<div class="ov hide" id="win"><div class="card"><h2>🏆 VICTORY!</h2><p id="winTxt"></p><button class="btn" id="again">Play again</button><button class="btn alt" id="leave2">Back to Blox home</button></div></div>
+<div class="ov hide" id="pause"><div class="card"><h2>Paused</h2><p>Reset points: checkpoints save your progress.</p><button class="btn" id="resume">Resume</button><button class="btn alt" id="respawn">Respawn at checkpoint</button><button class="btn alt" id="restart">Restart tower</button><button class="btn alt" id="leave">Leave to BloxZ home</button></div></div>
+<div class="ov hide" id="win"><div class="card"><h2>🏆 VICTORY!</h2><p id="winTxt"></p><button class="btn" id="again">Play again</button><button class="btn alt" id="leave2">Back to BloxZ home</button></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -226,7 +226,7 @@ const armL=part(.4,1,.4,0xf5cd30,-.7,1.6,0,-.45),armR=part(.4,1,.4,0xf5cd30,.7,1
 const legL=part(.45,1,.45,0x4caf50,-.25,.6,0,-.5),legR=part(.45,1,.45,0x4caf50,.25,.6,0,-.5);
 const DEF={head:'#f5cd30',torso:'#1e88e5',arms:'#f5cd30',legs:'#4caf50'};
 const pc=Object.assign({},DEF);
-try{Object.assign(pc,JSON.parse(localStorage.getItem('blox-colors')||'{}'))}catch(e){}
+try{Object.assign(pc,JSON.parse(localStorage.getItem('BloxZ-colors')||'{}'))}catch(e){}
 function applyColors(){const set=(g,c)=>g.children[0].material.color.set(c);set(torso,pc.torso);set(head,pc.head);set(armL,pc.arms);set(armR,pc.arms);set(legL,pc.legs);set(legR,pc.legs)}
 scene.add(av);
 
@@ -354,12 +354,12 @@ $('menuBtn').onclick=()=>{if(state==='play')setState('pause')};
 const pal=['#f2f3f3','#a1a5a2','#635f62','#1b2a35','#f5cd30','#e8ba36','#da8541','#eb8059','#d7545a','#c4281c','#7b2e2f','#b8527b','#8b5fbf','#6b327c','#0d69ac','#1e88e5','#42a5f5','#008f9c','#26c6da','#a4bd47','#4b974b','#287f47','#4caf50','#ffd700','#aa8855','#7c5c46','#e0b88a','#f2c9a3','#ffd9b8','#5c3a21','#cfcfcf','#111111'];
 const parts={head:'Head',torso:'Torso',arms:'Arms',legs:'Legs'};let selPart='head';
 function paint(){const s=document.documentElement.style;for(const k in pc)s.setProperty('--'+k,pc[k]);document.querySelectorAll('.sw').forEach(e=>e.classList.toggle('on',e.dataset.c===pc[selPart]));document.querySelectorAll('#pt button').forEach(e=>e.classList.toggle('on',e.dataset.p===selPart));$('cust').value=pc[selPart]}
-function setColor(c){pc[selPart]=c;applyColors();paint();try{localStorage.setItem('blox-colors',JSON.stringify(pc))}catch(e){}}
+function setColor(c){pc[selPart]=c;applyColors();paint();try{localStorage.setItem('BloxZ-colors',JSON.stringify(pc))}catch(e){}}
 function showTab(t){['home','game','avatar'].forEach(x=>$('t-'+x).hidden=x!==t);document.querySelectorAll('.si[data-tab]').forEach(e=>e.classList.toggle('on',e.dataset.tab===(t==='game'?'home':t)))}
 pal.forEach(c=>{const d=document.createElement('div');d.className='sw';d.dataset.c=c;d.style.background=c;d.onclick=()=>setColor(c);$('pal').appendChild(d)});
 Object.entries(parts).forEach(([k,n])=>{const b=document.createElement('button');b.dataset.p=k;b.textContent=n;b.onclick=()=>{selPart=k;paint()};$('pt').appendChild(b)});
 $('cust').oninput=e=>setColor(e.target.value);
-$('rst').onclick=()=>{Object.assign(pc,DEF);applyColors();paint();try{localStorage.removeItem('blox-colors')}catch(e){}};
+$('rst').onclick=()=>{Object.assign(pc,DEF);applyColors();paint();try{localStorage.removeItem('BloxZ-colors')}catch(e){}};
 document.querySelectorAll('.si[data-tab]').forEach(e=>e.onclick=()=>showTab(e.dataset.tab));
 $('demoCard').onclick=()=>showTab('game');$('back').onclick=()=>showTab('home');
 $('leave').onclick=$('leave2').onclick=()=>{setState('menu');showTab('home')};
@@ -375,7 +375,7 @@ document.querySelector('.fr').parentElement.innerHTML='<div class="na" style="pa
 document.querySelector('#t-game .info p:last-child').innerHTML='Single Player · BETA &nbsp;<span style="color:#ff3b3b;font-weight:900">✖</span> Multiplayer not available';
 /* ===== Library, Discover, Favorites, Settings ===== */
 let game='demo',sens=1,curG='demo',lastG='',genre='All',favs=[],plays={};
-try{sens=+localStorage.getItem('blox-sens')||1;lastG=localStorage.getItem('blox-last')||'';favs=JSON.parse(localStorage.getItem('blox-favs')||'[]');plays=JSON.parse(localStorage.getItem('blox-plays')||'{}')}catch(e){}
+try{sens=+localStorage.getItem('BloxZ-sens')||1;lastG=localStorage.getItem('BloxZ-last')||'';favs=JSON.parse(localStorage.getItem('BloxZ-favs')||'[]');plays=JSON.parse(localStorage.getItem('BloxZ-plays')||'{}')}catch(e){}
 const LS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const ALLG=[
 {id:'demo',name:'DEMO',genre:'Parkour',ok:1,c:['#5fb4ff','#4caf50'],desc:'A tall vertical cube-tower parkour with moving platforms, ladders, bounce pads and checkpoints. Not included yet: wall hops, rotating obstacles, disappearing platforms and training rooms.'},
@@ -409,13 +409,13 @@ function refresh(){
 function showTab(t){['home','game','avatar','disc','fav','set'].forEach(x=>$('t-'+x).hidden=x!==t);document.querySelectorAll('.si[data-tab]').forEach(e=>e.classList.toggle('on',e.dataset.tab===(t==='game'?'home':t)));refresh()}
 $('play').insertAdjacentHTML('afterend','<button class="btn alt" id="fav"></button>');
 const favBtn=()=>$('fav').textContent=favs.includes(curG)?'★ Favorited':'☆ Favorite';
-$('fav').onclick=()=>{favs=favs.includes(curG)?favs.filter(x=>x!==curG):[...favs,curG];LS('blox-favs',JSON.stringify(favs));favBtn();refresh()};
+$('fav').onclick=()=>{favs=favs.includes(curG)?favs.filter(x=>x!==curG):[...favs,curG];LS('BloxZ-favs',JSON.stringify(favs));favBtn();refresh()};
 function openGame(id){curG=id;const g=GAMES.find(x=>x.id===id);const th=document.querySelector('#t-game .th');th.classList.remove('thd');th.innerHTML='';th.style.background=`linear-gradient(${g.c[0]},${g.c[1]})`;
  const inf=document.querySelector('#t-game .info');inf.querySelector('h1').textContent=g.name;inf.querySelector('.st').textContent='By ECLIPS3 Games · '+g.genre;inf.querySelectorAll('p')[0].textContent=g.desc;
  const pb=$('play');pb.textContent=g.ok?'▶ Play':'✖ Unavailable';pb.disabled=!g.ok;pb.style.opacity=g.ok?1:.5;inf.querySelectorAll('p')[1].innerHTML='You have played this '+(plays[id]||0)+' time(s) on this device &nbsp;·&nbsp; Single Player · BETA &nbsp;<span style="color:#ff3b3b;font-weight:900">✖</span> Multiplayer not available';favBtn();srPick();showTab('game')}
 $('sens').value=sens;$('sensV').textContent=sens.toFixed(1)+'x';
-$('sens').oninput=e=>{sens=+e.target.value;$('sensV').textContent=sens.toFixed(1)+'x';LS('blox-sens',sens)};
-$('wipe').onclick=()=>{['blox-colors','blox-favs','blox-sens','blox-racer-best','blox-last'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});favs=[];lastG='';sens=1;$('sens').value=1;$('sensV').textContent='1.0x';best=null;Object.assign(pc,DEF);applyColors();paint();refresh()};
+$('sens').oninput=e=>{sens=+e.target.value;$('sensV').textContent=sens.toFixed(1)+'x';LS('BloxZ-sens',sens)};
+$('wipe').onclick=()=>{['BloxZ-colors','BloxZ-favs','BloxZ-sens','BloxZ-racer-best','BloxZ-last'].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});favs=[];lastG='';sens=1;$('sens').value=1;$('sensV').textContent='1.0x';best=null;Object.assign(pc,DEF);applyColors();paint();refresh()};
 document.body.insertAdjacentHTML('beforeend','<div class="ov hide" id="load" style="background:#121316;z-index:9"><div class="card"><h2 id="loadT">Loading…</h2><p>Loading local experience</p></div></div>');
 
 /* ===== APEX RACER ===== */
@@ -433,7 +433,7 @@ const car=new THREE.Group();
  const cab=new THREE.Mesh(boxGeo,new THREE.MeshLambertMaterial({color:0x222a35}));cab.scale.set(1.6,.6,1.8);cab.position.set(0,1.38,-.2);car.add(cab);
  const wm=new THREE.MeshLambertMaterial({color:0x111111});[[-1.05,1.4],[1.05,1.4],[-1.05,-1.4],[1.05,-1.4]].forEach(([x,z])=>{const w=new THREE.Mesh(boxGeo,wm);w.scale.set(.4,.8,.8);w.position.set(x,.4,z);car.add(w)})}
 rg.add(car);
-let C,rLap,acc,pphi,lapT,best=null;try{best=+localStorage.getItem('blox-racer-best')||null}catch(e){}
+let C,rLap,acc,pphi,lapT,best=null;try{best=+localStorage.getItem('BloxZ-racer-best')||null}catch(e){}
 const tv=new THREE.Vector3();
 function raceReset(){C={x:RR,z:0,h:0,vx:0,vz:0};rLap=1;acc=0;pphi=0;lapT=0;car.position.set(C.x,0,C.z);car.rotation.y=0;px=C.x;py=0;pz=C.z;camera.position.set(C.x,5,C.z-11)}
 function raceStep(dt){
@@ -449,7 +449,7 @@ function raceStep(dt){
  const rr=Math.hypot(C.x,C.z),lim=RW/2-1.2;
  if(Math.abs(rr-RR)>lim){const sg=Math.sign(rr-RR),k=(RR+sg*lim)/rr,nx=C.x/rr,nz=C.z/rr;C.x*=k;C.z*=k;const vn=(C.vx*nx+C.vz*nz)*sg;if(vn>0){C.vx-=vn*sg*nx*1.5;C.vz-=vn*sg*nz*1.5}C.vx*=.96;C.vz*=.96}
  const phi=Math.atan2(C.z,C.x);let d=phi-pphi;d=Math.atan2(Math.sin(d),Math.cos(d));pphi=phi;acc=Math.max(-.3,acc+d);
- if(acc>=Math.PI*2){acc-=Math.PI*2;if(best===null||lapT<best){best=lapT;LS('blox-racer-best',best)}
+ if(acc>=Math.PI*2){acc-=Math.PI*2;if(best===null||lapT<best){best=lapT;LS('BloxZ-racer-best',best)}
   if(rLap>=LAPS){$('winTxt').textContent='You finished '+LAPS+' laps! Last lap '+lapT.toFixed(2)+'s · Best lap '+best.toFixed(2)+'s';setState('win');return}rLap++;lapT=0}
  car.position.set(C.x,0,C.z);car.rotation.y=C.h;px=C.x;py=0;pz=C.z;
  $('zone').textContent='APEX RACER · Lap '+rLap+'/'+LAPS;$('h').textContent=Math.round(Math.hypot(C.vx,C.vz)*3.6)+' km/h';
@@ -461,12 +461,12 @@ function raceCam(){av.visible=false;const fx=Math.sin(C.h),fz=Math.cos(C.h);came
 const sg=new THREE.Group();sg.visible=false;scene.add(sg);
 {const lv=new THREE.Mesh(new THREE.PlaneGeometry(900,900),new THREE.MeshLambertMaterial({color:0xff5722,emissive:0xcc3300}));lv.rotation.x=-Math.PI/2;lv.position.y=-12;sg.add(lv)}
 const TS=5,GN=8,barCol=[0xff7043,0xab47bc,0x26c6da];let tiles=[],bars=[],S={t:0,fallT:2,spawnT:3},bestS=0,onG=false;
-try{bestS=+localStorage.getItem('blox-surv-best')||0}catch(e){}
+try{bestS=+localStorage.getItem('BloxZ-surv-best')||0}catch(e){}
 function clearSurv(){[...tiles,...bars].forEach(o=>{sg.remove(o.m);o.m.material.dispose()});tiles=[];bars=[]}
 function survReset(){clearSurv();
  for(let a=0;a<GN;a++)for(let b=0;b<GN;b++){const m=new THREE.Mesh(boxGeo,new THREE.MeshLambertMaterial({color:(a+b)%2?0x66bb6a:0x43a047}));m.scale.set(TS-.2,1.5,TS-.2);const x=(a-3.5)*TS,z=(b-3.5)*TS;m.position.set(x,-.75,z);m.castShadow=m.receiveShadow=true;m.add(new THREE.LineSegments(edgeGeo,edgeMat));sg.add(m);tiles.push({m,x,z,st:0,t:0})}
  S={t:0,fallT:2.5,spawnT:3};px=0;py=0;pz=0;vx=vz=vy=0;onG=true;yaw=0}
-function survEnd(win){bestS=Math.max(bestS,S.t);LS('blox-surv-best',bestS);document.querySelector('#win h2').textContent=win?'🏆 YOU SURVIVED!':'💥 GAME OVER';$('winTxt').textContent=(win?'All 3 rounds cleared! ':'You lasted ')+S.t.toFixed(1)+'s · Longest: '+bestS.toFixed(1)+'s';setState('win')}
+function survEnd(win){bestS=Math.max(bestS,S.t);LS('BloxZ-surv-best',bestS);document.querySelector('#win h2').textContent=win?'🏆 YOU SURVIVED!':'💥 GAME OVER';$('winTxt').textContent=(win?'All 3 rounds cleared! ':'You lasted ')+S.t.toFixed(1)+'s · Longest: '+bestS.toFixed(1)+'s';setState('win')}
 function survStep(dt){
  S.t+=dt;const round=Math.min(3,1+Math.floor(S.t/20));
  const fw=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0),rt=(keys.KeyD?1:0)-(keys.KeyA?1:0);
@@ -508,7 +508,7 @@ const WORLDS=[
 Object.assign(WORLDS[0],{dc:0x2e7d32,gc:0x1b9ad6,gg:1});Object.assign(WORLDS[1],{dc:0x558b2f,gc:0xc9965a});Object.assign(WORLDS[2],{dc:0x00e5ff,gc:0x0a0620,glow:1,stars:1});
 Object.assign(WORLDS[3],{dc:0xe8f4ff,gc:0xdff3ff});Object.assign(WORLDS[4],{dc:0xe040fb,gc:0x120826,glow:1});Object.assign(WORLDS[5],{dc:0xffffff,gc:0x9fd8ff,clouds:1});Object.assign(WORLDS[6],{dc:0x331a14,gc:0xff4500,gg:1});Object.assign(WORLDS[7],{dc:0x39ff6a,gc:0x04180c,glow:1});
 let srLv=0,SR={},srSave={unlocked:1,best:{}};
-try{Object.assign(srSave,JSON.parse(localStorage.getItem('blox-sr')||'{}'))}catch(e){}
+try{Object.assign(srSave,JSON.parse(localStorage.getItem('BloxZ-sr')||'{}'))}catch(e){}
 const srMats=[],srGeos=[],srTex=[];
 function mkTex(kind){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');
  if(kind==='grass'){g.fillStyle='#2f7d32';g.fillRect(0,0,128,128);for(let i=0;i<420;i++){g.fillStyle=Math.random()<.5?'#276b2a':'#3a8f3e';g.fillRect(Math.random()*128|0,Math.random()*128|0,6,6)}}
@@ -569,7 +569,7 @@ function srHit(axis){for(const p of SR.P){if(!(p.on&&p.st!==2))continue;
  if(axis==='x'){const l=px+HW-(p.x-p.hw),r=(p.x+p.hw)-(px-HW);px+=l<r?-l:r;vx=0}else{const l=pz+HW-(p.z-p.hd),r=(p.z+p.hd)-(pz-HW);pz+=l<r?-l:r;vz=0}}}
 function srFinish(){const S=SR,t=S.t,W=S.world,b=srSave.best[S.lv],nb=b===undefined||t<b;if(nb)srSave.best[S.lv]=t;
  const T=W.tm.map(x=>x*14/36),md=t<=T[0]?'🥇 Gold':t<=T[1]?'🥈 Silver':t<=T[2]?'🥉 Bronze':'No medal';
- const nx=S.lv+1<40;if(nx)srSave.unlocked=Math.max(srSave.unlocked,S.lv+2);LS('blox-sr',JSON.stringify(srSave));
+ const nx=S.lv+1<40;if(nx)srSave.unlocked=Math.max(srSave.unlocked,S.lv+2);LS('BloxZ-sr',JSON.stringify(srSave));
  document.querySelector('#win h2').textContent='🏁 LEVEL COMPLETE';
  $('winTxt').textContent='Level '+(S.lv+1)+' · '+W.n+': '+t.toFixed(2)+'s'+(nb?' (NEW BEST!)':'')+' · Best '+srSave.best[S.lv].toFixed(2)+'s · '+md+' · Deaths '+S.deaths+(nx?' · Next level unlocked':'');
  if(nx)srLv=S.lv+1;setState('win')}
@@ -616,13 +616,13 @@ function srPick(){const el=$('srLv');el.hidden=curG!=='sr';if(curG!=='sr')return
  Array.from({length:40},(_,i)=>i).forEach(i=>{const w=WORLDS[Math.floor(i/5)],b=document.createElement('button'),ok=i<srSave.unlocked;b.textContent=(ok?'':'✖ ')+(i+1)+(srSave.best[i]!==undefined?' · '+srSave.best[i].toFixed(1)+'s':'');b.disabled=!ok;b.title=w.n;b.className=i===srLv?'on':'';b.onclick=()=>{srLv=i;srPick()};el.appendChild(b)})}
 $('fav').insertAdjacentHTML('afterend','<div id="srLv" class="pt" style="margin-top:14px" hidden></div>');
 $('leave').insertAdjacentHTML('beforebegin','<button class="btn alt" id="skipL" hidden>Skip level ⏭</button>');
-$('skipL').onclick=()=>{if(game!=='sr')return;srLv=Math.min(39,SR.lv+1);srSave.unlocked=Math.max(srSave.unlocked,srLv+1);LS('blox-sr',JSON.stringify(srSave));launch('sr')};
+$('skipL').onclick=()=>{if(game!=='sr')return;srLv=Math.min(39,SR.lv+1);srSave.unlocked=Math.max(srSave.unlocked,srLv+1);LS('BloxZ-sr',JSON.stringify(srSave));launch('sr')};
 addEventListener('keydown',e=>{if(e.code==='KeyR'&&!e.repeat&&state==='play'&&game==='sr')srRespawn()});
 $('c').addEventListener('webglcontextlost',e=>{e.preventDefault();if(state==='play')setState('pause');toast('Graphics context lost — it will recover automatically','rgba(200,60,60,.9)')});
 function launch(id){const g=GAMES.find(x=>x.id===id);if(!g||!g.ok)return;
  $('loadT').textContent='Loading '+g.name+'…';$('load').classList.remove('hide');
  setTimeout(()=>{game=id;const dm=id==='demo';demoObjs.forEach(o=>o.visible=dm);rg.visible=id==='racer';srg.visible=id==='sr';if(id!=='sr')srClear();$('skipL').hidden=id!=='sr';$('again').textContent='Play again';sg.visible=id==='survival';if(id!=='survival')clearSurv();document.querySelector('#win h2').textContent='🏆 VICTORY!';if(dm)reset();else if(id==='racer')raceReset();else if(id==='survival')survReset();else srOpen();
-  $('restart').textContent='Restart '+(dm?'tower':id==='racer'?'race':id==='sr'?'level':'round');lastG=id;plays[id]=(plays[id]||0)+1;LS('blox-plays',JSON.stringify(plays));refresh();LS('blox-last',id);$('load').classList.add('hide');setState('play')},700)}
+  $('restart').textContent='Restart '+(dm?'tower':id==='racer'?'race':id==='sr'?'level':'round');lastG=id;plays[id]=(plays[id]||0)+1;LS('BloxZ-plays',JSON.stringify(plays));refresh();LS('BloxZ-last',id);$('load').classList.add('hide');setState('play')},700)}
 $('play').onclick=()=>launch(curG);
 $('restart').onclick=$('again').onclick=()=>launch(game);
 $('respawn').onclick=()=>{if(game==='racer')raceReset();else if(game==='survival')survReset();else if(game==='sr')srRespawn();else spawnAt(plats[cpIdx]);setState('play')};
