@@ -415,11 +415,7 @@ function loop(now){
   const dt=Math.min(.033,(now-last)/1000);last=now;
   if(state==='play'){
     plats.forEach(b=>updPlat(b,time));
-<<<<<<< HEAD
     if(game==='circuit')ncStep(dt);else if(game==='stunt')syStep(dt);else if(game==='racer')raceStep(dt);else if(game==='survival')survStep(dt);else if(game==='sr'){const n=Math.min(8,Math.max(1,Math.ceil(Math.hypot(vx,vz)*dt/.35)));for(let i=0;i<n&&state==='play'&&game==='sr';i++)srStep(dt/n)}else if(game==='ice')iceStep(dt);else{step(dt);updHud()}
-=======
-    if(game==='racer')raceStep(dt);else if(game==='survival')survStep(dt);else if(game==='sr'){const n=Math.min(8,Math.max(1,Math.ceil(Math.hypot(vx,vz)*dt/.35)));for(let i=0;i<n&&state==='play'&&game==='sr';i++)srStep(dt/n)}else if(game==='ice')iceStep(dt);else{step(dt);updHud()}
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
   }
   clouds.forEach(c=>{c.position.x+=c.userData.s*dt;if(c.position.x>130)c.position.x=-130});
   tg.rotation.y+=dt;
@@ -631,11 +627,7 @@ const M2=(c,glow)=>{const m=new THREE.MeshLambertMaterial({color:c,emissive:glow
 function srClear(){camera.fov=65;camera.updateProjectionMatrix();while(srg.children.length)srg.remove(srg.children[0]);srMats.splice(0).forEach(m=>m.dispose());srTex.splice(0).forEach(t=>t.dispose());srGeos.splice(0).forEach(g=>g.dispose());SR={}}
 function srSky(){const W=SR.world;if(!W)return;scene.background.set(W.bg);scene.fog.color.set(W.fog);starMat.opacity=W.stars?.9:0}
 function srLoad(lv){
-<<<<<<< HEAD
  srClear();const cf=lv===100?(guest||myGame):null,W=WORLDS[cf?cf.w:Math.floor(lv/5)],NP=cf&&cf.blocks?0:22,dd=cf?0.4:lv/39;const seed=srForce||((db&&KEY)?lv*977+13:(RANDLV?1+Math.floor(Math.random()*2147483000):lv*977+13)),fixed=seed===lv*977+13;srForce=0;let sd=seed;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
-=======
- srClear();const cf=lv===100?myGame:null,W=WORLDS[cf?cf.w:Math.floor(lv/5)],NP=cf&&cf.blocks?0:22,dd=cf?0.4:lv/39;const seed=srForce||((db&&KEY)?lv*977+13:(RANDLV?1+Math.floor(Math.random()*2147483000):lv*977+13)),fixed=seed===lv*977+13;srForce=0;let sd=seed;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
  const P=[],H=[],cps=[];const TX=W.tex?mkTex(W.tex):null,EM=W.edge?new THREE.LineBasicMaterial({color:W.acc}):edgeMat;if(W.edge)srMats.push(EM);
  const mk=(t,x,y,z,w,d,th,sl)=>{d=d||w;th=th||1.2;sl=sl||0;const col={s:W.plat,m:0x42a5f5,f:0xff8a65,b:0xff4081,p:0x00e676,d:0xba68c8,r:W.plat,i:0x9be7ff,c:0xdddddd,F:0xffd700}[t]||W.plat;
   let mat;if(TX&&'Ssr'.includes(t)){const top=M2(0xffffff,0);top.map=TX;top.needsUpdate=true;const sd=M2(W.side,0);mat=[sd,sd,top,sd,sd,sd]}else mat=M2(col,'bpcFd'.includes(t)||W.glow);
@@ -738,11 +730,7 @@ function srStep(dt){
  av.position.set(px,py,pz);let d=face-av.rotation.y;d=Math.atan2(Math.sin(d),Math.cos(d));av.rotation.y+=d*Math.min(1,dt*14);
  const sw=S.g&&l>0?Math.sin(S.t*13)*.9:0;legL.rotation.x=sw;legR.rotation.x=-sw;armL.rotation.x=S.g?-sw:-2.6;armR.rotation.x=S.g?sw:-2.6;
  const sp=Math.hypot(vx,vz),tf=65+Math.min(28,Math.max(0,sp-14)*.9);camera.fov+=(tf-camera.fov)*Math.min(1,dt*6);camera.updateProjectionMatrix();pUpdate(dt);ghostStep(S,dt);botStep(S,dt);const b=srSave.best[S.lv];
-<<<<<<< HEAD
  $('zone').textContent=(S.lv===100?((guest||myGame)?(guest||myGame).t:'Custom'):'SPEEDRUNNERS · Level '+(S.lv+1)+'/40')+' · '+S.world.n+(S.fixed?'':' · #'+String(S.seed).slice(-6));$('h').textContent='Time: '+S.t.toFixed(2)+'s';$('cps').textContent='Checkpoint: '+S.cp+'/'+(S.cps.length-1);
-=======
- $('zone').textContent=(S.lv===100?(myGame?myGame.t:'Custom'):'SPEEDRUNNERS · Level '+(S.lv+1)+'/40')+' · '+S.world.n+(S.fixed?'':' · #'+String(S.seed).slice(-6));$('h').textContent='Time: '+S.t.toFixed(2)+'s';$('cps').textContent='Checkpoint: '+S.cp+'/'+(S.cps.length-1);
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
  $('tm').textContent='Best: '+(b===undefined?'—':b.toFixed(2)+'s');$('dc').textContent='Deaths: '+S.deaths+' · Speed: '+Math.round(sp)+' u/s';$('fill').style.width=clamp(pz/S.zEnd,0,1)*100+'%';
 }
 /* ===== effects: particles, sound, flash, ghost ===== */
@@ -939,7 +927,6 @@ function iceStep(dt){
  $('fill').style.width=((I.lev+Math.min(1,1-ilev[I.lev].tiles.filter(t=>t.st<2).length/ilev[I.lev].tiles.length))/LVN*100)+'%';
  if(py<WATER)iceEnd(false)}
 GAMES.push({id:'ice',name:'FALLING ICE',genre:'Survival',ok:1,c:['#b3e5fc','#0288d1'],desc:'Hexagon ice tiles crack and fall when you stand on them. Fall through to the level below (5 levels in all), grab fish, and outlast 3 bots. Last one standing wins.'});
-<<<<<<< HEAD
 /* ===== NEON CIRCUIT (racing) ===== */
 const ncg=new THREE.Group();ncg.visible=false;scene.add(ncg);
 function ncCarMesh(col,trim){
@@ -1179,8 +1166,6 @@ function syCam(){
 }
 GAMES.push({id:'circuit',name:'NEON CIRCUIT',genre:'Racing',ok:1,c:['#00e5ff','#7c4dff'],desc:'Walk the paddock, get in your car with E, then race two rivals over three laps. A/D steer, Space drifts, Shift boosts. Best lap saved.'});
 GAMES.push({id:'stunt',name:'STUNT YARD',genre:'Car',ok:1,c:['#ff9100','#ff1744'],desc:'Stunt arena with ramps and 11 floating rings. Walk up to the car, press E to get in, then catch big air. Space drifts, Shift boosts. Best run saved.'});
-=======
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
 /* ===== 3D Studio: drag and place blocks ===== */
 let EDG=null,EDB=null,edGhost=null,edLast='',fromEd=false;const edPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0),edRay=new THREE.Raycaster(),edPt=new THREE.Vector3(),edMats={};
 const edMat=t=>edMats[t]||(edMats[t]=new THREE.MeshLambertMaterial({color:tyCol(t)}));
@@ -1257,19 +1242,11 @@ addEventListener('keydown',e=>{if(e.code==='KeyR'&&!e.repeat&&state==='play'&&ga
 $('c').addEventListener('webglcontextlost',e=>{e.preventDefault();if(state==='play')setState('pause');toast('Graphics context lost — it will recover automatically','rgba(200,60,60,.9)')});
 function launch(id){const g=GAMES.find(x=>x.id===id);if(!g||!g.ok)return;if(id==='my'){if(!myGame||!myGame.blocks||!myGame.blocks.some(b=>b[3]==='F')){info('Add a Finish block','Open Create, place a Finish block (and a Spawn block), then test play.');return}plays.my=(plays.my||0)+1;LS('blox-plays',JSON.stringify(plays));srLv=100;id='sr'}
  $('loadT').textContent='Loading '+g.name+'…';$('load').classList.remove('hide');
-<<<<<<< HEAD
  setTimeout(()=>{game=id;const dm=id==='demo';demoObjs.forEach(o=>o.visible=dm);rg.visible=id==='racer';ncg.visible=id==='circuit';syg.visible=id==='stunt';srg.visible=id==='sr';ig.visible=id==='ice';if(id!=='ice')iceClear();if(id!=='circuit'&&id!=='stunt')vgWalk(false);$('hint').innerHTML=(id==='circuit'||id==='stunt')?VG_HINT:HINT0;pg.visible=id==='sr'||id==='ice';ghostM.visible=false;if(id!=='sr')srClear();$('skipL').hidden=id!=='sr';$('sameL').hidden=id!=='sr';$('again').textContent='Play again';sg.visible=id==='survival';if(id!=='survival')clearSurv();document.querySelector('#win h2').textContent='🏆 VICTORY!';if(dm)reset();else if(id==='racer')raceReset();else if(id==='circuit')ncReset();else if(id==='stunt')syReset();else if(id==='survival')survReset();else if(id==='ice')iceReset();else srOpen();
   $('restart').textContent='Restart '+(dm?'tower':id==='racer'?'race':id==='sr'?'level':'round');lastG=id;plays[id]=(plays[id]||0)+1;LS('blox-plays',JSON.stringify(plays));refresh();LS('blox-last',id);$('load').classList.add('hide');setState('play')},700)}
 $('play').onclick=()=>launch(curG);
 $('again').onclick=()=>launch(game);$('restart').onclick=()=>{if(game==='sr'){if(PRG.sr)delete PRG.sr[srLv]}else if(game==='demo')delete PRG.demo;prgSave();launch(game)};
 $('respawn').onclick=()=>{if(game==='circuit')ncRespawn();else if(game==='stunt')syReset();else if(game==='racer')raceReset();else if(game==='survival')survReset();else if(game==='ice')iceReset();else if(game==='sr')srRespawn();else spawnAt(plats[cpIdx]);setState('play')};
-=======
- setTimeout(()=>{game=id;const dm=id==='demo';demoObjs.forEach(o=>o.visible=dm);rg.visible=id==='racer';srg.visible=id==='sr';ig.visible=id==='ice';if(id!=='ice')iceClear();pg.visible=id==='sr'||id==='ice';ghostM.visible=false;if(id!=='sr')srClear();$('skipL').hidden=id!=='sr';$('sameL').hidden=id!=='sr';$('again').textContent='Play again';sg.visible=id==='survival';if(id!=='survival')clearSurv();document.querySelector('#win h2').textContent='🏆 VICTORY!';if(dm)reset();else if(id==='racer')raceReset();else if(id==='survival')survReset();else if(id==='ice')iceReset();else srOpen();
-  $('restart').textContent='Restart '+(dm?'tower':id==='racer'?'race':id==='sr'?'level':'round');lastG=id;plays[id]=(plays[id]||0)+1;LS('blox-plays',JSON.stringify(plays));refresh();LS('blox-last',id);$('load').classList.add('hide');setState('play')},700)}
-$('play').onclick=()=>launch(curG);
-$('again').onclick=()=>launch(game);$('restart').onclick=()=>{if(game==='sr'){if(PRG.sr)delete PRG.sr[srLv]}else if(game==='demo')delete PRG.demo;prgSave();launch(game)};
-$('respawn').onclick=()=>{if(game==='racer')raceReset();else if(game==='survival')survReset();else if(game==='ice')iceReset();else if(game==='sr')srRespawn();else spawnAt(plats[cpIdx]);setState('play')};
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
 /* ===== Auto flips: a backflip or frontflip on every jump (no manual input, no announcement) ===== */
 const avIn=new THREE.Group();while(av.children.length)avIn.add(av.children[0]);av.add(avIn);avIn.rotation.order='YXZ';
 const TRK={back:{s:-1,d:.7},front:{s:1,d:.7}};
@@ -1392,7 +1369,6 @@ function sys(t,c){addMsg({name:'SYSTEM',text:t},c||'#ffd54a')}
 function addMsg(m,col){const d=document.createElement('div'),L=$('chL'),a=document.createElement('b'),t=document.createElement('span');a.textContent=(m.role&&m.role!=='player'?'['+m.role.toUpperCase()+'] ':'')+m.name+(m.v?' \u2714':'')+': ';a.style.color=col||RC[m.role]||'#9be7ff';t.textContent=m.text;d.append(a,t);d.dataset.t=Date.now();L.appendChild(d);while(L.children.length>40)L.firstChild.remove()}
 setInterval(()=>{document.querySelectorAll('#chL div').forEach(d=>d.classList.toggle('old',Date.now()-d.dataset.t>9000))},1000);
 const freeInput=()=>{for(const k in keys)keys[k]=false;if(document.pointerLockElement)document.exitPointerLock()};
-<<<<<<< HEAD
 const CHN={lobby:'Lobby',demo:'Tower',racer:'Apex Racer',survival:'Survival',sr:'SPEEDRUNNERS',ice:'Ice Thingy',my:'Custom courses'};
 let chCur='',chOff=null;
 function chatKey(){if(state!=='play'&&state!=='pause'&&state!=='win')return 'lobby';return game==='sr'&&srLv===100?'my-'+courseKey():game}
@@ -1406,12 +1382,6 @@ function openChat(){if(!NAME||!db){toast(NAME?'Chat offline':'Pick a name first'
 function closeChat(relock){chOpen=false;$('chat').classList.remove('open');$('chI').hidden=true;$('chI').value='';$('chI').blur();if(relock&&state==='play')lock()}
 async function sendChat(){const t=$('chI').value.trim();if(!t){closeChat(true);return}if(Date.now()-lastMsg<1000)return;lastMsg=Date.now();$('chI').value='';
  if(t[0]==='/')await cmd(t);else db.ref('chat').push({ch:(chatSync(),chCur),name:NAME,role:ROLE,v:isPrem()?1:0,text:t,ts:FB.database.ServerValue.TIMESTAMP}).catch(netFail);closeChat(true)}
-=======
-function openChat(){if(!NAME||!db){toast(NAME?'Chat offline':'Pick a name first','rgba(200,60,60,.9)');return}if(banT)return;chOpen=true;freeInput();$('chat').classList.add('open');$('chI').hidden=false;setTimeout(()=>$('chI').focus(),0)}
-function closeChat(relock){chOpen=false;$('chat').classList.remove('open');$('chI').hidden=true;$('chI').value='';$('chI').blur();if(relock&&state==='play')lock()}
-async function sendChat(){const t=$('chI').value.trim();if(!t){closeChat(true);return}if(Date.now()-lastMsg<1000)return;lastMsg=Date.now();$('chI').value='';
- if(t[0]==='/')await cmd(t);else db.ref('chat').push({name:NAME,role:ROLE,v:isPrem()?1:0,text:t,ts:FB.database.ServerValue.TIMESTAMP}).catch(netFail);closeChat(true)}
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
 $('chBtn').onclick=openChat;
 /* ---- player list + friends (Tab) ---- */
 function openPl(){plOpen=true;freeInput();$('plist').classList.remove('hide');plRender()}
@@ -1457,11 +1427,7 @@ function exec(k,tk,name){if(k==='ban')return db.ref('bans/'+tk).set({until:nowS(
 function openReq(){const L=$('reqL'),ks=Object.keys(reqs);L.innerHTML=ks.length?'':'<p>No pending requests.</p>';
  ks.forEach(id=>{const r=reqs[id],d=document.createElement('div'),s=document.createElement('span');s.textContent='/'+r.type+' '+r.targetName+' (by '+r.byName+')';d.appendChild(s);
   pb(d,'✔',async()=>{await exec(r.type,r.target,r.targetName);db.ref('requests/'+id).remove()});pb(d,'✖',()=>db.ref('requests/'+id).remove(),1);L.appendChild(d)});$('reqM').classList.remove('hide')}
-<<<<<<< HEAD
 const RULES="{\n  \"rules\": {\n    \".read\": false,\n    \".write\": false,\n    \"BloxZ\": {\n      \"Users\": {\n        \"$u\": {\n          \".read\": true,\n          \".write\": \"!data.exists()\",\n          \".validate\": \"newData.hasChildren(['username','salt','hash']) && newData.child('username').isString() && newData.child('username').val().length <= 16 && newData.child('hash').val().length === 64 && newData.child('salt').val().length === 32\",\n          \"role\": {\n            \".write\": true,\n            \".validate\": \"newData.val() === 'player' || newData.val() === 'helper' || newData.val() === 'mod' || newData.val() === 'admin' || newData.val() === 'owner'\"\n          }\n        }\n      },\n      \"Chat\": {\n        \".read\": true,\n        \"$id\": {\n          \".write\": \"!data.exists() && newData.exists()\",\n          \".validate\": \"newData.child('text').isString() && newData.child('text').val().length <= 160 && newData.child('name').isString() && newData.child('name').val().length <= 16\"\n        },\n        \".indexOn\": [\n          \"ch\"\n        ]\n      },\n      \"Online\": {\n        \".read\": true,\n        \"$n\": {\n          \".write\": true\n        }\n      },\n      \"Rooms\": {\n        \".read\": true,\n        \"$r\": {\n          \"$n\": {\n            \".write\": true\n          }\n        }\n      },\n      \"Bans\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Kicks\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Requests\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Friends\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"FriendReq\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Roles\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Games\": {\n        \".read\": true,\n        \"$u\": {\n          \".write\": true,\n          \".validate\": \"newData.hasChildren(['t','blocks','ts']) && newData.child('t').isString() && newData.child('t').val().length <= 24 && newData.child('blocks').isString() && newData.child('blocks').val().length <= 20000 && (!newData.child('script').exists() || (newData.child('script').isString() && newData.child('script').val().length <= 4000))\"\n        }\n      }\n    }\n  }\n}";
-=======
-const RULES="{\n  \"rules\": {\n    \".read\": false,\n    \".write\": false,\n    \"BloxZ\": {\n      \"Users\": {\n        \"$u\": {\n          \".read\": true,\n          \".write\": \"!data.exists()\",\n          \".validate\": \"newData.hasChildren(['username','salt','hash']) && newData.child('username').isString() && newData.child('username').val().length <= 16 && newData.child('hash').val().length === 64 && newData.child('salt').val().length === 32\",\n          \"role\": {\n            \".write\": true,\n            \".validate\": \"newData.val() === 'player' || newData.val() === 'helper' || newData.val() === 'mod' || newData.val() === 'admin' || newData.val() === 'owner'\"\n          }\n        }\n      },\n      \"Chat\": {\n        \".read\": true,\n        \"$id\": {\n          \".write\": \"!data.exists() && newData.exists()\",\n          \".validate\": \"newData.child('text').isString() && newData.child('text').val().length <= 160 && newData.child('name').isString() && newData.child('name').val().length <= 16\"\n        }\n      },\n      \"Online\": {\n        \".read\": true,\n        \"$n\": {\n          \".write\": true\n        }\n      },\n      \"Rooms\": {\n        \".read\": true,\n        \"$r\": {\n          \"$n\": {\n            \".write\": true\n          }\n        }\n      },\n      \"Bans\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Kicks\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Requests\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Friends\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"FriendReq\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Roles\": {\n        \".read\": true,\n        \".write\": true\n      }\n    }\n  }\n}";
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
 $('rulX').onclick=()=>$('rulM').classList.add('hide');$('rulC').onclick=()=>{$('rulT').select();try{navigator.clipboard.writeText(RULES)}catch(e){document.execCommand('copy')}$('rulC').textContent='Copied!'};
 $('reqX').onclick=()=>$('reqM').classList.add('hide');$('reqBtn').onclick=openReq;
 function staffSetup(){if(staffOff){staffOff();staffOff=null}$('reqBtn').hidden=true;if(!db||!NAME||RK[ROLE]<3)return;const r=db.ref('requests'),f=s=>{reqs={};const v=s.val()||{};for(const id in v)if(ROLE==='owner'||v[id].to===ROLE)reqs[id]=v[id];const n=Object.keys(reqs).length;$('reqBtn').hidden=!n;$('reqBtn').textContent='📋 Requests ('+n+')'};r.on('value',f);staffOff=()=>r.off('value',f)}
@@ -1482,11 +1448,7 @@ async function netName(n){if(!db)return;if(KEY){db.ref('online/'+KEY).remove();s
  if(ROLE!=='player')db.ref('roles/'+KEY).set(ROLE);
  listen(db.ref('bans/'+KEY),'value',s=>{const b=s.val();if(b&&b.until>nowS())showBan(b);else{clearInterval(banT);banT=null;$('banM').classList.add('hide')}});
  let base;listen(db.ref('kicks/'+KEY),'value',s=>{const v=s.val();if(base===undefined){base=v?v.ts:0;return}if(v&&v.ts!==base){base=v.ts;kicked(v.by)}});
-<<<<<<< HEAD
  chatJoin(chatKey());
-=======
- listen(db.ref('chat').limitToLast(30),'child_added',s=>{const m=s.val();addMsg(m);if(m.ts&&nowS()-m.ts<8000)bubble(nk(m.name),m.text)});
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
  listen(db.ref('online'),'value',s=>{ONL=s.val()||{};plRender()});
  listen(db.ref('friends/'+KEY),'value',s=>{FR=s.val()||{};plRender()});
  listen(db.ref('friendReq/'+KEY),'value',s=>{FQ=s.val()||{};if(FQold)for(const k in FQ)if(!FQold[k])toast(FQ[k].n+' sent you a friend request - press Tab');FQold=FQ;plRender()});
@@ -1501,11 +1463,7 @@ function mkRemote(k,d){const g=new THREE.Group(),cl=d.c||['#1e88e5','#f5cd30','#
  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv),depthTest:false,transparent:true}));sp.scale.set(3.4,.85,1);sp.position.y=3.3;sp.renderOrder=9;g.add(sp);
  g.position.set(d.x,d.y,d.z);scene.add(g);return{g,aL,aR,lL,lR,ph:0,f:d.f}}
 function killRemote(a){scene.remove(a.g);a.g.traverse(o=>{if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose()}})}
-<<<<<<< HEAD
 function curRoom(){if(state!=='play'&&state!=='pause')return null;if(game==='demo')return 'demo';if(game==='sr'&&SR&&SR.seed)return 'sr-'+(SR.lv===100?'custom-'+courseKey():SR.lv);if(game==='ice')return 'ice';return null}
-=======
-function curRoom(){if(state!=='play'&&state!=='pause')return null;if(game==='demo')return 'demo';if(game==='sr'&&SR&&SR.seed)return 'sr-'+(SR.lv===100?'custom':SR.lv);if(game==='ice')return 'ice';return null}
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
 function switchRoom(rk){if(roff){roff();roff=null}if(rkey&&KEY&&db)db.ref('rooms/'+rkey+'/'+KEY).remove();RAV.forEach(killRemote);RAV.clear();RM={};seenOthers=false;rkey=rk;
  if(rk&&db&&KEY){const r=db.ref('rooms/'+rk),f=s=>RM=s.val()||{};r.on('value',f);roff=()=>r.off('value',f);db.ref('rooms/'+rk+'/'+KEY).onDisconnect().remove();db.ref('online/'+KEY).update({g:rk,lv:srLv|0})}else if(db&&KEY)db.ref('online/'+KEY).update({g:'',lv:0})}
 const others=()=>Object.keys(RM).filter(k=>k!==KEY&&nowS()-RM[k].hb<6000);
@@ -1532,7 +1490,6 @@ $('codeOk').onclick=tryCode2;$('codeIn').onkeydown=e=>{if(e.key==='Enter')tryCod
 let CONN=null;
 function netPill(){const e=$('netS');let t,c='rgba(20,22,26,.8)';if(!db){t='○ OFFLINE';c='#7a2a2a'}else if(NETERR){t='⚠ BLOCKED - press T, type /rules';c='#8a5a00'}else if(CONN===null)t='… connecting';else if(!CONN){t='○ no connection';c='#7a2a2a'}else{const n=Object.keys(ONL).filter(k=>nowS()-ONL[k].hb<25000).length;t='● online · '+n+' player'+(n===1?'':'s')+(rkey?' · '+(netCount()+1)+' in this room':'');c='#0a6b45'}e.textContent=t;e.style.background=c}
 setInterval(netPill,1000);
-<<<<<<< HEAD
 /* ===== Creator scripts (a small safe language, never run as JavaScript) + Firebase save ===== */
 const SC_MAX=4000,SC_BLOCK={block:'s',bounce:'b',speed:'p',ice:'i',falling:'f',moving:'m',checkpoint:'c',spawn:'S'};
 const SC_EXAMPLE="on start\n  say Welcome to my course!\non touch ice\n  say Slippery!\non checkpoint\n  flash green\n  sound\non death\n  say Try again\non finish\n  say You made it!";
@@ -1631,8 +1588,6 @@ async function togglePub(){const m=myGame,say=t=>$('scPubMsg').textContent=t;
 const _drawCreateC=drawCreate;drawCreate=function(){_drawCreateC();if(!isPrem()||!$('edC'))return;
  if(!$('scPub')){$('crForm').insertAdjacentHTML('beforeend',"<div style='max-width:560px'><button class='btn' id='scPub' style='width:auto;display:inline-block;padding:8px 14px'></button><p id='scPubMsg' style='color:#bdbebe;min-height:18px'></p></div>");$('scPub').onclick=togglePub}
  pubDraw()};
-=======
->>>>>>> 7875bf91f812994d3da3278a20fd9fb0c80bb15c
 /* ---- start ---- */
 try{FB=firebase;FB.initializeApp(FBC);const raw=FB.database();db={ref:p=>raw.ref(p[0]==='.'?p:'BloxZ/'+p.replace(/^[a-z]/,c=>c.toUpperCase()))}}catch(e){db=null;sys('Online features offline (Firebase unreachable).','#ff9800')}
 if(db){db.ref('.info/connected').on('value',s=>{CONN=!!s.val();if(CONN&&NETKIND==='conn')NETERR=false});setTimeout(()=>{if(!CONN)netFail({message:'Could not connect to the Firebase database (it may not exist yet, the URL may be wrong, or something is blocking firebaseio.com)'},'conn')},8000)}
