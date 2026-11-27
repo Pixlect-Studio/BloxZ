@@ -1254,6 +1254,8 @@ function edRefresh(){const p=$('edPane');if(!p||!myGame)return;
   else if(a==='sel'){anSel=+b.dataset.i;anPrev=true;anT=0;edRefresh()}
   else if(a==='newanim'){edNewAnim(edSel>=0?edSel:0)}
   else if(a==='key'){const A=myGame.anims[anSel];if(!A)return;const t=+b.dataset.t;const k=A.keys.find(x=>Math.abs(x.t-t)<.01);if(!k)return;anT=k.t;anDraft={ry:k.ry||0,y:k.y||0,s:k.s||0};anPrev=true;edRefresh()}
+  else if(a==='delkey'){if(anSel<0)return;const A=myGame.anims[anSel];const i=(A.keys||[]).findIndex(k=>Math.abs(k.t-anT)<.14);if(i>=0){A.keys.splice(i,1);if(!A.keys.length)A.keys.push({t:0,ry:0,y:0,s:0});edSave();edRefresh()}}
+  else if(a==='stop'){anPrev=false;edRebuild();edRefresh()}
   else if(a==='delanim'){if(anSel<0)return;myGame.anims.splice(anSel,1);anSel=-1;anPrev=false;edSave();edRefresh();edRebuild()}
   else if(a==='tpl'){stuUse(+b.dataset.i);edRefresh()}
   else if(a==='snip'){const s=$('scBox');if(!s)return;const add='\n'+b.dataset.snip+'\n';s.value=(s.value.replace(/\s*$/,'')+add);myGame.script=s.value;edSave();edScStat();s.focus()}
@@ -1280,7 +1282,7 @@ function edPaneAnim(){const A=myGame.anims||[];let h="<p class='hint'>Select an 
   h+="<p class='hint'>Rotation <b id='anRyV'>"+Math.round(anDraft.ry)+"</b>&deg;</p><input id='anRy' type='range' min='0' max='360' step='5' value='"+anDraft.ry+"' style='width:100%'>";
   h+="<p class='hint'>Bob height <b id='anYV'>"+anDraft.y.toFixed(2)+"</b></p><input id='anY' type='range' min='-2' max='4' step='.1' value='"+anDraft.y+"' style='width:100%'>";
   h+="<p class='hint'>Scale <b id='anSV'>"+anDraft.s.toFixed(2)+"</b></p><input id='anS' type='range' min='-.8' max='2' step='.05' value='"+anDraft.s+"' style='width:100%'>";
-  h+="<p><button class='btn snip' data-act='addkey'>Add / update key at "+anT.toFixed(2)+"s</button><button class='btn alt snip' data-act='delanim'>Delete animation</button></p>";
+  h+="<p><button class='btn snip' data-act='addkey'>Add / update key at "+anT.toFixed(2)+"s</button><button class='btn alt snip' data-act='delkey'>Delete key</button><button class='btn alt snip' data-act='stop'>Stop preview</button><button class='btn alt snip' data-act='delanim'>Delete animation</button></p>";
   h+="<p class='hint'>Click a key marker to load it. Preview plays live in the viewport.</p>";}
  return h}
 function edAnimBind(){const A=myGame.anims||[],a=A[anSel];if(!a)return;
