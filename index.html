@@ -134,17 +134,45 @@ body:not(.menu) #tcMenuBtn{display:none}
 #reqBtn{left:70px;background:#c77d00}
 #acct input,#banM input{background:#121316;color:#fff;border:1px solid #3a3d44;border-radius:6px;padding:10px;width:100%;box-sizing:border-box;margin:5px 0;font-size:15px}
 #reqL div{display:flex;gap:6px;align-items:center;justify-content:space-between;background:#1b1d21;border-radius:6px;padding:6px 10px;margin:5px 0;font-size:13px;text-align:left}
+#gpop{position:fixed;left:50%;top:18%;transform:translate(-50%,-12px) scale(.92);z-index:22;pointer-events:none;opacity:0;transition:opacity .22s ease,transform .22s ease;text-align:center;font-weight:900;font-size:clamp(20px,4vw,42px);color:#fff;max-width:82vw;line-height:1.15}
+#gpop.on{opacity:1;transform:translate(-50%,0) scale(1)}
+#gpop>div{background:linear-gradient(180deg,rgba(0,176,111,.95),rgba(0,110,190,.95));padding:16px 26px;border-radius:16px;box-shadow:0 16px 50px rgba(0,0,0,.55);text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.stuTop{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stuTop input{min-width:190px}
+.stuGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:820px){.stuGrid{grid-template-columns:1fr}}
+.stuCard{background:#1a1c20;border-radius:12px;padding:14px;margin-top:12px}
+.stuCard h3{margin:0 0 8px;font-size:15px}
+.stuTpls{display:flex;flex-direction:column;gap:8px}
+.stuTpl{text-align:left;background:#23262b;border:1px solid #34383f;border-radius:10px;padding:10px;cursor:pointer;color:#fff;font-weight:800}
+.stuTpl:hover{border-color:#00b06f}
+.stuTpl b{display:block;font-size:13px}
+.stuTpl span{color:#bdbebe;font-weight:400;font-size:12px}
+.stuCode{background:#121316;border-radius:8px;padding:10px;font-size:12px;color:#c8e6c9;overflow:auto;margin:0}
+#edDock{position:fixed;right:10px;top:10px;bottom:10px;width:342px;z-index:7;background:rgba(25,27,31,.96);border-radius:12px;display:flex;flex-direction:column;font-weight:700;font-size:13px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#edDock[hidden]{display:none}
+.stuTabs{display:flex;border-bottom:1px solid #34383f;flex:0 0 auto}
+.stuTabs button{flex:1;background:#20232a;color:#bdbebe;border:0;padding:10px 2px;font-weight:800;cursor:pointer;font-size:12px}
+.stuTabs button.on{background:#00b06f;color:#062b1d}
+#edPane{flex:1;overflow:auto;padding:10px}
+#edPane textarea{width:100%;height:200px;background:#121316;color:#d7f5e4;border:1px solid #3a3d44;border-radius:8px;padding:8px;font-family:ui-monospace,Consolas,monospace;font-size:12px;box-sizing:border-box}
+#edPane .hint{color:#bdbebe;font-weight:400;font-size:12px;margin:6px 0}
+#edPane .snip{width:auto;display:inline-block;padding:5px 8px;margin:3px 3px 0 0;font-size:11px}
+.anBar{position:relative;height:32px;background:#121316;border-radius:8px;margin:8px 0;border:1px solid #34383f}
+.anKey{position:absolute;top:5px;width:8px;height:20px;background:#00e5ff;border-radius:2px;transform:translateX(-4px);cursor:pointer}
+.anPlay{position:absolute;top:0;bottom:0;width:2px;background:#ffd54a;pointer-events:none}
+@media(max-width:1000px){#edUI{width:132px;padding:6px;font-size:11px}#edUI .pt button{font-size:10px;padding:3px 5px}#edDock{width:calc(100% - 156px);right:8px;top:8px;bottom:8px}#edPane textarea{height:150px}}
 </style></head><body>
 <canvas id="c"></canvas>
 <div id="hud">
   <button id="menuBtn" title="Menu">☰</button>
   <div class="panel" id="stats"><div id="zone">Meadow</div><div id="h">Height: 0</div><div id="cps">Checkpoint: 0/13</div><div id="tm">Time: 0:00</div><div id="dc">Falls: 0</div><div id="bar"><div id="fill"></div></div></div>
 </div>
-<div id="toast"></div>
+<div id="toast"></div><div id="gpop"><div id="gpopT"></div></div>
 <div id="xh"></div><div id="hint"><span class="panel"><kbd>WASD</kbd> move · <kbd>Space</kbd> jump · tap <kbd>Shift</kbd> shift lock (hold = sprint) · drag mouse / <kbd>←</kbd><kbd>→</kbd> camera · <kbd>Esc</kbd> pause</span></div>
 
 <div class="ov" id="start">
-<nav id="nav"><div class="logo"><b></b>BLOX</div><span class="beta">v1.0.0-Release</span><span class="nl">Discover</span><span class="nl">Marketplace</span><span class="nl">Create</span><span class="nl">Bux</span><input id="srch" placeholder="Search"><span class="bux">◈ 1,000</span></nav>
+<nav id="nav"><div class="logo"><b></b>BLOX</div><span class="beta">v1.0.0-Release</span><span class="nl">Discover</span><span class="nl">Marketplace</span><span class="nl">3D Studio</span><span class="nl">Bux</span><input id="srch" placeholder="Search"><span class="bux">◈ 1,000</span></nav>
 <div id="wrap"><aside id="side"><a class="si on" data-tab="home">🏠 Home</a><a class="si">👤 Profile</a><a class="si">✉️ Messages</a><a class="si">👥 Friends</a><a class="si" data-tab="avatar">🧍 Avatar</a><a class="si">🎒 Inventory</a><a class="si">🔁 Trade</a><a class="si">👪 Communities</a><a class="si">⭐ Blox Premium</a><a class="si">🛒 Blox Shop</a></aside>
 <main id="mainc">
 <section id="t-home"><div class="ban"><b>v1.0.0-Release.</b> Live chat is online (<kbd>T</kbd> / <kbd>Enter</kbd>; <kbd>Tab</kbd> = players &amp; friends). SPEEDRUNNERS and Ice Thingy are real multiplayer - no bots, just other players. Other players appear in supported multiplayer games. Falling Ice starts after 3 players join, with a 20-second countdown.</div><div class="greet"><div class="mini"><i></i></div><h2>Hello, Player</h2></div>
@@ -349,6 +377,9 @@ function ladderStep(dt){
 }
 function reset(){cpIdx=0;falls=0;time=0;won=false;spawnAt(plats[0]);let sv0=null;try{sv0=PRG.demo}catch(e){}if(sv0&&sv0.cp>0&&plats[sv0.cp]){cpIdx=sv0.cp;spawnAt(plats[cpIdx])}yaw=Math.PI/2;updHud()}
 function toast(t,c){const e=$('toast');e.textContent=t;e.style.background=c||'rgba(0,170,80,.9)';e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,1800)}
+let gpopT=null;
+function gpop(t,ms){const e=$('gpop');if(!e)return;$('gpopT').textContent=t;e.classList.add('on');clearTimeout(gpopT);gpopT=setTimeout(()=>e.classList.remove('on'),ms||2400)}
+function scWin(t){if(t)$('winTxt').textContent=t;setState('win')}
 function setState(s){state=s;document.body.classList.toggle('menu',s==='menu');if(s==='play')lock();else if(document.exitPointerLock)document.exitPointerLock();$('start').classList.toggle('hide',s!=='menu');$('pause').classList.toggle('hide',s!=='pause');$('win').classList.toggle('hide',s!=='win');tcState(s);if(s==='menu'&&typeof vgWalk==='function')vgWalk(false);if(s==='menu'&&typeof trickEnd==='function')trickEnd()}
 function fmt(t){return Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0')}
 function updHud(){
@@ -444,7 +475,7 @@ addEventListener('keydown',e=>{
 addEventListener('keyup',e=>{keys[e.code]=false;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&performance.now()-slT<260)toggleSL()});
 addEventListener('blur',()=>{for(const k in keys)keys[k]=false;if(state==='play')setState('pause')});
 let drag=false;const cv=$('c');
-cv.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&tcOn())return;drag=(state!=='edit'||e.button===2);try{cv.setPointerCapture(e.pointerId)}catch(_){}cv.style.cursor='grabbing';if(state==='edit'&&e.button!==2)edDown(e);if(state==='play'&&document.pointerLockElement!==cv)lock()});
+cv.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&tcOn())return;drag=(state!=='edit'||e.button===2);try{cv.setPointerCapture(e.pointerId)}catch(_){}cv.style.cursor='grabbing';if(state==='edit'&&e.button!==2)edClick(e);if(state==='play'&&document.pointerLockElement!==cv)lock()});
 cv.addEventListener('pointerup',()=>{drag=false;cv.style.cursor='grab'});
 for(const ev of['mousedown','click'])cv.addEventListener(ev,()=>{if(state==='play'&&document.pointerLockElement!==cv)lock()});
 cv.addEventListener('pointermove',e=>{if(e.pointerType==='touch'&&tcOn())return;const lk=document.pointerLockElement===cv;if(!lk&&!drag)return;const s=(lk?.0025:.005)*sens;yaw-=e.movementX*s;pitch=pitch+e.movementY*s});
@@ -655,7 +686,7 @@ function srLoad(lv){
   const reps=2+Math.floor(rnd()*2);for(let i=0;i<reps;i++){straight(10+rnd()*14);ramp()}straight(12+rnd()*10);return cur};
  const bc=cf&&cf.blocks&&cf.blocks.length?cf.blocks:null;let prev=null;
  if(bc){const rows=[...bc].sort((a,b)=>a[1]-b[1]),sp0=rows.find(b=>b[3]==='S')||rows[0];
-  const place=(b,t)=>{const p=mk(t==='n'||t==='r'?'s':t,(b[0]-8.5)*4,b[2]*1.1,-b[1]*4,4,4);if(t==='m'){p.ax='x';p.amp=3}if(t==='r')addBar(p,5,.5);return p};
+  const place=(b,t)=>{const p=mk(t==='n'||t==='r'?'s':t,(b[0]-8.5)*4,b[2]*1.1,-b[1]*4,4,4);p.bi=bc.indexOf(b);if(t==='m'){p.ax='x';p.amp=3}if(t==='r')addBar(p,5,.5);return p};
   prev=place(sp0,'S');prev.ci=0;cps.push(prev);
   for(const b of rows){if(b===sp0)continue;const t=b[3]==='S'?'n':b[3],p=place(b,t);if(t==='c'){p.ci=cps.length;cps.push(p)}}
   prev={bz:Math.min(...P.map(p=>p.bz))}}
@@ -769,7 +800,18 @@ const itemCard=(i,btn)=>`<div class='gc' style='width:170px;cursor:default'><div
 document.head.insertAdjacentHTML('beforeend',"<style>#t-create input,#t-create select{background:#121316;color:#fff;border:1px solid #3a3d44;border-radius:6px;padding:7px}#t-create p{margin:10px 0}#t-home .vf,.vf{display:inline-block;background:#1d9bf0;color:#fff;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:14px;margin-left:8px;vertical-align:middle}#login input,#codeM input{background:#121316;color:#fff;border:1px solid #3a3d44;border-radius:6px;padding:10px;width:100%;margin:8px 0;text-align:center;font-size:16px}</style>");
 $('mainc').insertAdjacentHTML('beforeend',`<section id='t-market' hidden><h2 style='margin:0 0 6px'>Marketplace</h2><p class='st' style='color:#bdbebe'>Spend BuxZ on cosmetics. You earn BuxZ by finishing SPEEDRUNNERS levels (faster = more) and 5 every 10 seconds.</p><p id='mkMsg' style='color:#ff6b6b;min-height:18px'></p><div class='row' id='mkRow' style='flex-wrap:wrap'></div></section>
 <section id='t-inv' hidden><h2 style='margin:0 0 12px'>Inventory</h2><div class='row' id='invRow' style='flex-wrap:wrap'></div></section>
-<section id='t-create' hidden><h2 style='margin:0 0 6px'>Create</h2><div id='crLock' class='ban'>Create is a BloxZ Premium feature. <button class='btn' id='crUnlock' style='max-width:180px;margin-top:8px'>Enter code</button></div><div id='crForm' hidden><p style='color:#bdbebe'>You can make 1 parkour game. Every change saves automatically and your game shows on your home page. This is a parameter-based creator (world, length, difficulty, layout seed), not a block-by-block editor.</p><p>Title <input id='cT' maxlength='24'></p><p>Description <input id='cD' maxlength='80' style='width:280px'></p><p>World <select id='cW'>${WORLDS.map((w,i)=>`<option value='${i}'>${w.n}</option>`).join('')}</select></p><p>Length <input type='range' id='cN' min='8' max='40'> <b id='cNv'></b> pieces</p><p>Difficulty <input type='range' id='cDf' min='0' max='39'> <b id='cDv'></b>/39</p><p>Layout seed <input type='number' id='cS' style='width:110px'> <button class='btn alt' id='cR' style='width:auto;display:inline-block;padding:7px 12px'>Randomize</button></p><button class='btn' id='cPlay' style='max-width:200px'>Test play</button></div></section>`);
+<section id='t-create' hidden><h2 style='margin:0 0 6px'>3D Studio</h2><div id='crLock' class='ban'>The 3D Studio is a BloxZ Premium feature. <button class='btn' id='crUnlock' style='max-width:180px;margin-top:8px'>Enter code</button></div><div id='crForm' hidden>
+<div class='stuTop'><input id='cT' maxlength='24' placeholder='Project name'><input id='cD' maxlength='80' placeholder='Description'><select id='cW'>${WORLDS.map((w,i)=>`<option value='${i}'>${w.n}</option>`).join('')}</select><button class='btn' id='cPlay' style='width:auto;padding:8px 14px'>Play</button><button class='btn alt' id='cOpen' style='width:auto;padding:8px 14px'>Open 3D Studio</button></div>
+<p class='st' style='color:#bdbebe;margin:10px 0'>A new project starts with one platform, a spawn, a finish and built-in WASD movement. Open the 3D Studio to place blocks, write scripts (popups, alerts, custom wins) and animate props. Templates are below.</p>
+<div class='stuGrid'><div class='stuCard'><h3>Project</h3><p id='stuInfo' class='st' style='color:#bdbebe'></p><p id='stuStat' style='color:#9be7a8'></p></div><div class='stuCard'><h3>Templates</h3><div id='stuTpl' class='stuTpls'></div></div></div>
+<div class='stuCard'><h3>Script cheatsheet</h3><pre class='stuCode'>on start
+  popup Welcome to my game!
+on checkpoint
+  alert Halfway there
+on finish
+  popup You win!</pre></div>
+<span id='edC' hidden></span>
+</div></section>`);
 document.body.insertAdjacentHTML('beforeend',`<div class='ov' id='login' style='z-index:30;background:#121316'><div class='card'><h2>Welcome to BloxZ</h2><p>Choose a username</p><input id='uname' maxlength='16' placeholder='Username'><button class='btn' id='uok'>Continue</button></div></div>
 <div class='ov hide' id='codeM' style='z-index:25'><div class='card'><h2>BloxZ Premium</h2><p>Enter your code to unlock BloxZ Premium (Create and infinite BuxZ).</p><input id='codeIn' placeholder='CODE'><p id='codeMsg' style='color:#ff6b6b;min-height:18px'></p><button class='btn' id='codeOk'>Unlock</button><button class='btn alt' id='codeX'>Cancel</button></div></div>
 <div class='ov hide' id='infoM' style='z-index:25'><div class='card'><h2 id='infoT'></h2><p id='infoP'></p><button class='btn' id='infoX'>OK</button></div></div>`);
@@ -787,7 +829,7 @@ const sideBy=re=>[...document.querySelectorAll('.si')].find(e=>re.test(e.textCon
 const pr=sideBy(/Premium/);if(pr){pr.classList.remove('na');pr.title='';pr.onclick=askCode}
 const iv=sideBy(/Inventory/);if(iv){iv.classList.remove('na');iv.title='';iv.dataset.tab='inv';iv.onclick=()=>showTab('inv')}
 const sh=sideBy(/Shop/);if(sh){sh.classList.remove('na');sh.title='';sh.textContent='Marketplace';sh.dataset.tab='market';sh.onclick=()=>showTab('market')}
-side.insertAdjacentHTML('beforeend',"<a class='si' data-tab='create'>Create</a>");side.lastChild.onclick=()=>showTab('create');
+side.insertAdjacentHTML('beforeend',"<a class='si' data-tab='create'>3D Studio</a>");side.lastChild.onclick=()=>showTab('create');
 [...document.querySelectorAll('.nl')].forEach(e=>{if(e.textContent==='Marketplace'){e.classList.remove('na');e.title='';e.onclick=()=>showTab('market')}if(e.textContent==='Create'){e.classList.remove('na');e.title='';e.onclick=()=>showTab('create')}});
 function gateCust(){const c=$('cust');c.disabled=!isOwned('cl_custom');c.title=c.disabled?'Buy the Custom Color Pack in the Marketplace':''}
 function onTab(t){tabNow=t;gateCust();if(t==='set'){const i=$('setName');if(i){let u='';try{u=localStorage.getItem('bloxz-user')||''}catch(e){}i.value=u;$('setNameMsg').textContent=''}}if(t==='market')drawMarket();if(t==='inv')drawInv();if(t==='create')drawCreate();rename(document.body)}
@@ -806,10 +848,28 @@ function applyEq(){if(eqG){if(eqG.parent)eqG.parent.remove(eqG);eqG.traverse(o=>
 function flapWings(){}
 function trailEmit(dt){const it=ITEMS.find(i=>i.id===EQ.trail);if(!it||!isOwned(it.id)||Math.hypot(vx,vz)<3)return;tAcc+=dt;if(tAcc<.04)return;tAcc=0;burst(px,py+.2,pz,it.c==='rainbow'?new THREE.Color().setHSL((performance.now()/600)%1,1,.55):it.c,1,.8)}
 function syncMy(){const i=GAMES.findIndex(g=>g.id==='my');if(!myGame||!isPrem()){if(i>=0)GAMES.splice(i,1);return}const e={id:'my',name:myGame.t,genre:'Parkour',ok:1,c:['#ffb300','#ef5350'],desc:myGame.d+' (Created by '+DISP+')'};if(i>=0)GAMES[i]=e;else GAMES.push(e)}
-function drawCreate(){const ok=isPrem();$('crLock').hidden=ok;$('crForm').hidden=!ok;if(!ok)return;if(!myGame)myGame={t:'My Parkour',d:'My own parkour course.',w:0,np:22,df:5,seed:7};
- $('cT').value=myGame.t;$('cD').value=myGame.d;$('cW').value=myGame.w;$('cN').value=myGame.np;$('cNv').textContent=myGame.np;$('cDf').value=myGame.df;$('cDv').textContent=myGame.df;$('cS').value=myGame.seed;saveMy()}
-function saveMy(){const m=myGame;m.t=$('cT').value.trim()||'My Parkour';m.d=$('cD').value;m.w=+$('cW').value;m.np=+$('cN').value;m.df=+$('cDf').value;m.seed=+$('cS').value||1;$('cNv').textContent=m.np;$('cDv').textContent=m.df;LS('bloxz-my',JSON.stringify(m));syncMy();refresh()}
-['cT','cD','cW','cN','cDf','cS'].forEach(id=>$(id).oninput=saveMy);$('cR').onclick=()=>{$('cS').value=Math.floor(Math.random()*9999)+1;saveMy()};$('cPlay').onclick=()=>launch('my');
+/* ===== 3D Studio: project page, templates ===== */
+const stuFloor=(x0,x1,z0,z1,lv)=>{const B=[];for(let x=x0;x<=x1;x++)for(let z=z0;z<=z1;z++)B.push([x,z,lv||0,'n']);return B};
+const STU_TPL=[
+{n:'Platform Starter',d:'One platform, a spawn and a finish. WASD movement is built in.',f:()=>{const B=stuFloor(3,12,3,14,0);B.push([7,4,0,'S'],[8,13,0,'F']);return{t:'My First Game',d:'A platform you can walk across.',w:0,blocks:B,script:'on start\n  popup Welcome to my game!\non finish\n  popup Nice run!\n',anims:[]}}},
+{n:'Obby Run',d:'Gaps, a bounce pad and a checkpoint to grab.',f:()=>{const B=stuFloor(4,12,3,8,0);B.push([8,3,0,'S'],[8,9,0,'n'],[8,10,1,'n'],[9,11,1,'b'],[9,13,2,'n'],[9,14,2,'n'],[9,15,2,'c'],[10,17,3,'n'],[10,18,3,'p'],[10,19,3,'n'],[10,21,4,'n'],[10,22,4,'F']);return{t:'Obby Run',d:'Jump the gaps and reach the flag.',w:0,blocks:B,script:'on start\n  popup Jump the gaps!\non checkpoint\n  popup Checkpoint!\non death\n  say Try again\non finish\n  popup You made it!\n',anims:[]}}},
+{n:'Popup Story',d:'A flat stage that shows popups, alerts and a custom win.',f:()=>{const B=stuFloor(2,15,2,10,0);B.push([8,3,0,'S'],[8,9,0,'c'],[8,10,0,'F']);return{t:'Popup Story',d:'Tell a story with popups.',w:0,blocks:B,script:'on start\n  popup Chapter 1: The Stage\n  wait 2\n  say Press space to jump\non jump\n  popup You jumped!\non checkpoint\n  alert Halfway there\non finish\n  popup The End\n',anims:[]}}},
+{n:'Animated Stage',d:'A platform with spinning, bobbing and pulsing props.',f:()=>{const B=stuFloor(2,15,2,12,0);B.push([8,3,0,'S'],[8,11,0,'F']);const add=(x,z)=>{B.push([x,z,2,'n']);return B.length-1};const a=add(5,6),b=add(8,6),c=add(11,6);return{t:'Animated Stage',d:'Props that spin, bob and pulse.',w:0,blocks:B,script:'on start\n  popup Animated Stage\non finish\n  popup Nice!\n',anims:[{n:'Spin',bi:a,dur:4,loop:true,keys:[{t:0,ry:0,y:0,s:0},{t:2,ry:180,y:.8,s:0},{t:4,ry:360,y:0,s:0}]},{n:'Bob',bi:b,dur:2,loop:true,keys:[{t:0,y:0,s:0},{t:1,y:1.4,s:0},{t:2,y:0,s:0}]},{n:'Pulse',bi:c,dur:2,loop:true,keys:[{t:0,s:0},{t:1,s:.4},{t:2,s:0}]}]}}}
+];
+function stuNew(){return STU_TPL[0].f()}
+function stuFill(){if(!myGame)myGame=stuNew();if(!myGame.blocks||!myGame.blocks.length)myGame.blocks=stuNew().blocks;if(!myGame.anims)myGame.anims=[];if(typeof myGame.script!=='string')myGame.script='';return myGame}
+function stuUse(i){const t=STU_TPL[i];if(!t)return;if(myGame&&(myGame.blocks||[]).length&&!confirm('Replace the current project with "'+t.n+'"?'))return;myGame=t.f();edSave();drawCreate();toast('Template loaded: '+t.n);if(state==='edit'){edRebuild();if(typeof edRefresh==='function')edRefresh()}}
+function stuStat(){const B=myGame.blocks||[],S=B.some(b=>b[3]==='S'),F=B.some(b=>b[3]==='F'),A=(myGame.anims||[]).length,sc=(myGame.script||'').trim();
+ if($('stuStat'))$('stuStat').textContent=B.length+' blocks \u00b7 '+(S?'spawn \u2713':'spawn \u2717')+' \u00b7 '+(F?'finish \u2713':'finish \u2717')+' \u00b7 '+A+' animation'+(A===1?'':'s')+' \u00b7 '+(sc?'script \u2713':'script empty');
+ if($('stuInfo'))$('stuInfo').textContent='World: '+((WORLDS[myGame.w|0]||{}).n||'-')+' \u00b7 saves to this device and your account.'}
+function stuTpls(){const el=$('stuTpl');if(!el||el.dataset.done)return;el.dataset.done='1';
+ STU_TPL.forEach((t,i)=>{const b=document.createElement('button');b.className='stuTpl';b.innerHTML='<b>'+t.n+'</b><span>'+t.d+'</span>';b.onclick=()=>stuUse(i);el.appendChild(b)})}
+function drawCreate(){const ok=isPrem();$('crLock').hidden=ok;$('crForm').hidden=!ok;if(!ok)return;stuFill();
+ $('cT').value=myGame.t;$('cD').value=myGame.d||'';if($('cW'))$('cW').value=myGame.w|0;
+ stuStat();stuTpls();syncMy()}
+function saveMy(){if(!myGame)return;myGame.t=($('cT').value||'').trim()||'My Game';myGame.d=$('cD').value||'';myGame.w=+($('cW')?$('cW').value:0)||0;edSave()}
+['cT','cD'].forEach(id=>{const e=$(id);if(e)e.oninput=saveMy});if($('cW'))$('cW').onchange=saveMy;
+$('cPlay').onclick=()=>launch('my');$('cOpen').onclick=()=>openStudio();
 function addBots(S,P){return;const R=P.filter(p=>p.th<=1.3).sort((a,b)=>b.bz-a.bz).map(p=>({x:p.bx,y:p.by,z:p.bz}));if(R.length<2)return;
  const cum=[0];for(let i=1;i<R.length;i++){const a=R[i-1],b=R[i];cum.push(cum[i-1]+Math.hypot(b.x-a.x,b.z-a.z)+Math.abs(b.y-a.y))}
  S.bots=['Nova','Kai','Rex'].map((n,k)=>{const g=new THREE.Group(),col=[0xff7043,0x7e57c2,0x26a69a][k];
@@ -829,27 +889,10 @@ const CWc=18,CHr=36,CS=16;
 const TY=[['n','Block','#66bb6a'],['b','Bounce','#ff4081'],['p','Speed pad','#00e676'],['i','Ice','#9be7ff'],['f','Falling','#ff8a65'],['m','Moving','#42a5f5'],['r','Spinner','#ffd54a'],['c','Checkpoint','#eeeeee'],['F','Finish','#ffd700'],['S','Spawn','#ffffff'],['x','Erase','#555555']];
 let edTool='n',edLvl=0,edPaint=false;
 const tyCol=t=>(TY.find(x=>x[0]===t)||[0,0,'#66bb6a'])[2];
-function edHTML(){return `<p style='color:#bdbebe'>Build your course in the 3D Studio: open it, pick a block type, set the height, then click or drag in the 3D view to place blocks. You need one Spawn and one Finish. Press P to leave the Studio.</p><div style='display:flex;gap:20px;flex-wrap:wrap'><canvas id='edC' width='${CWc*CS}' height='${CHr*CS}' style='background:#1a1c20;border-radius:8px;cursor:crosshair;touch-action:none'></canvas><div style='min-width:230px'><p>Title <input id='cT' maxlength='24'></p><p>Description <input id='cD' maxlength='80' style='width:210px'></p><p>World look <select id='cW'>${WORLDS.map((w,i)=>`<option value='${i}'>${w.n}</option>`).join('')}</select></p><p>Block type</p><div class='pt' id='edT'></div><p>Height <button class='btn alt' id='edM' style='width:auto;display:inline-block;padding:6px 12px'>-</button> <b id='edL'>0</b> <button class='btn alt' id='edP' style='width:auto;display:inline-block;padding:6px 12px'>+</button></p><p><button class='btn alt' id='edS' style='width:auto;display:inline-block;padding:8px 12px'>Starter layout</button> <button class='btn alt' id='edX' style='width:auto;display:inline-block;padding:8px 12px'>Clear all</button></p><button class='btn' id='cPlay' style='max-width:200px'>Test play</button><p id='edMsg' style='color:#9be7a8;min-height:18px'></p></div></div>`}
-function edDraw(){const c=$('edC');if(!c)return;const g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);g.strokeStyle='#2a2d33';
- for(let x=0;x<=CWc;x++){g.beginPath();g.moveTo(x*CS,0);g.lineTo(x*CS,c.height);g.stroke()}for(let y=0;y<=CHr;y++){g.beginPath();g.moveTo(0,y*CS);g.lineTo(c.width,y*CS);g.stroke()}
- g.font='bold 10px sans-serif';g.textAlign='center';
- for(const b of myGame.blocks){const X=b[0]*CS,Y=(CHr-1-b[1])*CS;g.fillStyle=tyCol(b[3]);g.fillRect(X+1,Y+1,CS-2,CS-2);g.fillStyle='#000';g.fillText(b[3]==='S'||b[3]==='F'?b[3]:b[2],X+CS/2,Y+CS-4)}
- const nb=myGame.blocks.length,hasS=myGame.blocks.some(b=>b[3]==='S'),hasF=myGame.blocks.some(b=>b[3]==='F');$('edMsg').textContent=nb+' blocks'+(hasS?'':' - needs Spawn')+(hasF?'':' - needs Finish')}
-function edSave(){LS('bloxz-my',JSON.stringify(myGame));syncMy();edDraw();edRebuild()}
+function edSave(){if(!myGame)return;LS('bloxz-my',JSON.stringify(myGame));syncMy();if(typeof edRebuild==='function')edRebuild();if(typeof stuStat==='function')stuStat()}
 function edPlace(cx,cz){if(cx<0||cx>=CWc||cz<0||cz>=CHr)return;const B=myGame.blocks,i=B.findIndex(b=>b[0]===cx&&b[1]===cz);if(i>=0)B.splice(i,1);
  if(edTool!=='x'){if(edTool==='S'||edTool==='F'){const j=B.findIndex(b=>b[3]===edTool);if(j>=0)B.splice(j,1)}B.push([cx,cz,edLvl,edTool])}edSave()}
 function edStarter(){myGame.blocks=[[8,0,0,'S'],[8,1,0,'n'],[8,2,0,'n'],[8,4,1,'n'],[8,5,1,'n'],[9,7,2,'b'],[9,9,2,'n'],[9,10,2,'c'],[9,11,2,'n'],[10,13,3,'n'],[10,14,3,'p'],[10,15,3,'n'],[10,16,3,'n'],[10,18,4,'F']];edSave()}
-function saveMy(){myGame.t=$('cT').value.trim()||'My Parkour';myGame.d=$('cD').value;myGame.w=+$('cW').value;edSave()}
-function edTools(){const el=$('edT');el.innerHTML='';TY.forEach(([k,n,c])=>{const b=document.createElement('button');b.textContent=n;b.style.borderLeft='6px solid '+c;b.className=edTool===k?'on':'';b.onclick=()=>{edTool=k;edTools()};el.appendChild(b)})}
-function bindEd(){const c=$('edC');
- const at=e=>{const r=c.getBoundingClientRect();edPlace(Math.floor((e.clientX-r.left)*(c.width/r.width)/CS),CHr-1-Math.floor((e.clientY-r.top)*(c.height/r.height)/CS))};
- c.onpointerdown=e=>{edPaint=true;try{c.setPointerCapture(e.pointerId)}catch(_){}at(e)};c.onpointermove=e=>{if(edPaint)at(e)};c.onpointerup=()=>edPaint=false;
- $('edM').onclick=()=>{edLvl=Math.max(0,edLvl-1);$('edL').textContent=edLvl};$('edP').onclick=()=>{edLvl=Math.min(9,edLvl+1);$('edL').textContent=edLvl};
- $('cT').oninput=saveMy;$('cD').oninput=saveMy;$('cW').onchange=saveMy;$('edX').onclick=()=>{myGame.blocks=[];edSave()};$('edS').onclick=edStarter;$('cPlay').onclick=()=>launch('my')}
-function drawCreate(){const ok=isPrem();$('crLock').hidden=ok;$('crForm').hidden=!ok;if(!ok)return;
- if(!myGame)myGame={t:'My Parkour',d:'My own parkour course.',w:0,blocks:[]};if(!myGame.blocks)myGame.blocks=[];
- if(!$('edC')){$('crForm').innerHTML=edHTML();bindEd();$('edC').style.display='none';$('crForm').insertAdjacentHTML('afterbegin',"<button class='btn' id='ed3' style='max-width:240px;margin-bottom:10px'>Open 3D Studio</button>");$('ed3').onclick=openStudio}
- $('cT').value=myGame.t;$('cD').value=myGame.d;$('cW').value=myGame.w;$('edL').textContent=edLvl;edTools();edDraw();syncMy()}
 /* ===== FALLING ICE ===== */
 const ig=new THREE.Group();ig.visible=false;scene.add(ig);
 const IR=5,HR=3,LVN=5,LGAP=12,S3=Math.sqrt(3),WATER=-(LVN-1)*LGAP-12,hexGeo=new THREE.CylinderGeometry(HR-.12,HR-.12,1.2,6),hexEdge=new THREE.EdgesGeometry(hexGeo),ICOL=[0xcfefff,0xb2ebf2,0x9fd8f5,0xc5cae9,0xe1f5fe];
@@ -1167,7 +1210,7 @@ function syCam(){
 GAMES.push({id:'circuit',name:'NEON CIRCUIT',genre:'Racing',ok:1,c:['#00e5ff','#7c4dff'],desc:'Walk the paddock, get in your car with E, then race two rivals over three laps. A/D steer, Space drifts, Shift boosts. Best lap saved.'});
 GAMES.push({id:'stunt',name:'STUNT YARD',genre:'Car',ok:1,c:['#ff9100','#ff1744'],desc:'Stunt arena with ramps and 11 floating rings. Walk up to the car, press E to get in, then catch big air. Space drifts, Shift boosts. Best run saved.'});
 /* ===== 3D Studio: drag and place blocks ===== */
-let EDG=null,EDB=null,edGhost=null,edLast='',fromEd=false;const edPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0),edRay=new THREE.Raycaster(),edPt=new THREE.Vector3(),edMats={};
+let EDG=null,EDB=null,edGhost=null,edHi=null,edLast='',fromEd=false,edSel=-1,edSelMode=false,edTab='object',anSel=-1,anPrev=false,anT=0,anDraft={ry:0,y:0,s:0};const edPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0),edRay=new THREE.Raycaster(),edPt=new THREE.Vector3(),edMats={};
 const edMat=t=>edMats[t]||(edMats[t]=new THREE.MeshLambertMaterial({color:tyCol(t)}));
 function edBuild(){EDG=new THREE.Group();scene.add(EDG);
  const gnd=new THREE.Mesh(new THREE.PlaneGeometry(400,400),new THREE.MeshLambertMaterial({color:0x2e3b2e}));gnd.rotation.x=-Math.PI/2;gnd.position.y=-1.3;EDG.add(gnd);
@@ -1175,29 +1218,97 @@ function edBuild(){EDG=new THREE.Group();scene.add(EDG);
  const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));EDG.add(new THREE.LineSegments(gg,new THREE.LineBasicMaterial({color:0x8899aa,transparent:true,opacity:.5})));
  EDB=new THREE.Group();EDG.add(EDB);
  edGhost=new THREE.Mesh(boxGeo,new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.45}));edGhost.scale.set(4,1.2,4);edGhost.visible=false;EDG.add(edGhost);
- document.body.insertAdjacentHTML('beforeend',`<div id='edUI' hidden style='position:fixed;top:10px;left:10px;z-index:6;background:rgba(25,27,31,.92);border-radius:10px;padding:10px;width:210px;font-weight:700;font-size:13px'><div style='font-size:16px;margin-bottom:6px'>3D Studio</div><div class='pt' id='sT' style='flex-direction:column;gap:4px'></div><p style='margin:8px 0'>Height <button class='btn alt' id='sM' style='width:auto;display:inline-block;padding:3px 10px'>-</button> <b id='sL'>0</b> <button class='btn alt' id='sP' style='width:auto;display:inline-block;padding:3px 10px'>+</button></p><button class='btn' id='sTest' style='padding:7px;font-size:14px'>Test play</button><button class='btn alt' id='sS' style='padding:6px;font-size:13px'>Starter layout</button><button class='btn alt' id='sX' style='padding:6px;font-size:13px'>Clear all</button><button class='btn alt' id='sLeave' style='padding:6px;font-size:13px'>Leave (P)</button><p id='sMsg' style='font-size:12px;margin:8px 0 4px;color:#9be7a8'></p><p style='font-size:11px;color:#bdbebe;font-weight:400;margin:0'>Left-drag: place. Shift: erase. Right-drag: orbit. Wheel: zoom. WASD: move. Q/E: height. 1-9: block type. X: erase. P: leave.</p></div>`);
+ edHi=new THREE.Mesh(new THREE.BoxGeometry(4.2,1.5,4.2),new THREE.MeshBasicMaterial({color:0x00e5ff,wireframe:true}));edHi.visible=false;EDG.add(edHi);
+ document.body.insertAdjacentHTML('beforeend',"<div id='edUI' hidden style='position:fixed;top:10px;left:10px;bottom:10px;z-index:6;background:rgba(25,27,31,.94);border-radius:12px;padding:10px;width:clamp(132px,16vw,206px);font-weight:700;font-size:13px;overflow:auto;box-sizing:border-box'><div style='font-size:17px;margin-bottom:8px'>3D Studio</div><button class='btn alt' id='sSel' style='padding:6px;font-size:12px'>Select / inspect</button><div class='pt' id='sT' style='flex-direction:column;gap:4px;margin-top:8px'></div><p style='margin:8px 0'>Height <button class='btn alt' id='sM' style='width:auto;display:inline-block;padding:3px 10px'>-</button> <b id='sL'>0</b> <button class='btn alt' id='sP' style='width:auto;display:inline-block;padding:3px 10px'>+</button></p><button class='btn' id='sTest' style='padding:7px;font-size:14px'>Test play</button><button class='btn alt' id='sS' style='padding:6px;font-size:13px'>Templates</button><button class='btn alt' id='sX' style='padding:6px;font-size:13px'>Clear all</button><button class='btn alt' id='sLeave' style='padding:6px;font-size:13px'>Leave (P)</button><p id='sMsg' style='font-size:12px;margin:8px 0 4px;color:#9be7a8'></p><p style='font-size:11px;color:#bdbebe;font-weight:400;margin:0'>Left-drag: place. Shift: erase. Right-drag: orbit. Wheel: zoom. WASD: move. Q/E: height. 1-9: block. X: erase. P: leave.</p></div>");
+ document.body.insertAdjacentHTML('beforeend',"<div id='edDock' hidden><div class='stuTabs'><button data-t='object'>Object</button><button data-t='scripts'>Scripts</button><button data-t='anim'>Animation</button><button data-t='tpl'>Templates</button></div><div id='edPane'></div></div>");
  $('sM').onclick=()=>{edLvl=Math.max(0,edLvl-1);$('sL').textContent=edLvl};$('sP').onclick=()=>{edLvl=Math.min(9,edLvl+1);$('sL').textContent=edLvl};
- $('sS').onclick=edStarter;$('sX').onclick=()=>{myGame.blocks=[];edSave()};$('sLeave').onclick=()=>edLeave();
- $('sTest').onclick=()=>{if(!myGame.blocks.some(b=>b[3]==='F')){$('sMsg').textContent='Place a Finish block first';return}fromEd=true;$('edUI').hidden=true;EDG.visible=false;setState('menu');launch('my')};
+ $('sSel').onclick=()=>{edSelMode=!edSelMode;$('sSel').className=edSelMode?'btn':'btn alt';$('sSel').textContent=edSelMode?'Selecting... click a block':'Select / inspect';if(!edSelMode){edSel=-1;edMark();edRefresh()}};
+ $('sS').onclick=()=>{edDockTab('tpl')};
+ $('sX').onclick=()=>{if(!confirm('Clear every block in this project?'))return;myGame.blocks=[];myGame.anims=[];edSel=-1;edSave();edRebuild();edMark();edRefresh()};
+ $('sLeave').onclick=()=>edLeave();
+ $('sTest').onclick=()=>{if(!myGame.blocks.some(b=>b[3]==='F')){$('sMsg').textContent='Place a Finish block first';return}fromEd=true;$('edUI').hidden=true;$('edDock').hidden=true;EDG.visible=false;setState('menu');launch('my')};
+ document.querySelectorAll('.stuTabs button').forEach(b=>b.onclick=()=>edDockTab(b.dataset.t));
  cv.addEventListener('pointermove',e=>{if(state==='edit')edHandle(e,edPaint)});window.addEventListener('pointerup',()=>{edPaint=false;edLast=''});cv.addEventListener('contextmenu',e=>{if(state==='edit')e.preventDefault()});
  addEventListener('keydown',e=>{if(state!=='edit'||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.code==='KeyE')edLvl=Math.min(9,edLvl+1);else if(e.code==='KeyQ')edLvl=Math.max(0,edLvl-1);else if(e.code==='KeyX'){edTool=edTool==='x'?'n':'x';edTools3()}else{const n=+e.key;if(n>=1&&n<=9){edTool=TY[n-1][0];edTools3()}}$('sL').textContent=edLvl})}
-function edTools3(){const el=$('sT');el.innerHTML='';TY.forEach(([k,n,c],i)=>{const b=document.createElement('button');b.textContent=(i<9?(i+1)+' ':'')+n;b.style.cssText='border-left:6px solid '+c+';text-align:left';b.className=edTool===k?'on':'';b.onclick=()=>{edTool=k;edTools3()};el.appendChild(b)})}
-function edRebuild(){if(!EDB)return;EDB.clear();for(const b of myGame.blocks){const m=new THREE.Mesh(boxGeo,edMat(b[3]));m.scale.set(3.9,1.2,3.9);m.position.set((b[0]-8.5)*4,b[2]*1.1-.6,-b[1]*4);m.add(new THREE.LineSegments(edgeGeo,edgeMat));EDB.add(m);
-  if(b[3]==='r'){const r=new THREE.Mesh(boxGeo,edMat('r'));r.scale.set(5,.3,.5);r.position.set((b[0]-8.5)*4,b[2]*1.1+.2,-b[1]*4);EDB.add(r)}}}
+function edTools3(){const el=$('sT');if(!el)return;el.innerHTML='';TY.forEach(([k,n,c],i)=>{const b=document.createElement('button');b.textContent=(i<9?(i+1)+' ':'')+n;b.style.cssText='border-left:6px solid '+c+';text-align:left';b.className=edTool===k?'on':'';b.onclick=()=>{edTool=k;edTools3()};el.appendChild(b)})}
+function edRebuild(){if(!EDB||!myGame)return;EDB.clear();edSel=-1;edMark();(myGame.blocks||[]).forEach((b,i)=>{const m=new THREE.Mesh(boxGeo,edMat(b[3]));m.scale.set(3.9,1.2,3.9);m.position.set((b[0]-8.5)*4,b[2]*1.1-.6,-b[1]*4);m.userData.bi=i;m.userData.by=m.position.y;m.userData.bs=m.scale.clone();m.add(new THREE.LineSegments(edgeGeo,edgeMat));EDB.add(m);
+  if(b[3]==='r'){const r=new THREE.Mesh(boxGeo,edMat('r'));r.scale.set(5,.3,.5);r.position.set((b[0]-8.5)*4,b[2]*1.1+.2,-b[1]*4);r.userData.bi=i;r.userData.by=r.position.y;r.userData.bs=r.scale.clone();EDB.add(r)}})}
+function edMark(){if(!edHi)return;const b=myGame&&myGame.blocks?myGame.blocks[edSel]:null;if(!b){edHi.visible=false;return}edHi.visible=true;edHi.position.set((b[0]-8.5)*4,b[2]*1.1-.6,-b[1]*4)}
 function edCell(e){const r=cv.getBoundingClientRect();edRay.setFromCamera({x:(e.clientX-r.left)/r.width*2-1,y:-((e.clientY-r.top)/r.height*2-1)},camera);edPlane.constant=-(edLvl*1.1);
  if(!edRay.ray.intersectPlane(edPlane,edPt))return null;const cx=Math.round(edPt.x/4+8.5),cz=Math.round(-edPt.z/4);return(cx<0||cx>=CWc||cz<0||cz>=CHr)?null:[cx,cz]}
-function edHandle(e,paint){const c=edCell(e);if(!c){edGhost.visible=false;return}const er=e.shiftKey||edTool==='x';edGhost.visible=true;edGhost.material.color.set(er?0xff4444:tyCol(edTool));edGhost.position.set((c[0]-8.5)*4,edLvl*1.1-.6,-c[1]*4);
+function edHandle(e,paint){if(edSelMode){edGhost.visible=false;return}const c=edCell(e);if(!c){edGhost.visible=false;return}const er=e.shiftKey||edTool==='x';edGhost.visible=true;edGhost.material.color.set(er?0xff4444:tyCol(edTool));edGhost.position.set((c[0]-8.5)*4,edLvl*1.1-.6,-c[1]*4);
  if(paint){const key=c+'|'+edLvl+edTool+er;if(key===edLast)return;edLast=key;const t0=edTool;if(e.shiftKey)edTool='x';edPlace(c[0],c[1]);edTool=t0}}
-function edDown(e){edPaint=true;edLast='';edHandle(e,true)}
+function edDown(e){if(edSelMode){edPick(e);return}edPaint=true;edLast='';edHandle(e,true)}
+function edClick(e){if(edSelMode)edPick(e);else edDown(e)}
+function edPick(e){const r=cv.getBoundingClientRect();edRay.setFromCamera({x:(e.clientX-r.left)/r.width*2-1,y:-((e.clientY-r.top)/r.height*2-1)},camera);const hit=edRay.intersectObjects(EDB.children,false)[0];if(!hit){edSel=-1}else{edSel=hit.object.userData.bi}edMark();edDockTab('object');}
+function edDockTab(t){edTab=t;document.querySelectorAll('.stuTabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));edRefresh()}
+function edRefresh(){const p=$('edPane');if(!p||!myGame)return;
+ if(edTab==='scripts'){p.innerHTML=edPaneScripts();const s=$('scBox');if(s){s.value=myGame.script||'';s.oninput=()=>{myGame.script=s.value;edSave();edScStat()};edScStat()}}
+ else if(edTab==='anim'){p.innerHTML=edPaneAnim();edAnimBind()}
+ else if(edTab==='tpl'){p.innerHTML=edPaneTpl()}
+ else p.innerHTML=edPaneObj();
+ p.onclick=e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
+  if(a==='dup'){const s=myGame.blocks[edSel];if(!s)return;myGame.blocks.push([s[0],s[1],s[2],s[3]]);edSave();edRebuild();edSel=myGame.blocks.length-1;edMark();edRefresh()}
+  else if(a==='del'){if(edSel<0)return;myGame.blocks.splice(edSel,1);edRemap(edSel);edSel=-1;edSave();edRebuild();edMark();edRefresh()}
+  else if(a==='anim'){if(edSel<0)return;edNewAnim(edSel)}
+  else if(a==='sel'){anSel=+b.dataset.i;anPrev=true;anT=0;edRefresh()}
+  else if(a==='newanim'){edNewAnim(edSel>=0?edSel:0)}
+  else if(a==='key'){const A=myGame.anims[anSel];if(!A)return;const t=+b.dataset.t;const k=A.keys.find(x=>Math.abs(x.t-t)<.01);if(!k)return;anT=k.t;anDraft={ry:k.ry||0,y:k.y||0,s:k.s||0};anPrev=true;edRefresh()}
+  else if(a==='delanim'){if(anSel<0)return;myGame.anims.splice(anSel,1);anSel=-1;anPrev=false;edSave();edRefresh();edRebuild()}
+  else if(a==='tpl'){stuUse(+b.dataset.i);edRefresh()}
+  else if(a==='snip'){const s=$('scBox');if(!s)return;const add='\n'+b.dataset.snip+'\n';s.value=(s.value.replace(/\s*$/,'')+add);myGame.script=s.value;edSave();edScStat();s.focus()}
+  else if(a==='run'){edLeave();launch('my')}};
+ edScWatch();}
+function edScStat(){const el=$('scStat');if(!el)return;const p=scParse(myGame.script||'');el.style.color=p.err.length?'#ff8a8a':'#9be7a8';el.textContent=p.err.length?p.err.slice(0,3).join(' | '):(p.ev.length?p.ev.length+' event'+(p.ev.length===1?'':'s')+' ready':'no script yet');}
+function edScWatch(){}
+function edPaneObj(){const B=myGame.blocks||[];if(edSel<0||!B[edSel])return "<p class='hint'>Press <b>Select / inspect</b> on the left, then click a block in the viewport.</p><p class='hint'>Blocks: "+B.length+"<br>Animations: "+((myGame.anims||[]).length)+"<br>Script: "+((myGame.script||'').trim()?'yes':'empty')+"</p>";
+ const b=B[edSel],ty=TY.find(t=>t[0]===b[3])||TY[0];
+ return "<h3 style='margin:0 0 6px'>"+ty[1]+"</h3><p class='hint'>Grid x "+b[0]+" \u00b7 z "+b[1]+" \u00b7 height "+b[2]+"</p><button class='btn snip' data-act='dup'>Duplicate</button><button class='btn alt snip' data-act='del'>Delete</button><button class='btn alt snip' data-act='anim'>Animate</button><p class='hint' style='margin-top:10px'>Block "+edSel+" of "+(B.length-1)+"</p>";}
+function edPaneScripts(){const sn=[['on start\n  popup Welcome!','Start + popup'],['on jump\n  popup Nice jump!','Jump'],['on death\n  say Try again','Death'],['on checkpoint\n  alert Checkpoint!','Checkpoint'],['on finish\n  popup You win!','Finish'],['on every 10\n  popup 10 seconds!','Timer'],['on touch ice\n  say Slippery!','Ice'],['  win Custom win text','win'],['  teleport','teleport'],['  title New area','title'],['  flash green','flash'],['  sound','sound']];
+ return "<p class='hint'>Scripts are safe: they never run JavaScript. One block per line, actions indented under an <b>on ...</b> event.</p><textarea id='scBox' spellcheck='false'></textarea><p id='scStat' class='hint'></p>"+sn.map(s=>"<button class='btn alt snip' data-act='snip' data-snip=\""+s[0]+"\">"+s[1]+"</button>").join('')+"<p class='hint' style='margin-top:10px'><b>Events</b> start, jump, checkpoint, death, finish, touch &lt;block&gt;, every &lt;sec&gt;.<br><b>Actions</b> say, popup, alert, win, title, teleport, wait, flash, sound, jump, boost, kill.</p><button class='btn snip' data-act='run'>Test play</button>";}
+function edPaneTpl(){let h="<p class='hint'>Templates replace the current project.</p>";STU_TPL.forEach((t,i)=>{h+="<button class='stuTpl' data-act='tpl' data-i='"+i+"' style='width:100%;margin-bottom:8px'><b>"+t.n+"</b><span>"+t.d+"</span></button>"});return h}
+function edNewAnim(bi){if(!myGame.anims)myGame.anims=[];const A={n:'Animation '+(myGame.anims.length+1),bi:bi,dur:4,loop:true,keys:[{t:0,ry:0,y:0,s:0},{t:2,ry:180,y:.8,s:0},{t:4,ry:360,y:0,s:0}]};myGame.anims.push(A);anSel=myGame.anims.length-1;anDraft={ry:180,y:.8,s:0};anT=2;anPrev=true;edSave();edDockTab('anim');edRefresh()}
+function edRemap(i){const A=myGame.anims||[];A.forEach(a=>{if(a.bi===i)a.bi=-1;else if(a.bi>i)a.bi--})}
+function edPaneAnim(){const A=myGame.anims||[];let h="<p class='hint'>Select an animation, scrub the timeline, then add keys. Animations run in game too.</p>";
+ if(!A.length)h+="<p class='hint'>No animations yet.</p>";
+ A.forEach((a,i)=>{h+="<button class='btn "+(i===anSel?'':'alt')+" snip' data-act='sel' data-i='"+i+"'>&#9654; "+a.n+" \u00b7 block "+a.bi+"</button>"});
+ h+="<p style='margin:8px 0 0'><button class='btn alt snip' data-act='newanim'>+ Animation for selected block</button></p>";
+ if(anSel>=0&&A[anSel]){const a=A[anSel];const dur=a.dur||1;
+  h+="<p style='margin:10px 0 4px'>Duration <input id='anDur' type='number' min='.5' max='30' step='.5' value='"+a.dur+"' style='width:70px'> s <label class='hint'><input type='checkbox' id='anLoop' "+(a.loop?'checked':'')+"> loop</label></p>";
+  h+="<div class='anBar' id='anBar'>"+a.keys.map(k=>"<div class='anKey' data-act='key' data-t='"+k.t+"' style='left:"+Math.min(100,k.t/dur*100)+"%'></div>").join('')+"<div class='anPlay' id='anPlay' style='left:0%'></div></div>";
+  h+="<p class='hint'>Time "+anT.toFixed(2)+"s</p>";
+  h+="<p class='hint'>Rotation <b id='anRyV'>"+Math.round(anDraft.ry)+"</b>&deg;</p><input id='anRy' type='range' min='0' max='360' step='5' value='"+anDraft.ry+"' style='width:100%'>";
+  h+="<p class='hint'>Bob height <b id='anYV'>"+anDraft.y.toFixed(2)+"</b></p><input id='anY' type='range' min='-2' max='4' step='.1' value='"+anDraft.y+"' style='width:100%'>";
+  h+="<p class='hint'>Scale <b id='anSV'>"+anDraft.s.toFixed(2)+"</b></p><input id='anS' type='range' min='-.8' max='2' step='.05' value='"+anDraft.s+"' style='width:100%'>";
+  h+="<p><button class='btn snip' data-act='addkey'>Add / update key at "+anT.toFixed(2)+"s</button><button class='btn alt snip' data-act='delanim'>Delete animation</button></p>";
+  h+="<p class='hint'>Click a key marker to load it. Preview plays live in the viewport.</p>";}
+ return h}
+function edAnimBind(){const A=myGame.anims||[],a=A[anSel];if(!a)return;
+ const d=$('anDur'),l=$('anLoop');if(d)d.oninput=()=>{a.dur=Math.max(.5,+d.value||4);edSave()};if(l)l.onchange=()=>{a.loop=l.checked;edSave()};
+ const bind=(id,key,fmt,el)=>{const r=$(id);if(!r)return;r.oninput=()=>{anDraft[key]=+r.value;el&&($(el).textContent=fmt(+r.value));anPrev=true;edApplyDraft()}};
+ bind('anRy','ry',v=>Math.round(v),'anRyV');bind('anY','y',v=>v.toFixed(2),'anYV');bind('anS','s',v=>v.toFixed(2),'anSV');
+ const bar=$('anBar');if(bar){bar.onpointerdown=e=>{const r=bar.getBoundingClientRect();anT=clamp((e.clientX-r.left)/r.width,0,1)*(a.dur||1);anPrev=true;const p=$('anPlay');if(p)p.style.left=(anT/(a.dur||1)*100)+'%'}}
+ const add=document.querySelector("[data-act='addkey']");if(add)add.onclick=()=>{const near=a.keys.find(k=>Math.abs(k.t-anT)<.08);const v={t:+anT.toFixed(2),ry:+anDraft.ry,y:+anDraft.y,s:+anDraft.s};if(near)Object.assign(near,v);else a.keys.push(v);a.keys.sort((x,y)=>x.t-y.t);myGame.anims[anSel]=a;edSave();edRefresh()};}
+function edApplyDraft(){const A=myGame.anims||[],a=A[anSel];if(!a)return;edPlayAnim(a,anT,anDraft)}
+function anSample(a,t,draft){const K=(a.keys||[]).slice().sort((x,y)=>x.t-y.t);if(!K.length)return{y:0,ry:0,s:0};const dur=a.dur||K[K.length-1].t||1;let u=a.loop?((t%dur)+dur)%dur:Math.min(Math.max(t,0),dur);
+ if(draft&&Math.abs(u-t)<1e-6)return draft;
+ if(u<=K[0].t)return K[0];let i=1;while(i<K.length&&K[i].t<u)i++;if(i>=K.length)return K[K.length-1];const A=K[i-1],B=K[i],f=(u-A.t)/Math.max(.0001,B.t-A.t);
+ return{y:(A.y||0)+((B.y||0)-(A.y||0))*f,ry:(A.ry||0)+((B.ry||0)-(A.ry||0))*f,s:(A.s||0)+((B.s||0)-(A.s||0))*f}}
+function edPlayAnim(a,t,draft){const s=anSample(a,t,draft);EDB.children.forEach(m=>{if(m.userData.bi!==a.bi)return;const by=m.userData.by!==undefined?m.userData.by:m.position.y,bs=m.userData.bs||m.scale.clone();m.position.y=by+(s.y||0);m.rotation.y=(s.ry||0)*Math.PI/180;const k=1+(s.s||0);m.scale.set(bs.x*k,bs.y*k,bs.z*k)})}
+function anGame(dt){if(!SR||SR.lv!==100||!myGame||!myGame.anims)return;const t=SR.t||0;
+ for(const a of myGame.anims){if(a.bi<0||!a.keys||!a.keys.length)continue;const s=anSample(a,t);
+  for(const p of SR.P||[]){if(p.bi!==a.bi||!p.mesh)continue;if(p.anBy===undefined)p.anBy=p.mesh.position.y;if(p.anBs===undefined)p.anBs=p.mesh.scale.clone();
+   p.mesh.position.y=p.anBy+(s.y||0);p.mesh.rotation.y=(s.ry||0)*Math.PI/180;const k=1+(s.s||0);p.mesh.scale.set(p.anBs.x*k,p.anBs.y*k,p.anBs.z*k)}}}
 function edUpdate(dt){av.position.set(0,-999,0);zoomT=Math.max(zoomT,10);
  const fw=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0),rt=(keys.KeyD?1:0)-(keys.KeyA?1:0),v=Math.max(20,dist)*.9;
  px=clamp(px+(-Math.sin(yaw)*fw+Math.cos(yaw)*rt)*v*dt,-40,40);pz=clamp(pz+(-Math.cos(yaw)*fw-Math.sin(yaw)*rt)*v*dt,-150,10);py=0;
- const m=myGame.blocks;$('sMsg').textContent=m.length+' blocks'+(m.some(b=>b[3]==='S')?'':' | needs Spawn')+(m.some(b=>b[3]==='F')?'':' | needs Finish')}
-function openStudio(){if(!myGame)myGame={t:'My Parkour',d:'My own parkour course.',w:0,blocks:[]};if(!myGame.blocks)myGame.blocks=[];if(!EDG)edBuild();
+ if(anPrev&&myGame&&myGame.anims&&myGame.anims[anSel]){const a=myGame.anims[anSel];anT=(anT+dt)%(a.dur||1);edPlayAnim(a,anT);const p=$('anPlay');if(p)p.style.left=(anT/(a.dur||1)*100)+'%'}
+ const m=myGame.blocks||[];if($('sMsg'))$('sMsg').textContent=m.length+' blocks'+(m.some(b=>b[3]==='S')?'':' | needs Spawn')+(m.some(b=>b[3]==='F')?'':' | needs Finish')}
+function openStudio(){stuFill();if(!EDG)edBuild();
  demoObjs.forEach(o=>o.visible=false);rg.visible=false;sg.visible=false;srg.visible=false;pg.visible=false;ghostM.visible=false;EDG.visible=true;
  game='sr';SR={world:WORLDS[myGame.w||0]};px=0;py=0;pz=-30;yaw=0;pitch=.9;zoomT=60;dist=60;
- setState('edit');document.body.classList.add('menu');$('edUI').hidden=false;$('sL').textContent=edLvl;edTools3();edRebuild();rename(document.body)}
-function edLeave(){if(!EDG)return;$('edUI').hidden=true;EDG.visible=false;edPaint=false;setState('menu');showTab('create')}
+ setState('edit');document.body.classList.add('menu');$('edUI').hidden=false;$('edDock').hidden=false;$('sL').textContent=edLvl;edTools3();edRebuild();edSel=-1;anPrev=false;edDockTab('object');rename(document.body);window.scrollTo(0,0)}
+function edLeave(){if(!EDG)return;$('edUI').hidden=true;$('edDock').hidden=true;EDG.visible=false;edPaint=false;edSelMode=false;anPrev=false;setState('menu');showTab('create')}
 {let u='';try{u=localStorage.getItem('bloxz-user')||''}catch(e){}if(u)setUser(u);else{syncMy();applyEq();rename(document.body)}}
 {const h2=$('t-set').querySelector('h2');h2.insertAdjacentHTML('afterend',`<p>Username <input id='setName' maxlength='16' style='background:#121316;color:#fff;border:1px solid #3a3d44;border-radius:6px;padding:8px'> <button class='btn' id='setNameOk' style='width:auto;display:inline-block;padding:8px 14px'>Save</button> <span id='setNameMsg' style='color:#9be7a8;margin-left:8px'></span></p>`);
  const save=()=>{const n=$('setName').value.trim();if(!n){$('setNameMsg').style.color='#ff6b6b';$('setNameMsg').textContent='Enter a name first';return}setUser(n);$('setNameMsg').style.color='#9be7a8';$('setNameMsg').textContent='Saved as '+DISP};
@@ -1509,6 +1620,8 @@ function scParse(src){const ev=[],err=[];let cur=null;
   else if(c==='boost'){v=num(.5,10,2);if(v===null)return}
   else if(c==='wait'){v=num(.1,60,1);if(v===null)return}
   else if(c==='flash'){v={red:'#ff3b3b',green:'#00e676',blue:'#2979ff',yellow:'#ffd54a',pink:'#ff4081',white:'#ffffff'}[a.toLowerCase()||'white'];if(!v)return bad('flash colors: red, green, blue, yellow, pink, white')}
+  else if(c==='popup'||c==='alert'||c==='title'||c==='win'){if(!a)return bad(c+' needs some text');v=a.slice(0,c==='popup'?120:90)}
+  else if(c==='teleport'||c==='respawn'){v=1}
   else if(c!=='sound'&&c!=='kill')return bad('unknown command "'+c+'"');
   cur.a.push([c,v])});
  return{ev,err}}
@@ -1516,7 +1629,8 @@ let scRun=null;
 function scFire(k,v){const R=scRun;if(!R)return;for(const e of R.ev){if(e.k!==k||(k==='touch'&&e.v!==v))continue;let d=SR.t||0;for(const[c,x]of e.a){if(c==='wait'){d+=x;continue}if(R.q.length<200)R.q.push({at:d,c,x,end:k==='finish'})}}}
 function scDo(i){const live=state==='play';
  if(i.c==='say')toast(i.x,'rgba(0,120,200,.9)');else if(i.c==='sound')beep(520,1040,.25);else if(i.c==='flash')flash(i.x);
- else if(!live)return;else if(i.c==='jump'){vy=i.x;SR.g=false;SR.stand=null}else if(i.c==='boost')SR.boost=i.x;else if(i.c==='kill')srRespawn()}
+ else if(i.c==='popup')gpop(i.x);else if(i.c==='alert'){if(document.exitPointerLock)document.exitPointerLock();info('Message',i.x)}else if(i.c==='title')$('zone').textContent=i.x;
+ else if(!live)return;else if(i.c==='jump'){vy=i.x;SR.g=false;SR.stand=null}else if(i.c==='boost')SR.boost=i.x;else if(i.c==='kill')srRespawn();else if(i.c==='teleport')srRespawn();else if(i.c==='win')scWin(i.x)}
 function scTick(){const R=scRun;if(!R)return;const now=SR.t||0,due=R.q.filter(i=>i.at<=now);R.q=R.q.filter(i=>i.at>now);due.forEach(scDo)}
 const _srOpen=srOpen;srOpen=function(){scRun=null;_srOpen();if(srLv!==100||!myGame||!SR.cps)return;const p=scParse((guest||myGame).script);if(!p.ev.length)return;
  scRun={ev:p.ev,q:[],next:p.ev.map(e=>e.k==='every'||e.k==='time'?(SR.t||0)+e.v:0),on:null};scFire('start');setTimeout(()=>{if(scRun&&game==='sr'&&srLv===100)scTick()},750)};
@@ -1527,17 +1641,19 @@ const _srStep=srStep;srStep=function(dt){if(!scRun||SR.lv!==100)return _srStep(d
   const t=S.stand?S.stand.t:(g===false&&vy===23?'b':null);if(t&&(S.stand!==scRun.on||t==='b'))scFire('touch',t);scRun.on=S.stand;
   scRun.ev.forEach((e,i)=>{const n=scRun.next[i];if(!n||S.t<n)return;const one={k:e.k,a:e.a},all=scRun.ev;scRun.ev=[one];scFire(e.k);scRun.ev=all;scRun.next[i]=e.k==='every'?n+e.v:0})}
  scTick()};
+const _srStepA=srStep;srStep=function(dt){_srStepA(dt);if(SR&&SR.lv===100&&myGame&&myGame.anims&&myGame.anims.length)anGame(dt)};
 const _srRespawn=srRespawn;srRespawn=function(){_srRespawn();if(scRun&&SR.lv===100)scFire('death')};
 const _srFinish=srFinish;srFinish=function(){_srFinish();if(scRun&&SR.lv===100){scRun.q=[];scFire('finish');const q=scRun.q;scRun=null;q.forEach(i=>setTimeout(()=>{if(state==='win')scDo(i)},Math.max(0,i.at-SR.t)*1000))}};
 
 let cloudKey='',cloudReady=false,cloudDirty=false,cloudT=null,cloudMsg='Log in to save online';
-const newGame=()=>({t:'My Parkour',d:'My own parkour course.',w:0,blocks:[],script:''});
+const newGame=()=>stuNew();
+function cleanAnims(v){let a=[];try{a=typeof v==='string'?JSON.parse(v||'[]'):v}catch(e){}if(!Array.isArray(a))return[];return a.slice(0,40).map(x=>({n:String(x&&x.n||'Animation').replace(/[<>]/g,'').slice(0,20),bi:Number.isInteger(x&&x.bi)?x.bi:-1,dur:Math.max(.5,Math.min(30,+x.dur||4)),loop:x.loop!==false,keys:(Array.isArray(x&&x.keys)?x.keys:[]).slice(0,40).map(k=>({t:Math.max(0,Math.min(30,+k.t||0)),ry:+k.ry||0,y:+k.y||0,s:+k.s||0}))})).filter(x=>x.keys.length)}
 function cloudStatus(m){cloudMsg=m;const e=$('scCloud');if(e)e.textContent=m}
 function cleanGame(v){let b=[];try{b=JSON.parse(v.blocks)}catch(e){}const seen=new Set();
  b=(Array.isArray(b)?b:[]).filter(x=>Array.isArray(x)&&Number.isInteger(x[0])&&x[0]>=0&&x[0]<CWc&&Number.isInteger(x[1])&&x[1]>=0&&x[1]<CHr&&Number.isInteger(x[2])&&x[2]>=0&&x[2]<=9&&TY.some(t=>t[0]===x[3]&&x[3]!=='x')&&!seen.has(x[0]+','+x[1])&&seen.add(x[0]+','+x[1])).map(x=>x.slice(0,4));
- const w=v.w|0;return{t:String(v.t||'My Parkour').replace(/[<>]/g,'').slice(0,24),d:String(v.d||'').slice(0,80),w:w>=0&&w<WORLDS.length?w:0,blocks:b,script:String(v.script||'').slice(0,SC_MAX),pub:v.pub===true,by:String(v.by||'').replace(/[<>]/g,'').slice(0,16),ts:+v.ts||0,owner:cloudKey}}
+ const w=v.w|0;return{t:String(v.t||'My Parkour').replace(/[<>]/g,'').slice(0,24),d:String(v.d||'').slice(0,80),w:w>=0&&w<WORLDS.length?w:0,blocks:b,script:String(v.script||'').slice(0,SC_MAX),anims:cleanAnims(v.anims),pub:v.pub===true,by:String(v.by||'').replace(/[<>]/g,'').slice(0,16),ts:+v.ts||0,owner:cloudKey}}
 async function cloudSave(){clearTimeout(cloudT);cloudT=null;if(!db||!cloudReady||!myGame)return false;const m=myGame,k=cloudKey;m.ts=m.ts||Date.now();m.owner=k;cloudStatus('Saving to Firebase…');
- try{await db.ref('games/'+k).set({t:String(m.t).replace(/[<>]/g,'').slice(0,24),d:String(m.d||'').slice(0,80),w:m.w|0,blocks:JSON.stringify(m.blocks||[]),script:String(m.script||'').slice(0,SC_MAX),pub:!!m.pub,by:String(DISP).slice(0,16),ts:m.ts});if(!cloudT)cloudStatus('✔ Saved to Firebase');return true}
+ try{await db.ref('games/'+k).set({t:String(m.t).replace(/[<>]/g,'').slice(0,24),d:String(m.d||'').slice(0,80),w:m.w|0,blocks:JSON.stringify(m.blocks||[]),script:String(m.script||'').slice(0,SC_MAX),anims:JSON.stringify((m.anims||[]).slice(0,40)),pub:!!m.pub,by:String(DISP).slice(0,16),ts:m.ts});if(!cloudT)cloudStatus('✔ Saved to Firebase');return true}
  catch(e){cloudStatus('Not saved online (kept on this device): '+(e.message||e));return false}}
 function cloudTouch(){if(!myGame)return;myGame.ts=Date.now();if(cloudKey)myGame.owner=cloudKey;cloudDirty=true;LS('bloxz-my',JSON.stringify(myGame));if(!cloudReady)return;cloudStatus('Unsaved changes…');clearTimeout(cloudT);cloudT=setTimeout(cloudSave,1200)}
 async function cloudLoad(k){if(!db||!k)return;cloudKey=k;cloudReady=false;cloudStatus('Loading from Firebase…');
