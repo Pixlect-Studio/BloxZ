@@ -161,6 +161,11 @@ body:not(.menu) #tcMenuBtn{display:none}
 .anBar{position:relative;height:32px;background:#121316;border-radius:8px;margin:8px 0;border:1px solid #34383f}
 .anKey{position:absolute;top:5px;width:8px;height:20px;background:#00e5ff;border-radius:2px;transform:translateX(-4px);cursor:pointer}
 .anPlay{position:absolute;top:0;bottom:0;width:2px;background:#ffd54a;pointer-events:none}
+.entCard{display:flex;gap:6px;align-items:center;background:#23262b;border-radius:8px;padding:6px 8px;margin:5px 0;font-size:12px}
+.entCard b{font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.entCard i{color:#9aa0a6;font-style:normal;font-size:11px}
+.entCard .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+#edPane input[type=file]{width:100%;color:#bdbebe;font-size:11px;margin:6px 0}
 @media(max-width:1000px){#edUI{width:132px;padding:6px;font-size:11px}#edUI .pt button{font-size:10px;padding:3px 5px}#edDock{width:calc(100% - 156px);right:8px;top:8px;bottom:8px}#edPane textarea{height:150px}}
 </style></head><body>
 <canvas id="c"></canvas>
@@ -802,7 +807,7 @@ $('mainc').insertAdjacentHTML('beforeend',`<section id='t-market' hidden><h2 sty
 <section id='t-inv' hidden><h2 style='margin:0 0 12px'>Inventory</h2><div class='row' id='invRow' style='flex-wrap:wrap'></div></section>
 <section id='t-create' hidden><h2 style='margin:0 0 6px'>3D Studio</h2><div id='crLock' class='ban'>The 3D Studio is a BloxZ Premium feature. <button class='btn' id='crUnlock' style='max-width:180px;margin-top:8px'>Enter code</button></div><div id='crForm' hidden>
 <div class='stuTop'><input id='cT' maxlength='24' placeholder='Project name'><input id='cD' maxlength='80' placeholder='Description'><select id='cW'>${WORLDS.map((w,i)=>`<option value='${i}'>${w.n}</option>`).join('')}</select><button class='btn' id='cPlay' style='width:auto;padding:8px 14px'>Play</button><button class='btn alt' id='cOpen' style='width:auto;padding:8px 14px'>Open 3D Studio</button></div>
-<p class='st' style='color:#bdbebe;margin:10px 0'>A new project starts with one platform, a spawn, a finish and built-in WASD movement. Open the 3D Studio to place blocks, write scripts (popups, alerts, custom wins) and animate props. Templates are below.</p>
+<p class='st' style='color:#bdbebe;margin:10px 0'>A new project starts with one platform, a spawn, a finish and built-in WASD movement. Open the 3D Studio to place blocks, write scripts (popups, alerts, custom wins) and animate props. Use the Entities tab to upload cars, NPCs and templates (.json). Templates are below.</p>
 <div class='stuGrid'><div class='stuCard'><h3>Project</h3><p id='stuInfo' class='st' style='color:#bdbebe'></p><p id='stuStat' style='color:#9be7a8'></p></div><div class='stuCard'><h3>Templates</h3><div id='stuTpl' class='stuTpls'></div></div></div>
 <div class='stuCard'><h3>Script cheatsheet</h3><pre class='stuCode'>on start
   popup Welcome to my game!
@@ -857,10 +862,10 @@ const STU_TPL=[
 {n:'Animated Stage',d:'A platform with spinning, bobbing and pulsing props.',f:()=>{const B=stuFloor(2,15,2,12,0);B.push([8,3,0,'S'],[8,11,0,'F']);const add=(x,z)=>{B.push([x,z,2,'n']);return B.length-1};const a=add(5,6),b=add(8,6),c=add(11,6);return{t:'Animated Stage',d:'Props that spin, bob and pulse.',w:0,blocks:B,script:'on start\n  popup Animated Stage\non finish\n  popup Nice!\n',anims:[{n:'Spin',bi:a,dur:4,loop:true,keys:[{t:0,ry:0,y:0,s:0},{t:2,ry:180,y:.8,s:0},{t:4,ry:360,y:0,s:0}]},{n:'Bob',bi:b,dur:2,loop:true,keys:[{t:0,y:0,s:0},{t:1,y:1.4,s:0},{t:2,y:0,s:0}]},{n:'Pulse',bi:c,dur:2,loop:true,keys:[{t:0,s:0},{t:1,s:.4},{t:2,s:0}]}]}}}
 ];
 function stuNew(){return STU_TPL[0].f()}
-function stuFill(){if(!myGame)myGame=stuNew();if(!myGame.blocks||!myGame.blocks.length)myGame.blocks=stuNew().blocks;if(!myGame.anims)myGame.anims=[];if(typeof myGame.script!=='string')myGame.script='';return myGame}
+function stuFill(){if(!myGame)myGame=stuNew();if(!myGame.blocks||!myGame.blocks.length)myGame.blocks=stuNew().blocks;if(!myGame.anims)myGame.anims=[];if(!Array.isArray(myGame.ents))myGame.ents=[];if(typeof myGame.script!=='string')myGame.script='';return myGame}
 function stuUse(i){const t=STU_TPL[i];if(!t)return;if(myGame&&(myGame.blocks||[]).length&&!confirm('Replace the current project with "'+t.n+'"?'))return;myGame=t.f();edSave();drawCreate();toast('Template loaded: '+t.n);if(state==='edit'){edRebuild();if(typeof edRefresh==='function')edRefresh()}}
 function stuStat(){const B=myGame.blocks||[],S=B.some(b=>b[3]==='S'),F=B.some(b=>b[3]==='F'),A=(myGame.anims||[]).length,sc=(myGame.script||'').trim();
- if($('stuStat'))$('stuStat').textContent=B.length+' blocks \u00b7 '+(S?'spawn \u2713':'spawn \u2717')+' \u00b7 '+(F?'finish \u2713':'finish \u2717')+' \u00b7 '+A+' animation'+(A===1?'':'s')+' \u00b7 '+(sc?'script \u2713':'script empty');
+ if($('stuStat'))$('stuStat').textContent=B.length+' blocks \u00b7 '+(S?'spawn \u2713':'spawn \u2717')+' \u00b7 '+(F?'finish \u2713':'finish \u2717')+' \u00b7 '+A+' animation'+(A===1?'':'s')+' \u00b7 '+((myGame.ents||[]).length)+' entities \u00b7 '+(sc?'script \u2713':'script empty');
  if($('stuInfo'))$('stuInfo').textContent='World: '+((WORLDS[myGame.w|0]||{}).n||'-')+' \u00b7 saves to this device and your account.'}
 function stuTpls(){const el=$('stuTpl');if(!el||el.dataset.done)return;el.dataset.done='1';
  STU_TPL.forEach((t,i)=>{const b=document.createElement('button');b.className='stuTpl';b.innerHTML='<b>'+t.n+'</b><span>'+t.d+'</span>';b.onclick=()=>stuUse(i);el.appendChild(b)})}
@@ -893,6 +898,53 @@ function edSave(){if(!myGame)return;LS('bloxz-my',JSON.stringify(myGame));syncMy
 function edPlace(cx,cz){if(cx<0||cx>=CWc||cz<0||cz>=CHr)return;const B=myGame.blocks,i=B.findIndex(b=>b[0]===cx&&b[1]===cz);if(i>=0)B.splice(i,1);
  if(edTool!=='x'){if(edTool==='S'||edTool==='F'){const j=B.findIndex(b=>b[3]===edTool);if(j>=0)B.splice(j,1)}B.push([cx,cz,edLvl,edTool])}edSave()}
 function edStarter(){myGame.blocks=[[8,0,0,'S'],[8,1,0,'n'],[8,2,0,'n'],[8,4,1,'n'],[8,5,1,'n'],[9,7,2,'b'],[9,9,2,'n'],[9,10,2,'c'],[9,11,2,'n'],[10,13,3,'n'],[10,14,3,'p'],[10,15,3,'n'],[10,16,3,'n'],[10,18,4,'F']];edSave()}
+/* ===== 3D Studio entities: upload cars, NPCs and templates ===== */
+const ENT_KINDS=['car','npc','template'];
+const ENT_BUILTIN=[
+{kind:'car',name:'Red Sedan',color:'#ff3b3b',text:'Beep beep!',speed:5},
+{kind:'car',name:'Cyan Racer',color:'#00e5ff',text:'Vroom!',speed:8},
+{kind:'npc',name:'Guide',color:'#ffd54a',text:'Welcome to my game!',speed:1},
+{kind:'npc',name:'Guard',color:'#7c4dff',text:'Halt! Finish the course.',speed:1.4},
+{kind:'npc',name:'Fan',color:'#00e676',text:'Nice jump!',speed:1.2}
+];
+let ENT_LIB=null;
+function entOk(e){return e&&typeof e==='object'&&ENT_KINDS.indexOf(e.kind)>=0&&typeof e.name==='string'&&!!e.name.trim()}
+function entLib(){if(ENT_LIB)return ENT_LIB;let a=[];try{a=JSON.parse(localStorage.getItem('bloxz-ents')||'[]')}catch(e){}ENT_LIB=(Array.isArray(a)?a:[]).filter(entOk);return ENT_LIB}
+function entSaveLib(){LS('bloxz-ents',JSON.stringify(entLib().slice(-24)));if(typeof edRefresh==='function'&&edTab==='ent')edRefresh()}
+function entSan(e){const k=ENT_KINDS.indexOf(e.kind)>=0?e.kind:'npc';const o={kind:k,name:String(e.name||'Entity').replace(/[<>]/g,'').slice(0,22),color:/^#[0-9a-f]{3,8}$/i.test(String(e.color||''))?e.color:'#ffb300',text:String(e.text||'').replace(/[<>]/g,'').slice(0,90),speed:Math.max(.2,Math.min(20,+e.speed||3))};
+ if(k==='template'){o.blocks=(Array.isArray(e.blocks)?e.blocks:[]).filter(b=>Array.isArray(b)&&b.length>=4).slice(0,3000).map(b=>[b[0]|0,b[1]|0,Math.max(0,Math.min(9,b[2]|0)),String(b[3]||'n')]);o.script=String(e.script||'').slice(0,SC_MAX);o.anims=cleanAnims(e.anims)}
+ return o}
+function entAll(){return ENT_BUILTIN.concat(entLib())}
+function entAdd(e){const o=entSan(e),lib=entLib(),i=lib.findIndex(x=>x.name.toLowerCase()===o.name.toLowerCase());if(i>=0)lib[i]=o;else lib.push(o);entSaveLib();toast('Entity saved: '+o.name,'rgba(0,150,120,.95)');return o}
+function entUploadFile(file){if(!file)return;const rd=new FileReader();rd.onload=()=>{try{const raw=JSON.parse(String(rd.result||'{}')),arr=Array.isArray(raw)?raw:[raw];let n=0,bad=0;arr.forEach(x=>{try{const s=entSan(x);if(s.kind==='template'&&!s.blocks.length)throw new Error('template needs blocks');entAdd(s);n++}catch(err){bad++}});if(!n)throw new Error('no valid entities in that file');toast(n+' entit'+(n===1?'y':'ies')+' uploaded'+(bad?' ('+bad+' skipped)':''),'rgba(0,150,120,.95)')}catch(e){toast('Upload failed: '+e.message,'rgba(180,40,40,.95)')}if(typeof edRefresh==='function')edRefresh()};rd.readAsText(file)}
+function entDownload(){const m=myGame||{};const o={format:'bloxz-entity',v:1,kind:'template',name:m.t||'My Game',color:'#00b06f',text:m.d||'',speed:0,blocks:m.blocks||[],script:m.script||'',anims:m.anims||[],ents:m.ents||[]};
+ const b=new Blob([JSON.stringify(o)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(String(o.name).replace(/[^a-z0-9_-]+/gi,'_')||'game')+'.bloxz.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast('Project downloaded as a template file','rgba(0,120,200,.95)')}
+function entPlace(e){if(!e||!myGame)return;stuFill();const b=edSel>=0?myGame.blocks[edSel]:null,x=b?b[0]:8,z=b?b[1]:6,h=b?b[2]:0;
+ myGame.ents=myGame.ents||[];if(myGame.ents.length>=40){toast('Entity limit reached (40)','rgba(180,40,40,.95)');return}
+ myGame.ents.push({kind:e.kind,name:e.name,color:e.color,text:e.text,speed:e.speed,x:x,z:z,h:h});edSave();edRebuild();if(edTab==='ent')edRefresh();toast(e.name+' placed at '+x+','+z,'rgba(0,150,120,.95)')}
+function entDel(i){if(!myGame||!myGame.ents)return;myGame.ents.splice(i,1);edSave();edRebuild();edRefresh()}
+function entUse(e){if(!e||e.kind!=='template')return;if(!confirm('Replace this project with template "'+e.name+'"?'))return;myGame={t:e.name,d:e.text||'Uploaded template',w:0,blocks:(e.blocks||[]).slice(),script:e.script||'',anims:(e.anims||[]).slice(),ents:(e.ents||[]).slice()};edSel=-1;edSave();drawCreate();edRebuild();edRefresh();toast('Template loaded: '+e.name)}
+function entSpawn(){if(!SR||SR.lv!==100||SR.entG)return;const g=guest||myGame,list=(g&&g.ents)||[];if(!list.length)return;
+ const grp=new THREE.Group();srg.add(grp);SR.entG=grp;SR.ents=[];
+ list.slice(0,40).forEach(e=>{const col=new THREE.Color(e.color||'#ffb300'),g3=new THREE.Group(),mat=new THREE.MeshLambertMaterial({color:col});
+  if(e.kind==='car'){const bd=new THREE.Mesh(boxGeo,mat);bd.scale.set(2.4,.8,4.4);bd.position.y=.75;g3.add(bd);
+   const cab=new THREE.Mesh(boxGeo,new THREE.MeshLambertMaterial({color:0x101216}));cab.scale.set(2,.65,2);cab.position.set(0,1.35,-.2);g3.add(cab);
+   const wm=new THREE.MeshLambertMaterial({color:0x0a0a0a});[[-1.3,1.5],[1.3,1.5],[-1.3,-1.5],[1.3,-1.5]].forEach(q=>{const w=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,.32,10),wm);w.rotation.z=Math.PI/2;w.position.set(q[0],.42,q[1]);g3.add(w)})}
+  else{const bd=new THREE.Mesh(new THREE.CylinderGeometry(.45,.55,1.7,10),mat);bd.position.y=.95;g3.add(bd);
+   const hd=new THREE.Mesh(new THREE.SphereGeometry(.45,12,10),new THREE.MeshLambertMaterial({color:0xffd9b3}));hd.position.y=2.1;g3.add(hd);
+   const nose=new THREE.Mesh(boxGeo,mat);nose.scale.set(.12,.12,.14);nose.position.set(0,2.1,.42);g3.add(nose)}
+  g3.position.set((e.x-8.5)*4,(e.h||0)*1.1+.6,-e.z*4);grp.add(g3);
+  SR.ents.push({e:e,g3:g3,t:Math.random()*10,cool:2,bz:g3.position.z,by:g3.position.y})})}
+function entStep(dt){if(!SR||!SR.ents)return;const tm=performance.now()/1000;
+ for(const o of SR.ents){const e=o.e,g3=o.g3;if(!g3)continue;
+  if(e.kind==='car'){o.t+=dt;const sp=Math.max(.5,+e.speed||4);g3.position.z=o.bz+Math.sin(o.t*sp*.32)*9;g3.rotation.y=Math.cos(o.t*sp*.32)>0?0:Math.PI}
+  else{o.t+=dt*.6;g3.rotation.y=Math.sin(tm*.7+o.bz)*.5;g3.position.y=o.by+Math.abs(Math.sin(tm*2+o.bz))*.12}
+  o.cool=Math.max(0,(o.cool||0)-dt);
+  if(o.cool<=0&&e.text){const dx=px-g3.position.x,dz=pz-g3.position.z;if(dx*dx+dz*dz<12){gpop(e.text,2200);o.cool=7}}}
+ if(SR.P)for(const p of SR.P)if(p.mesh&&p.entHover){}
+}
+const _srOpenE=srOpen;srOpen=function(){_srOpenE();entSpawn()};
+const _srStepE=srStep;srStep=function(dt){_srStepE(dt);if(SR&&SR.lv===100&&SR.ents)entStep(dt)};
 /* ===== FALLING ICE ===== */
 const ig=new THREE.Group();ig.visible=false;scene.add(ig);
 const IR=5,HR=3,LVN=5,LGAP=12,S3=Math.sqrt(3),WATER=-(LVN-1)*LGAP-12,hexGeo=new THREE.CylinderGeometry(HR-.12,HR-.12,1.2,6),hexEdge=new THREE.EdgesGeometry(hexGeo),ICOL=[0xcfefff,0xb2ebf2,0x9fd8f5,0xc5cae9,0xe1f5fe];
@@ -1219,11 +1271,11 @@ function edBuild(){EDG=new THREE.Group();scene.add(EDG);
  EDB=new THREE.Group();EDG.add(EDB);
  edGhost=new THREE.Mesh(boxGeo,new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.45}));edGhost.scale.set(4,1.2,4);edGhost.visible=false;EDG.add(edGhost);
  edHi=new THREE.Mesh(new THREE.BoxGeometry(4.2,1.5,4.2),new THREE.MeshBasicMaterial({color:0x00e5ff,wireframe:true}));edHi.visible=false;EDG.add(edHi);
- document.body.insertAdjacentHTML('beforeend',"<div id='edUI' hidden style='position:fixed;top:10px;left:10px;bottom:10px;z-index:6;background:rgba(25,27,31,.94);border-radius:12px;padding:10px;width:clamp(132px,16vw,206px);font-weight:700;font-size:13px;overflow:auto;box-sizing:border-box'><div style='font-size:17px;margin-bottom:8px'>3D Studio</div><button class='btn alt' id='sSel' style='padding:6px;font-size:12px'>Select / inspect</button><div class='pt' id='sT' style='flex-direction:column;gap:4px;margin-top:8px'></div><p style='margin:8px 0'>Height <button class='btn alt' id='sM' style='width:auto;display:inline-block;padding:3px 10px'>-</button> <b id='sL'>0</b> <button class='btn alt' id='sP' style='width:auto;display:inline-block;padding:3px 10px'>+</button></p><button class='btn' id='sTest' style='padding:7px;font-size:14px'>Test play</button><button class='btn alt' id='sS' style='padding:6px;font-size:13px'>Templates</button><button class='btn alt' id='sX' style='padding:6px;font-size:13px'>Clear all</button><button class='btn alt' id='sLeave' style='padding:6px;font-size:13px'>Leave (P)</button><p id='sMsg' style='font-size:12px;margin:8px 0 4px;color:#9be7a8'></p><p style='font-size:11px;color:#bdbebe;font-weight:400;margin:0'>Left-drag: place. Shift: erase. Right-drag: orbit. Wheel: zoom. WASD: move. Q/E: height. 1-9: block. X: erase. P: leave.</p></div>");
- document.body.insertAdjacentHTML('beforeend',"<div id='edDock' hidden><div class='stuTabs'><button data-t='object'>Object</button><button data-t='scripts'>Scripts</button><button data-t='anim'>Animation</button><button data-t='tpl'>Templates</button></div><div id='edPane'></div></div>");
+ document.body.insertAdjacentHTML('beforeend',"<div id='edUI' hidden style='position:fixed;top:10px;left:10px;bottom:10px;z-index:6;background:rgba(25,27,31,.94);border-radius:12px;padding:10px;width:clamp(132px,16vw,206px);font-weight:700;font-size:13px;overflow:auto;box-sizing:border-box'><div style='font-size:17px;margin-bottom:8px'>3D Studio</div><button class='btn alt' id='sSel' style='padding:6px;font-size:12px'>Select / inspect</button><div class='pt' id='sT' style='flex-direction:column;gap:4px;margin-top:8px'></div><p style='margin:8px 0'>Height <button class='btn alt' id='sM' style='width:auto;display:inline-block;padding:3px 10px'>-</button> <b id='sL'>0</b> <button class='btn alt' id='sP' style='width:auto;display:inline-block;padding:3px 10px'>+</button></p><button class='btn' id='sTest' style='padding:7px;font-size:14px'>Test play</button><button class='btn alt' id='sS' style='padding:6px;font-size:13px'>Templates</button><button class='btn alt' id='sE' style='padding:6px;font-size:13px'>Upload entities</button><button class='btn alt' id='sX' style='padding:6px;font-size:13px'>Clear all</button><button class='btn alt' id='sLeave' style='padding:6px;font-size:13px'>Leave (P)</button><p id='sMsg' style='font-size:12px;margin:8px 0 4px;color:#9be7a8'></p><p style='font-size:11px;color:#bdbebe;font-weight:400;margin:0'>Left-drag: place. Shift: erase. Right-drag: orbit. Wheel: zoom. WASD: move. Q/E: height. 1-9: block. X: erase. P: leave.</p></div>");
+ document.body.insertAdjacentHTML('beforeend',"<div id='edDock' hidden><div class='stuTabs'><button data-t='object'>Object</button><button data-t='scripts'>Scripts</button><button data-t='anim'>Animation</button><button data-t='ent'>Entities</button><button data-t='tpl'>Templates</button></div><div id='edPane'></div></div>");
  $('sM').onclick=()=>{edLvl=Math.max(0,edLvl-1);$('sL').textContent=edLvl};$('sP').onclick=()=>{edLvl=Math.min(9,edLvl+1);$('sL').textContent=edLvl};
  $('sSel').onclick=()=>{edSelMode=!edSelMode;$('sSel').className=edSelMode?'btn':'btn alt';$('sSel').textContent=edSelMode?'Selecting... click a block':'Select / inspect';if(!edSelMode){edSel=-1;edMark();edRefresh()}};
- $('sS').onclick=()=>{edDockTab('tpl')};
+ $('sS').onclick=()=>{edDockTab('tpl')};$('sE').onclick=()=>{edDockTab('ent')};
  $('sX').onclick=()=>{if(!confirm('Clear every block in this project?'))return;myGame.blocks=[];myGame.anims=[];edSel=-1;edSave();edRebuild();edMark();edRefresh()};
  $('sLeave').onclick=()=>edLeave();
  $('sTest').onclick=()=>{if(!myGame.blocks.some(b=>b[3]==='F')){$('sMsg').textContent='Place a Finish block first';return}fromEd=true;$('edUI').hidden=true;$('edDock').hidden=true;EDG.visible=false;setState('menu');launch('my')};
@@ -1232,7 +1284,8 @@ function edBuild(){EDG=new THREE.Group();scene.add(EDG);
  addEventListener('keydown',e=>{if(state!=='edit'||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.code==='KeyE')edLvl=Math.min(9,edLvl+1);else if(e.code==='KeyQ')edLvl=Math.max(0,edLvl-1);else if(e.code==='KeyX'){edTool=edTool==='x'?'n':'x';edTools3()}else{const n=+e.key;if(n>=1&&n<=9){edTool=TY[n-1][0];edTools3()}}$('sL').textContent=edLvl})}
 function edTools3(){const el=$('sT');if(!el)return;el.innerHTML='';TY.forEach(([k,n,c],i)=>{const b=document.createElement('button');b.textContent=(i<9?(i+1)+' ':'')+n;b.style.cssText='border-left:6px solid '+c+';text-align:left';b.className=edTool===k?'on':'';b.onclick=()=>{edTool=k;edTools3()};el.appendChild(b)})}
 function edRebuild(){if(!EDB||!myGame)return;EDB.clear();edSel=-1;edMark();(myGame.blocks||[]).forEach((b,i)=>{const m=new THREE.Mesh(boxGeo,edMat(b[3]));m.scale.set(3.9,1.2,3.9);m.position.set((b[0]-8.5)*4,b[2]*1.1-.6,-b[1]*4);m.userData.bi=i;m.userData.by=m.position.y;m.userData.bs=m.scale.clone();m.add(new THREE.LineSegments(edgeGeo,edgeMat));EDB.add(m);
-  if(b[3]==='r'){const r=new THREE.Mesh(boxGeo,edMat('r'));r.scale.set(5,.3,.5);r.position.set((b[0]-8.5)*4,b[2]*1.1+.2,-b[1]*4);r.userData.bi=i;r.userData.by=r.position.y;r.userData.bs=r.scale.clone();EDB.add(r)}})}
+  if(b[3]==='r'){const r=new THREE.Mesh(boxGeo,edMat('r'));r.scale.set(5,.3,.5);r.position.set((b[0]-8.5)*4,b[2]*1.1+.2,-b[1]*4);r.userData.bi=i;r.userData.by=r.position.y;r.userData.bs=r.scale.clone();EDB.add(r)}});
+ ((myGame&&myGame.ents)||[]).forEach(e=>{const m=new THREE.Mesh(boxGeo,new THREE.MeshLambertMaterial({color:new THREE.Color(e.color||'#ffb300')}));m.scale.set(1.5,2.3,1.5);m.position.set((e.x-8.5)*4,(e.h||0)*1.1+.5,-e.z*4);m.userData.bi=-1;EDB.add(m)})}
 function edMark(){if(!edHi)return;const b=myGame&&myGame.blocks?myGame.blocks[edSel]:null;if(!b){edHi.visible=false;return}edHi.visible=true;edHi.position.set((b[0]-8.5)*4,b[2]*1.1-.6,-b[1]*4)}
 function edCell(e){const r=cv.getBoundingClientRect();edRay.setFromCamera({x:(e.clientX-r.left)/r.width*2-1,y:-((e.clientY-r.top)/r.height*2-1)},camera);edPlane.constant=-(edLvl*1.1);
  if(!edRay.ray.intersectPlane(edPlane,edPt))return null;const cx=Math.round(edPt.x/4+8.5),cz=Math.round(-edPt.z/4);return(cx<0||cx>=CWc||cz<0||cz>=CHr)?null:[cx,cz]}
@@ -1240,12 +1293,13 @@ function edHandle(e,paint){if(edSelMode){edGhost.visible=false;return}const c=ed
  if(paint){const key=c+'|'+edLvl+edTool+er;if(key===edLast)return;edLast=key;const t0=edTool;if(e.shiftKey)edTool='x';edPlace(c[0],c[1]);edTool=t0}}
 function edDown(e){if(edSelMode){edPick(e);return}edPaint=true;edLast='';edHandle(e,true)}
 function edClick(e){if(edSelMode)edPick(e);else edDown(e)}
-function edPick(e){const r=cv.getBoundingClientRect();edRay.setFromCamera({x:(e.clientX-r.left)/r.width*2-1,y:-((e.clientY-r.top)/r.height*2-1)},camera);const hit=edRay.intersectObjects(EDB.children,false)[0];if(!hit){edSel=-1}else{edSel=hit.object.userData.bi}edMark();edDockTab('object');}
+function edPick(e){const r=cv.getBoundingClientRect();edRay.setFromCamera({x:(e.clientX-r.left)/r.width*2-1,y:-((e.clientY-r.top)/r.height*2-1)},camera);const hit=edRay.intersectObjects(EDB.children,false)[0];if(!hit||hit.object.userData.bi<0){edSel=-1}else{edSel=hit.object.userData.bi}edMark();edDockTab('object');}
 function edDockTab(t){edTab=t;document.querySelectorAll('.stuTabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));edRefresh()}
 function edRefresh(){const p=$('edPane');if(!p||!myGame)return;
  if(edTab==='scripts'){p.innerHTML=edPaneScripts();const s=$('scBox');if(s){s.value=myGame.script||'';s.oninput=()=>{myGame.script=s.value;edSave();edScStat()};edScStat()}}
  else if(edTab==='anim'){p.innerHTML=edPaneAnim();edAnimBind()}
  else if(edTab==='tpl'){p.innerHTML=edPaneTpl()}
+ else if(edTab==='ent'){p.innerHTML=edPaneEnt();edEntBind()}
  else p.innerHTML=edPaneObj();
  p.onclick=e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act;
   if(a==='dup'){const s=myGame.blocks[edSel];if(!s)return;myGame.blocks.push([s[0],s[1],s[2],s[3]]);edSave();edRebuild();edSel=myGame.blocks.length-1;edMark();edRefresh()}
@@ -1258,6 +1312,10 @@ function edRefresh(){const p=$('edPane');if(!p||!myGame)return;
   else if(a==='stop'){anPrev=false;edRebuild();edRefresh()}
   else if(a==='delanim'){if(anSel<0)return;myGame.anims.splice(anSel,1);anSel=-1;anPrev=false;edSave();edRefresh();edRebuild()}
   else if(a==='tpl'){stuUse(+b.dataset.i);edRefresh()}
+  else if(a==='entplace'){entPlace(entAll()[+b.dataset.i])}
+  else if(a==='entuse'){entUse(entAll()[+b.dataset.i])}
+  else if(a==='entdel'){entDel(+b.dataset.i)}
+  else if(a==='entdl'){entDownload()}
   else if(a==='snip'){const s=$('scBox');if(!s)return;const add='\n'+b.dataset.snip+'\n';s.value=(s.value.replace(/\s*$/,'')+add);myGame.script=s.value;edSave();edScStat();s.focus()}
   else if(a==='run'){edLeave();launch('my')}};
  edScWatch();}
@@ -1268,6 +1326,17 @@ function edPaneObj(){const B=myGame.blocks||[];if(edSel<0||!B[edSel])return "<p 
  return "<h3 style='margin:0 0 6px'>"+ty[1]+"</h3><p class='hint'>Grid x "+b[0]+" \u00b7 z "+b[1]+" \u00b7 height "+b[2]+"</p><button class='btn snip' data-act='dup'>Duplicate</button><button class='btn alt snip' data-act='del'>Delete</button><button class='btn alt snip' data-act='anim'>Animate</button><p class='hint' style='margin-top:10px'>Block "+edSel+" of "+(B.length-1)+"</p>";}
 function edPaneScripts(){const sn=[['on start\n  popup Welcome!','Start + popup'],['on jump\n  popup Nice jump!','Jump'],['on death\n  say Try again','Death'],['on checkpoint\n  alert Checkpoint!','Checkpoint'],['on finish\n  popup You win!','Finish'],['on every 10\n  popup 10 seconds!','Timer'],['on touch ice\n  say Slippery!','Ice'],['  win Custom win text','win'],['  teleport','teleport'],['  title New area','title'],['  flash green','flash'],['  sound','sound']];
  return "<p class='hint'>Scripts are safe: they never run JavaScript. One block per line, actions indented under an <b>on ...</b> event.</p><textarea id='scBox' spellcheck='false'></textarea><p id='scStat' class='hint'></p>"+sn.map(s=>"<button class='btn alt snip' data-act='snip' data-snip=\""+s[0]+"\">"+s[1]+"</button>").join('')+"<p class='hint' style='margin-top:10px'><b>Events</b> start, jump, checkpoint, death, finish, touch &lt;block&gt;, every &lt;sec&gt;.<br><b>Actions</b> say, popup, alert, win, title, teleport, wait, flash, sound, jump, boost, kill.</p><button class='btn snip' data-act='run'>Test play</button>";}
+function edPaneEnt(){const lib=entAll(),mine=(myGame.ents||[]);
+ let h="<p class='hint'>Upload a <b>.json</b> entity file (car, NPC or template), or use the built-in ones. Select a block first, then Place drops the entity on it.</p>";
+ h+="<input type='file' id='entFile' accept='.json,application/json'><button class='btn snip' data-act='entdl'>Download project as template</button>";
+ h+="<h3 style='margin:12px 0 6px'>Cars, NPCs &amp; uploads</h3>";
+ lib.forEach((e,i)=>{h+="<div class='entCard'><span class='dot' style='background:"+e.color+"'></span><b>"+e.name+"</b><i>"+e.kind+"</i><button class='btn alt snip' data-act='entplace' data-i='"+i+"'>Place</button>"+(e.kind==='template'?"<button class='btn alt snip' data-act='entuse' data-i='"+i+"'>Use</button>":'')+"</div>"});
+ h+="<h3 style='margin:12px 0 6px'>In this project</h3>";
+ if(!mine.length)h+="<p class='hint'>Nothing placed yet.</p>";
+ mine.forEach((e,i)=>{h+="<div class='entCard'><span class='dot' style='background:"+(e.color||'#ffb300')+"'></span><b>"+e.name+"</b><i>"+e.kind+" @ "+e.x+","+e.z+"</i><button class='btn alt snip' data-act='entdel' data-i='"+i+"'>Delete</button></div>"});
+ h+="<p class='hint' style='margin-top:10px'>Upload format: <b>{\"kind\":\"car\",\"name\":\"My Car\",\"color\":\"#ff3b3b\",\"text\":\"Beep!\",\"speed\":6}</b> — kind can be car, npc or template. Templates also take <b>blocks</b>, <b>script</b> and <b>anims</b>.</p>";
+ return h}
+function edEntBind(){const f=$('entFile');if(f)f.onchange=()=>{entUploadFile(f.files&&f.files[0]);try{f.value=''}catch(e){}}}
 function edPaneTpl(){let h="<p class='hint'>Templates replace the current project.</p>";STU_TPL.forEach((t,i)=>{h+="<button class='stuTpl' data-act='tpl' data-i='"+i+"' style='width:100%;margin-bottom:8px'><b>"+t.n+"</b><span>"+t.d+"</span></button>"});return h}
 function edNewAnim(bi){if(!myGame.anims)myGame.anims=[];const A={n:'Animation '+(myGame.anims.length+1),bi:bi,dur:4,loop:true,keys:[{t:0,ry:0,y:0,s:0},{t:2,ry:180,y:.8,s:0},{t:4,ry:360,y:0,s:0}]};myGame.anims.push(A);anSel=myGame.anims.length-1;anDraft={ry:180,y:.8,s:0};anT=2;anPrev=true;edSave();edDockTab('anim');edRefresh()}
 function edRemap(i){const A=myGame.anims||[];A.forEach(a=>{if(a.bi===i)a.bi=-1;else if(a.bi>i)a.bi--})}
@@ -1649,13 +1718,14 @@ const _srFinish=srFinish;srFinish=function(){_srFinish();if(scRun&&SR.lv===100){
 
 let cloudKey='',cloudReady=false,cloudDirty=false,cloudT=null,cloudMsg='Log in to save online';
 const newGame=()=>stuNew();
+function cleanEnts(v){let a=[];try{a=typeof v==='string'?JSON.parse(v||'[]'):v}catch(e){}if(!Array.isArray(a))return[];return a.slice(0,40).map(e=>({kind:['car','npc','template'].indexOf(e&&e.kind)>=0?e.kind:'npc',name:String(e&&e.name||'Entity').replace(/[<>]/g,'').slice(0,22),color:/^#[0-9a-f]{3,8}$/i.test(String(e&&e.color||''))?e.color:'#ffb300',text:String(e&&e.text||'').replace(/[<>]/g,'').slice(0,90),speed:Math.max(.2,Math.min(20,+(e&&e.speed)||3)),x:Math.max(0,Math.min(17,(e&&e.x)|0)),z:Math.max(0,Math.min(35,(e&&e.z)|0)),h:Math.max(0,Math.min(9,(e&&e.h)|0))}))}
 function cleanAnims(v){let a=[];try{a=typeof v==='string'?JSON.parse(v||'[]'):v}catch(e){}if(!Array.isArray(a))return[];return a.slice(0,40).map(x=>({n:String(x&&x.n||'Animation').replace(/[<>]/g,'').slice(0,20),bi:Number.isInteger(x&&x.bi)?x.bi:-1,dur:Math.max(.5,Math.min(30,+x.dur||4)),loop:x.loop!==false,keys:(Array.isArray(x&&x.keys)?x.keys:[]).slice(0,40).map(k=>({t:Math.max(0,Math.min(30,+k.t||0)),ry:+k.ry||0,y:+k.y||0,s:+k.s||0}))})).filter(x=>x.keys.length)}
 function cloudStatus(m){cloudMsg=m;const e=$('scCloud');if(e)e.textContent=m}
 function cleanGame(v){let b=[];try{b=JSON.parse(v.blocks)}catch(e){}const seen=new Set();
  b=(Array.isArray(b)?b:[]).filter(x=>Array.isArray(x)&&Number.isInteger(x[0])&&x[0]>=0&&x[0]<CWc&&Number.isInteger(x[1])&&x[1]>=0&&x[1]<CHr&&Number.isInteger(x[2])&&x[2]>=0&&x[2]<=9&&TY.some(t=>t[0]===x[3]&&x[3]!=='x')&&!seen.has(x[0]+','+x[1])&&seen.add(x[0]+','+x[1])).map(x=>x.slice(0,4));
- const w=v.w|0;return{t:String(v.t||'My Parkour').replace(/[<>]/g,'').slice(0,24),d:String(v.d||'').slice(0,80),w:w>=0&&w<WORLDS.length?w:0,blocks:b,script:String(v.script||'').slice(0,SC_MAX),anims:cleanAnims(v.anims),pub:v.pub===true,by:String(v.by||'').replace(/[<>]/g,'').slice(0,16),ts:+v.ts||0,owner:cloudKey}}
+ const w=v.w|0;return{t:String(v.t||'My Parkour').replace(/[<>]/g,'').slice(0,24),d:String(v.d||'').slice(0,80),w:w>=0&&w<WORLDS.length?w:0,blocks:b,script:String(v.script||'').slice(0,SC_MAX),anims:cleanAnims(v.anims),ents:cleanEnts(v.ents),pub:v.pub===true,by:String(v.by||'').replace(/[<>]/g,'').slice(0,16),ts:+v.ts||0,owner:cloudKey}}
 async function cloudSave(){clearTimeout(cloudT);cloudT=null;if(!db||!cloudReady||!myGame)return false;const m=myGame,k=cloudKey;m.ts=m.ts||Date.now();m.owner=k;cloudStatus('Saving to Firebase…');
- try{await db.ref('games/'+k).set({t:String(m.t).replace(/[<>]/g,'').slice(0,24),d:String(m.d||'').slice(0,80),w:m.w|0,blocks:JSON.stringify(m.blocks||[]),script:String(m.script||'').slice(0,SC_MAX),anims:JSON.stringify((m.anims||[]).slice(0,40)),pub:!!m.pub,by:String(DISP).slice(0,16),ts:m.ts});if(!cloudT)cloudStatus('✔ Saved to Firebase');return true}
+ try{await db.ref('games/'+k).set({t:String(m.t).replace(/[<>]/g,'').slice(0,24),d:String(m.d||'').slice(0,80),w:m.w|0,blocks:JSON.stringify(m.blocks||[]),script:String(m.script||'').slice(0,SC_MAX),anims:JSON.stringify((m.anims||[]).slice(0,40)),ents:JSON.stringify((m.ents||[]).slice(0,40)),pub:!!m.pub,by:String(DISP).slice(0,16),ts:m.ts});if(!cloudT)cloudStatus('✔ Saved to Firebase');return true}
  catch(e){cloudStatus('Not saved online (kept on this device): '+(e.message||e));return false}}
 function cloudTouch(){if(!myGame)return;myGame.ts=Date.now();if(cloudKey)myGame.owner=cloudKey;cloudDirty=true;LS('bloxz-my',JSON.stringify(myGame));if(!cloudReady)return;cloudStatus('Unsaved changes…');clearTimeout(cloudT);cloudT=setTimeout(cloudSave,1200)}
 async function cloudLoad(k){if(!db||!k)return;cloudKey=k;cloudReady=false;cloudStatus('Loading from Firebase…');
