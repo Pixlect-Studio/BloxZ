@@ -1,6 +1,6 @@
 # BloxZ
 
-<sub>**BETA V2.0.0 — RELEASE**</sub>
+<sub>**BETA V1.0.0 — RELEASE**</sub>
 
 Welcome to **BloxZ**!
 
