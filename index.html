@@ -168,6 +168,41 @@ body:not(.menu) #tcMenuBtn{display:none}
 .entCard .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
 #edPane input[type=file]{width:100%;color:#bdbebe;font-size:11px;margin:6px 0}
 @media(max-width:1000px){#edUI{width:132px;padding:6px;font-size:11px}#edUI .pt button{font-size:10px;padding:3px 5px}#edDock{width:calc(100% - 156px);right:8px;top:8px;bottom:8px}#edPane textarea{height:150px}}
+</style><style>
+#av2{margin-top:22px;padding-top:18px;border-top:1px solid #41444b;max-width:1050px}
+#av2 h3{margin:0 0 9px!important;font-size:16px}
+.av2Top{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.av2Choices{display:flex;flex-wrap:wrap;gap:7px}
+.av2Choice,.av2Equip,.av2OutfitRow button{border:1px solid #484c55;background:#292d34;color:#f5f6f7;border-radius:7px;padding:8px 11px;font-weight:700;cursor:pointer}
+.av2Choice.on{background:#087e56;border-color:#19c88a;color:#fff}
+.av2Wear{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.9fr);gap:18px;margin-top:20px}
+.av2Sub{color:#aeb4be;font-size:12px;line-height:1.45;margin:0 0 10px}
+.av2Slot{display:grid;grid-template-columns:125px minmax(120px,1fr) 72px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #363a42;font-size:13px}
+.av2Slot select{min-width:0;background:#121316;color:#fff;border:1px solid #484c55;border-radius:6px;padding:8px}
+.av2Equip{padding:7px 9px;background:#087e56;border:0}
+.av2Msg{min-height:18px;color:#9be7a8;font-size:12px;margin:8px 0}
+.av2Outfits{background:#1a1c20;border-radius:10px;padding:14px}
+.av2OutfitRow{display:grid;grid-template-columns:1fr repeat(3,auto);gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #373a41;font-size:12px}
+.av2OutfitRow button{padding:6px 8px;font-size:12px}
+.av2OutfitRow button:disabled{opacity:.35;cursor:not-allowed}
+.av2Footer{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:18px;color:#aeb4be;font-size:12px;flex-wrap:wrap}
+#av2Shop,#av2Random,#av2Reset{width:auto;display:inline-block;padding:8px 13px;font-size:13px;margin:5px 6px 0 0}
+#fig{transform-origin:center bottom;transition:filter .15s}
+#fig.style-rounded>div{border-radius:14px!important}
+#fig.style-rounded .fh{border-radius:50%!important}
+#fig.style-rounded .ft{border-radius:18px!important}
+#fig.style-rounded .fal,#fig.style-rounded .far,#fig.style-rounded .fll,#fig.style-rounded .flr{border-radius:14px!important}
+#fig.style-r15 .fh{width:54px;height:54px;left:43px;border-radius:8px}
+#fig.style-r15 .ft{width:66px;left:37px;height:82px}
+#fig.style-r15 .fal,#fig.style-r15 .far{width:23px;height:76px}
+#fig.style-r15 .fal{left:8px}#fig.style-r15 .far{left:109px}
+#fig.style-r15 .fll,#fig.style-r15 .flr{width:30px;height:92px}
+#fig.style-robot .fh,#fig.style-robot .ft,#fig.style-robot .fal,#fig.style-robot .far,#fig.style-robot .fll,#fig.style-robot .flr{border-radius:2px!important;box-shadow:inset 0 0 0 3px rgba(0,0,0,.24),inset 0 -7px 0 rgba(0,0,0,.15)}
+#fig .av2-preview-piece{position:absolute;display:block;pointer-events:none;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+#fig .pvHair{left:43px;top:-5px;width:54px;height:22px;border-radius:12px 12px 5px 5px}
+#fig .pvHat{left:35px;top:-12px;width:70px;height:13px;border-radius:5px 5px 2px 2px}
+#fig .pvGlasses{left:44px;top:23px;width:52px;height:13px;border-radius:3px;opacity:.85}
+@media(max-width:760px){.av2Top,.av2Wear{grid-template-columns:1fr}.av2Slot{grid-template-columns:105px minmax(100px,1fr) 66px}#av2{padding-right:4px}}
 </style></head><body>
 <canvas id="c"></canvas>
 <div id="hud">
@@ -351,8 +386,8 @@ const M=c=>new THREE.MeshLambertMaterial({color:c});
 function part(w,h,d,c,x,y,z,pivotY){const g=new THREE.Group();g.position.set(x,y,z);const m=new THREE.Mesh(boxGeo,M(c));m.scale.set(w,h,d);m.position.y=pivotY||0;m.castShadow=true;g.add(m);av.add(g);return g}
 const torso=part(1,1,.5,0x1e88e5,0,1.1,0);
 const head=part(.9,.9,.9,0xf5cd30,0,2.05,0);
-const eyeM=M(0x111111);[-.2,.2].forEach(x=>{const e=new THREE.Mesh(boxGeo,eyeM);e.scale.set(.12,.16,.05);e.position.set(x,2.12,.46);av.add(e)});
-const sm=new THREE.Mesh(boxGeo,eyeM);sm.scale.set(.38,.07,.05);sm.position.set(0,1.88,.46);av.add(sm);
+const eyeM=M(0x111111),baseFaceMeshes=[];[-.2,.2].forEach(x=>{const e=new THREE.Mesh(boxGeo,eyeM);e.scale.set(.12,.16,.05);e.position.set(x,2.12,.46);av.add(e);baseFaceMeshes.push(e)});
+const sm=new THREE.Mesh(boxGeo,eyeM);sm.scale.set(.38,.07,.05);sm.position.set(0,1.88,.46);av.add(sm);baseFaceMeshes.push(sm);
 const armL=part(.4,1,.4,0xf5cd30,-.7,1.6,0,-.45),armR=part(.4,1,.4,0xf5cd30,.7,1.6,0,-.45);
 const legL=part(.45,1,.45,0x4caf50,-.25,.6,0,-.5),legR=part(.45,1,.45,0x4caf50,.25,.6,0,-.5);
 const DEF={head:'#f5cd30',torso:'#1e88e5',arms:'#f5cd30',legs:'#4caf50'};
@@ -420,7 +455,7 @@ function step(dt){
   if(ground_)coyote=.12;
   if(jbuf>0&&coyote>0){vy=JV;coyote=0;jbuf=0;ground_=false;standing=null}
   px+=vx*dt;hit('x');pz+=vz*dt;hit('z');
-  const prev=py;if(!climb)vy-=G*dt;py+=vy*dt;
+  const prev=py;if(FLY)vy=(keys.Space?12:0)-((keys.ShiftLeft||keys.ShiftRight)?12:0);else if(!climb)vy-=G*dt;py+=vy*dt;
   let landed=null;
   for(const b of plats){
     if(!near(b)||!ovl(b)||!(py<b.top&&py+PH>b.bot))continue;
@@ -430,7 +465,7 @@ function step(dt){
   ground_=!!landed;standing=landed;if(landed&&landed.pad){vy=18;ground_=false;standing=null;landed=null}
   if(landed&&landed.cp&&landed.i>cpIdx){cpIdx=landed.i;PRG.demo={cp:cpIdx};prgSave();toast('✔ Checkpoint reached!')}
   if(landed&&landed.last&&!won){won=true;delete PRG.demo;prgSave();$('winTxt').textContent='You conquered the tower in '+fmt(time)+' with '+falls+' falls.';setState('win')}
-  if(py<plats[cpIdx].top-35||py<-6){falls++;spawnAt(plats[cpIdx]);toast('Respawned at checkpoint','rgba(200,60,60,.9)')}
+  if(!FLY&&(py<plats[cpIdx].top-35||py<-6)){falls++;spawnAt(plats[cpIdx]);toast('Respawned at checkpoint','rgba(200,60,60,.9)')}
   // avatar
   av.position.set(px,py,pz);
   let d=face-av.rotation.y;d=Math.atan2(Math.sin(d),Math.cos(d));av.rotation.y+=d*Math.min(1,dt*14);
@@ -475,10 +510,10 @@ addEventListener('keydown',e=>{
   if(state==='play'&&e.code!=='Escape'&&document.pointerLockElement!==cv)lock();
   keys[e.code]=true;
   if(!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)&&['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
-  if(e.code==='Space')jbuf=.14;
+  if(e.code==='Space'&&!FLY)jbuf=.14;
   if(e.code==='KeyP'&&!e.repeat&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)){if(state==='edit')edLeave();else if(state==='play'||state==='pause'){const back=fromEd;fromEd=false;setState('menu');if(back)openStudio();else showTab('home')}}else if(e.code==='Escape'&&!e.repeat){if(state==='play')setState('pause');else if(state==='pause')setState('play')}
 });
-addEventListener('keyup',e=>{keys[e.code]=false;if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&performance.now()-slT<260)toggleSL()});
+addEventListener('keyup',e=>{keys[e.code]=false;if(!FLY&&(e.code==='ShiftLeft'||e.code==='ShiftRight')&&performance.now()-slT<260)toggleSL()});
 addEventListener('blur',()=>{for(const k in keys)keys[k]=false;if(state==='play')setState('pause')});
 let drag=false;const cv=$('c');
 cv.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&tcOn())return;drag=(state!=='edit'||e.button===2);try{cv.setPointerCapture(e.pointerId)}catch(_){}cv.style.cursor='grabbing';if(state==='edit'&&e.button!==2)edClick(e);if(state==='play'&&document.pointerLockElement!==cv)lock()});
@@ -619,7 +654,7 @@ function survStep(dt){
  coyote-=dt;jbuf-=dt;if(onG)coyote=.12;
  if(jbuf>0&&coyote>0){vy=JV;coyote=0;jbuf=0;onG=false}
  px+=vx*dt;pz+=vz*dt;
- const prev=py;vy-=G*dt;py+=vy*dt;
+ const prev=py;if(FLY)vy=(keys.Space?12:0)-((keys.ShiftLeft||keys.ShiftRight)?12:0);else vy-=G*dt;py+=vy*dt;
  const tl=tiles.find(t=>t.st<2&&Math.abs(px-t.x)<TS/2&&Math.abs(pz-t.z)<TS/2);
  onG=false;if(tl&&vy<=0&&prev>=-.2&&py<=0){py=0;vy=0;onG=true}
  S.fallT-=dt;if(S.fallT<=0){const c=tiles.filter(t=>t.st===0);if(c.length>1){const t=c[Math.floor(Math.random()*c.length)];t.st=1;t.t=0;t.m.material.color.set(0xe53935)}S.fallT=Math.max(.45,2.4-S.t*.032)}
@@ -775,7 +810,7 @@ function srStep(dt){
  if(jbuf>0&&coyote>0){vy=JVS;coyote=0;jbuf=0;S.g=false;S.stand=null;burst(px,py,pz,0xffffff,6,4);beep(300,700,.12)}
  if(vy>4&&!keys.Space)vy-=55*dt;
  px+=vx*dt;srHit('x');pz+=vz*dt;srHit('z');
- const wasG=S.g,vIn=vy;const prev=py;vy-=G*dt;py+=vy*dt;let ld=null,T=0;
+ const wasG=S.g,vIn=vy;const prev=py;if(FLY)vy=(keys.Space?12:0)-((keys.ShiftLeft||keys.ShiftRight)?12:0);else vy-=G*dt;py+=vy*dt;let ld=null,T=0;
  for(const p of S.P){if(!(p.on&&p.st!==2)||Math.abs(px-p.x)>=p.hw+HW||Math.abs(pz-p.z)>=p.hd+HW)continue;const m=srSlope(p);T=tp(p);if(!(py<T+(S.g&&m?.35+m*S.dist*1.5:0)&&py+PH>T-p.th))continue;
   if(vy<=0&&prev>=T-(m?.45+m*S.dist*1.5+.1:.4)){py=T;vy=0;ld=p}
   else if(vy>0){if(prev+PH<=T-p.th+.3){py=T-p.th-PH;vy=0}else if(prev>=T-(m?.45+m*S.dist*1.5+.1:.4)&&py<T)py=T}}
@@ -870,7 +905,7 @@ function drawInv(){const el=$('invRow'),L=ITEMS.filter(i=>isOwned(i.id));el.inne
  el.querySelectorAll('[data-eq]').forEach(b=>b.onclick=()=>{const i=ITEMS.find(x=>x.id===b.dataset.eq),s=slotOf(i);EQ[s]=EQ[s]===i.id?null:i.id;SV();applyEq();drawInv()})}
 function applyEq(){if(eqG){if(eqG.parent)eqG.parent.remove(eqG);eqG.traverse(o=>{if(o.material)o.material.dispose()})}eqG=new THREE.Group();WG=null;
  const mk=(w,h,d,c,x,y,z)=>{const m=new THREE.Mesh(boxGeo,new THREE.MeshLambertMaterial({color:c}));m.scale.set(w,h,d);m.position.set(x,y,z);return m};
- const bk=ITEMS.find(i=>i.id===EQ.back),wg=ITEMS.find(i=>i.id===EQ.wings);
+ const bk=ITEMS.find(i=>i.id===EQ.back&&['bk_cape','bk_jet'].includes(i.id)),wg=ITEMS.find(i=>i.id===EQ.wings);
  if(bk&&isOwned(bk.id)){if(bk.id==='bk_cape')eqG.add(mk(.9,1.3,.08,bk.c,0,1.05,-.32));else{eqG.add(mk(.6,.9,.3,bk.c,0,1.15,-.42));eqG.add(mk(.15,.4,.15,0xff7043,-.15,.6,-.42));eqG.add(mk(.15,.4,.15,0xff7043,.15,.6,-.42))}}
  if(wg&&isOwned(wg.id)){WG=new THREE.Group();const cols=wg.c==='rainbow'?[0xff1744,0xff9100,0xffea00,0x00e676,0x00b0ff,0xd500f9]:[0xffffff,0xf5f5f5,0xeeeeee,0xffffff,0xf5f5f5,0xeeeeee];
   [-1,1].forEach(s=>{const w=new THREE.Group();cols.forEach((c,k)=>w.add(mk(1.6-k*.12,.16,.06,c,s*(.8-k*.06),.5-k*.17,0)));w.position.set(0,1.4,-.38);WG.add(w)});WG.children[0].rotation.z=-.3;WG.children[1].rotation.z=.3;eqG.add(WG)}
@@ -1039,7 +1074,7 @@ function iceStep(dt){
  if(keys.ArrowLeft)yaw+=1.8*dt;if(keys.ArrowRight)yaw-=1.8*dt;
  const k=1-Math.exp(-(I.g?2.6:1.2)*dt);vx+=(wx*SPEED*1.25-vx)*k;vz+=(wz*SPEED*1.25-vz)*k;
  jbuf-=dt;if(jbuf>0&&I.g){vy=11;I.g=false;jbuf=0;beep(300,600,.1)}
- px+=vx*dt;pz+=vz*dt;const prev=py;vy-=G*dt;py+=vy*dt;
+ px+=vx*dt;pz+=vz*dt;const prev=py;if(FLY)vy=(keys.Space?12:0)-((keys.ShiftLeft||keys.ShiftRight)?12:0);else vy-=G*dt;py+=vy*dt;
  const gr=iceGround(px,pz,prev,py);I.g=false;
  if(gr){py=ilev[gr.k].y;vy=0;I.g=true;if(gr.t.st===0){gr.t.st=1;gr.t.t=0}
   if(gr.k>I.lev){I.lev=gr.k;I.score+=20;toast('Level '+(gr.k+1)+' of '+LVN,'rgba(0,120,200,.9)');beep(500,1000,.25)}}
@@ -1441,11 +1476,33 @@ function prgSave(){LS('bloxz-prog',JSON.stringify(PRG))}
 function prgSet(S){PRG.sr=PRG.sr||{};PRG.sr[S.lv]={cp:S.cp,seed:S.seed||0,t:+S.t.toFixed(2),d:S.deaths};prgSave()}
 /* ===== Settings tabs (General / Stats / Membership), live stats, name tag, cancel membership ===== */
 var ntag;
+/* Build a correctly-sized overhead plate instead of squeezing every label into 256px. */
+function makeOverheadNameplate(name, role, premium, options){
+ const o=options||{},fontSize=o.fontSize||30,height=o.height||64,pad=o.padding||22;
+ const roleName=String(role||'player').toLowerCase();
+ const prefix=roleName!=='player'?'['+roleName.toUpperCase()+'] ':'';
+ const displayName=String(name||'Player').slice(0,32),check=premium?'✔':'';
+ const measure=document.createElement('canvas').getContext('2d');measure.font='bold '+fontSize+'px sans-serif';
+ const roleW=measure.measureText(prefix).width,nameW=measure.measureText(displayName).width,checkW=check?measure.measureText(' '+check).width:0;
+ const width=Math.max(112,Math.min(768,Math.ceil(pad*2+roleW+nameW+checkW)));
+ const cv=document.createElement('canvas');cv.width=width;cv.height=height;const x=cv.getContext('2d');
+ x.fillStyle=o.background||'rgba(0,0,0,.62)';
+ const radius=Math.min(10,Math.floor(height/4)),left=1,top=Math.max(2,Math.floor(height*.10)),bottom=height-top;
+ x.beginPath();x.moveTo(left+radius,top);x.lineTo(width-radius,top);x.quadraticCurveTo(width,top,width,bottom-radius);x.quadraticCurveTo(width,bottom,width-radius,bottom);x.lineTo(left+radius,bottom);x.quadraticCurveTo(left,bottom,left,bottom-radius);x.lineTo(left,top+radius);x.quadraticCurveTo(left,top,left+radius,top);x.closePath();x.fill();
+ x.font='bold '+fontSize+'px sans-serif';x.textBaseline='middle';x.textAlign='left';
+ let roleColor='#ffffff';try{roleColor=(RC&&RC[roleName])||'#ffffff'}catch(e){}
+ let cursor=pad;if(prefix){x.fillStyle=roleColor;x.fillText(prefix,cursor,height/2);cursor+=roleW}
+ x.fillStyle='#ffffff';x.fillText(displayName,cursor,height/2);cursor+=nameW;
+ if(check){x.fillStyle='#ffd54a';x.fillText(' '+check,cursor,height/2)}
+ const texture=new THREE.CanvasTexture(cv),sp=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false}));
+ sp.scale.set((o.worldWidth||3.4)*(width/256),o.worldHeight||.85,1);sp.position.y=o.y===undefined?3.3:o.y;sp.renderOrder=o.renderOrder||9;
+ return sp;
+}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function nameTag(){if(ntag){if(ntag.parent)ntag.parent.remove(ntag);if(ntag.material.map)ntag.material.map.dispose();ntag.material.dispose();ntag=null}
  const label=roleTag()+DISP+(isPrem()?' \u2714':''),hn=$('hudName');if(hn)hn.textContent=label;
- const c=document.createElement('canvas');c.width=256;c.height=48;const g=c.getContext('2d');g.fillStyle='rgba(0,0,0,.5)';g.fillRect(0,4,256,40);g.fillStyle='#fff';g.font='bold 26px sans-serif';g.textAlign='center';g.fillText(label,128,34);
- const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));sp.scale.set(5,.95,1);sp.position.y=3.4;sp.renderOrder=5;av.add(sp);ntag=sp}
+ let currentRole='player';try{currentRole=ROLE||'player'}catch(e){}
+ const sp=makeOverheadNameplate(DISP,currentRole,isPrem(),{fontSize:26,height:48,padding:18,worldWidth:5,worldHeight:.95,y:3.4,renderOrder:5});av.add(sp);ntag=sp}
 function statLines(){const g=id=>{const e=$(id);return e?e.textContent:''};return `<div style='line-height:1.9'><b>${esc(DISP)}${isPrem()?' \u2714':''}</b><br>${esc(g('zone'))}<br>${esc(g('h'))}<br>${esc(g('cps'))}<br>${esc(g('tm'))}<br>${esc(g('dc'))}<br>BuxZ: ${isPrem()?'\u221e':Math.floor(bux)}</div>`}
 const setSec=$('t-set'),setH2=setSec.querySelector('h2');
 {const gen=document.createElement('div');gen.id='setGen';[...setSec.children].filter(e=>e!==setH2).forEach(k=>gen.appendChild(k));setSec.appendChild(gen)}
@@ -1582,8 +1639,8 @@ nameTag();applyEq();reset();applyColors();paint();setState('menu');refresh();req
 
 /* ===== ROLES + ONLINE (no sign-in: identity = your name) ===== */
 const FBC={apiKey:"AIzaSyBd64rDBVLAgK9HxLmxd5uauBMxQtpUE5c",authDomain:"racing-gamer-giga.firebaseapp.com",databaseURL:"https://racing-gamer-giga-default-rtdb.firebaseio.com",projectId:"racing-gamer-giga",storageBucket:"racing-gamer-giga.firebasestorage.app",messagingSenderId:"780868062717",appId:"1:780868062717:web:5a752c32628116aa7fdd94"};
-const ROLEH={"678b0c96c360c03ff9d4b5dc58f10ad8af66897c94d9ec5ee81c710f6cd9605f": "owner", "fc520b880": "owner", "689d5386fec6345a1ebe2ec8851d2e218a3bb03ef6efbca9316c4c577dd043bf": "admin", "fb793f216": "admin", "a42aef6c99bd9bea222c95b5da45f8acd28cd7cf8e476539d7ec73692cdb6ab7": "mod", "f8f6b094": "mod", "c670a4d00f61e48d71a748317b2dfc74b7f05035b11a357c5d936257fcb6b0aa": "helper", "fdcc33ebc": "helper","d2e62a94b6eaa734e1067cf2314820f9ae70ab4df75f21f67d6821edaa8ddddf":"owner"};
-const RK={player:0,helper:1,mod:2,admin:3,owner:4},RC={owner:'#ff5252',admin:'#ffb300',mod:'#42a5f5',helper:'#66bb6a'};
+const ROLEH={"678b0c96c360c03ff9d4b5dc58f10ad8af66897c94d9ec5ee81c710f6cd9605f": "owner", "fc520b880": "owner", "689d5386fec6345a1ebe2ec8851d2e218a3bb03ef6efbca9316c4c577dd043bf": "admin", "fb793f216": "admin", "a42aef6c99bd9bea222c95b5da45f8acd28cd7cf8e476539d7ec73692cdb6ab7": "mod", "f8f6b094": "mod", "c670a4d00f61e48d71a748317b2dfc74b7f05035b11a357c5d936257fcb6b0aa": "helper", "fdcc33ebc": "helper","d2e62a94b6eaa734e1067cf2314820f9ae70ab4df75f21f67d6821edaa8ddddf":"owner", "46a15258c9574d95b26f1a6c442a749f6fd6f8559c975fd005ea36db446e44c8":"developer"};
+const RK={player:0,helper:1,mod:2,developer:3,admin:4,owner:5},RC={owner:'#ff5252',admin:'#ffb300',developer:'#ab47bc',mod:'#42a5f5',helper:'#66bb6a'};
 let ROLE='player',FB=null,db=null,NAME='',KEY='',offs=[],banT=null,chOpen=false,plOpen=false,lastMsg=0,reqs={},FR={},FQ={},FQold=null,ONL={},RM={},rkey=null,roff=null,soff=0,hbT=null,lastSend=0,seenOthers=false,rndI=null,kickUntil=0,staffOff=null;
 const SID=Math.random().toString(36).slice(2,10),nk=n=>String(n).toLowerCase().replace(/[.#$\[\]\/\s]/g,'_'),nowS=()=>Date.now()+soff,ownerOn=()=>ROLE==='owner';
 isPrem=function(){return ADMIN||prem||ownerOn()};
@@ -1610,10 +1667,10 @@ function chatJoin(c){if(chOff){chOff();chOff=null}chCur=c;$('chL').innerHTML='';
  if(!db||!KEY)return;const q=db.ref('chat').orderByChild('ch').equalTo(c).limitToLast(30),f=s=>{const m=s.val();addMsg(m);if(m.ts&&nowS()-m.ts<8000)bubble(nk(m.name),m.text)};
  q.on('child_added',f,netFail);chOff=()=>q.off('child_added',f);sys('— '+chatLabel(c)+' chat —')}
 function chatSync(){if(!KEY){if(chOff){chOff();chOff=null;chCur=''}return}const c=chatKey();if(c!==chCur||!chOff)chatJoin(c)}
-setInterval(()=>{if(db&&$('load').classList.contains('hide'))chatSync()},250);
-function openChat(){if(!NAME||!db){toast(NAME?'Chat offline':'Pick a name first','rgba(200,60,60,.9)');return}if(banT)return;chOpen=true;freeInput();$('chat').classList.add('open');$('chI').hidden=false;setTimeout(()=>$('chI').focus(),0)}
+setInterval(()=>{if(!sessionBanned&&db&&$('load').classList.contains('hide'))chatSync()},250);
+function openChat(){if(sessionBanned){$('banM').classList.remove('hide');return}if(!NAME||!db){toast(NAME?'Chat offline':'Pick a name first','rgba(200,60,60,.9)');return}if(banT)return;chOpen=true;freeInput();$('chat').classList.add('open');$('chI').hidden=false;setTimeout(()=>$('chI').focus(),0)}
 function closeChat(relock){chOpen=false;$('chat').classList.remove('open');$('chI').hidden=true;$('chI').value='';$('chI').blur();if(relock&&state==='play')lock()}
-async function sendChat(){const t=$('chI').value.trim();if(!t){closeChat(true);return}if(Date.now()-lastMsg<1000)return;lastMsg=Date.now();$('chI').value='';
+async function sendChat(){if(sessionBanned){closeChat();$('banM').classList.remove('hide');return}const t=$('chI').value.trim();if(!t){closeChat(true);return}if(Date.now()-lastMsg<1000)return;lastMsg=Date.now();$('chI').value='';
  if(t[0]==='/')await cmd(t);else db.ref('chat').push({ch:(chatSync(),chCur),name:NAME,role:ROLE,v:isPrem()?1:0,text:t,ts:FB.database.ServerValue.TIMESTAMP}).catch(netFail);closeChat(true)}
 $('chBtn').onclick=openChat;
 /* ---- player list + friends (Tab) ---- */
@@ -1642,34 +1699,71 @@ function acceptFriend(k,n){db.ref('friends/'+KEY+'/'+k).set({n});db.ref('friends
 function unfriend(k){db.ref('friends/'+KEY+'/'+k).remove();db.ref('friends/'+k+'/'+KEY).remove()}
 function joinF(o){closePl(false);try{if(o.g.indexOf('ice')===0)launch('ice');else{srLv=o.lv|0;launch('sr')}}catch(e){}}
 /* ---- commands ---- */
-async function cmd(t){const [c,n]=t.slice(1).split(/\s+/),k=(c||'').toLowerCase();
- if(k==='help'){sys('/friend <name> · /ban <name> · /kick <name> · /unban <name> · /requests · /rules (owner)');return}
- if(k==='friend'){if(n)sendFriend(n);else sys('Usage: /friend <name>');return}
+async function cmd(t){
+ const raw=t.slice(1).trim(),parts=raw?raw.split(/\s+/):[],k=(parts.shift()||'').toLowerCase();
+ if(k==='help'){sys('/friend <name> · /ban <name> [reason] · /kick <name> [reason] · /unban <name> · /requests · /rules (owner)'+(['owner','admin','developer'].includes(ROLE)?' · /fly · /broadcast <message>':''));return}
+ if(k==='friend'){if(parts[0])sendFriend(parts[0]);else sys('Usage: /friend <name>');return}
  if(k==='rules'){if(ownerOn()||NETERR){$('rulT').value=RULES;$('rulC').textContent='Copy';$('rulM').classList.remove('hide')}else sys('Owner only');return}
- if(k==='requests'){if(RK[ROLE]>=3)openReq();else sys('No permission');return}
+ if(k==='requests'){if(ROLE==='owner'||ROLE==='admin')openReq();else sys('No permission');return}
+ if(k==='fly'){if(!['owner','admin','developer'].includes(ROLE)){sys('You do not have permission');return}if(state!=='play'){sys('Join a game before enabling flight');return}FLY=!FLY;vy=0;toast(FLY?'✈ Flight enabled · Space up · Shift down':'Flight disabled',FLY?'rgba(30,136,229,.92)':'rgba(25,27,31,.88)');sys(FLY?'Flight enabled. Hold Space to rise and Shift to descend.':'Flight disabled.');return}
+ if(k==='broadcast'||k==='bc'){const message=parts.join(' ').trim();if(!['owner','admin','developer'].includes(ROLE)){sys('You do not have permission');return}if(!message){sys('Usage: /broadcast <message>');return}if(!db){sys('Broadcast unavailable while offline');return}await db.ref('announcements').push({by:NAME,role:ROLE,text:message.slice(0,180),ts:FB.database.ServerValue.TIMESTAMP});sys('Global broadcast sent');return}
  if(!['ban','kick','unban'].includes(k)){sys('Unknown command. Try /help');return}
- if(RK[ROLE]<1){sys('You do not have permission');return}if(!n){sys('Usage: /'+k+' <name>');return}
+ if(!['helper','mod','admin','owner'].includes(ROLE)){sys('You do not have permission');return}
+ const n=parts.shift();if(!n){sys('Usage: /'+k+' <name>'+(k==='ban'||k==='kick'?' [reason]':''));return}
+ const reason=parts.join(' ').trim().slice(0,240)||'No reason provided.';
  const tk=nk(n);if(tk===KEY){sys("You can't target yourself");return}
  const tr=(await db.ref('roles/'+tk).once('value')).val()||(ONL[tk]&&ONL[tk].role)||'player';if(RK[tr]>=RK[ROLE]){sys('That player outranks you');return}
- if(k==='unban'){if(RK[ROLE]<3){sys('Admins and owners only');return}await db.ref('bans/'+tk).remove();sys(n+' was unbanned');return}
+ if(k==='unban'){if(ROLE!=='admin'&&ROLE!=='owner'){sys('Admins and owners only');return}await db.ref('bans/'+tk).remove();sys(n+' was unbanned');return}
  if(k==='kick'&&!ONL[tk]){sys(n+' is not online');return}
- const direct=k==='kick'?ROLE!=='helper':RK[ROLE]>=3;
- if(direct){await exec(k,tk,n);sys(n+(k==='ban'?' was banned for 30 minutes':' was kicked'))}
- else{const to=ROLE==='mod'?'admin':'owner';await db.ref('requests').push({type:k,target:tk,targetName:n,byName:NAME,to});sys('/'+k+' request for '+n+' sent to '+to.toUpperCase())}}
-function exec(k,tk,name){if(k==='ban')return db.ref('bans/'+tk).set({until:nowS()+30*60000,by:NAME,name});return db.ref('kicks/'+tk).set({ts:FB.database.ServerValue.TIMESTAMP,by:NAME})}
+ const direct=k==='kick'?['mod','admin','owner'].includes(ROLE):['admin','owner'].includes(ROLE);
+ if(direct){await exec(k,tk,n,reason);sys(n+(k==='ban'?' was banned. Reason: ':' was kicked. Reason: ')+reason)}
+ else{const to=ROLE==='mod'?'admin':'owner';await db.ref('requests').push({type:k,target:tk,targetName:n,reason,byName:NAME,to});sys('/'+k+' request for '+n+' sent to '+to.toUpperCase()+'. Reason: '+reason)}}
+async function exec(k,tk,name,reason){
+ reason=String(reason||'No reason provided.').slice(0,240);
+ if(k==='ban'){
+  const stamp=nowS(),sessionAlias='Guest_'+Math.random().toString(36).slice(2,7).toUpperCase();
+  const record={until:stamp+30*60000,reservationUntil:stamp+40*60000,by:NAME,name,reason,sessionAlias};
+  await db.ref('bans/'+tk).set(record);
+  return record;
+ }
+ return db.ref('kicks/'+tk).set({ts:FB.database.ServerValue.TIMESTAMP,by:NAME,name,reason});
+}
 function openReq(){const L=$('reqL'),ks=Object.keys(reqs);L.innerHTML=ks.length?'':'<p>No pending requests.</p>';
- ks.forEach(id=>{const r=reqs[id],d=document.createElement('div'),s=document.createElement('span');s.textContent='/'+r.type+' '+r.targetName+' (by '+r.byName+')';d.appendChild(s);
-  pb(d,'✔',async()=>{await exec(r.type,r.target,r.targetName);db.ref('requests/'+id).remove()});pb(d,'✖',()=>db.ref('requests/'+id).remove(),1);L.appendChild(d)});$('reqM').classList.remove('hide')}
-const RULES="{\n  \"rules\": {\n    \".read\": false,\n    \".write\": false,\n    \"BloxZ\": {\n      \"Users\": {\n        \"$u\": {\n          \".read\": true,\n          \".write\": \"!data.exists()\",\n          \".validate\": \"newData.hasChildren(['username','salt','hash']) && newData.child('username').isString() && newData.child('username').val().length <= 16 && newData.child('hash').val().length === 64 && newData.child('salt').val().length === 32\",\n          \"role\": {\n            \".write\": true,\n            \".validate\": \"newData.val() === 'player' || newData.val() === 'helper' || newData.val() === 'mod' || newData.val() === 'admin' || newData.val() === 'owner'\"\n          }\n        }\n      },\n      \"Chat\": {\n        \".read\": true,\n        \"$id\": {\n          \".write\": \"!data.exists() && newData.exists()\",\n          \".validate\": \"newData.child('text').isString() && newData.child('text').val().length <= 160 && newData.child('name').isString() && newData.child('name').val().length <= 16\"\n        },\n        \".indexOn\": [\n          \"ch\"\n        ]\n      },\n      \"Online\": {\n        \".read\": true,\n        \"$n\": {\n          \".write\": true\n        }\n      },\n      \"Rooms\": {\n        \".read\": true,\n        \"$r\": {\n          \"$n\": {\n            \".write\": true\n          }\n        }\n      },\n      \"Bans\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Kicks\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Requests\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Friends\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"FriendReq\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Roles\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Games\": {\n        \".read\": true,\n        \"$u\": {\n          \".write\": true,\n          \".validate\": \"newData.hasChildren(['t','blocks','ts']) && newData.child('t').isString() && newData.child('t').val().length <= 24 && newData.child('blocks').isString() && newData.child('blocks').val().length <= 20000 && (!newData.child('script').exists() || (newData.child('script').isString() && newData.child('script').val().length <= 4000))\"\n        }\n      }\n    }\n  }\n}";
+ ks.forEach(id=>{const r=reqs[id],d=document.createElement('div'),s=document.createElement('span');s.textContent='/'+r.type+' '+r.targetName+' (by '+r.byName+')'+(r.reason?' — Reason: '+r.reason:'');d.appendChild(s);
+  pb(d,'✔',async()=>{await exec(r.type,r.target,r.targetName,r.reason);db.ref('requests/'+id).remove()});pb(d,'✖',()=>db.ref('requests/'+id).remove(),1);L.appendChild(d)});$('reqM').classList.remove('hide')}
+const RULES="{\n  \"rules\": {\n    \".read\": false,\n    \".write\": false,\n    \"BloxZ\": {\n      \"Users\": {\n        \"$u\": {\n          \".read\": true,\n          \".write\": \"!data.exists()\",\n          \".validate\": \"newData.hasChildren(['username','salt','hash']) && newData.child('username').isString() && newData.child('username').val().length <= 16 && newData.child('hash').val().length === 64 && newData.child('salt').val().length === 32\",\n          \"role\": {\n            \".write\": true,\n            \".validate\": \"newData.val() === 'player' || newData.val() === 'helper' || newData.val() === 'mod' || newData.val() === 'developer' || newData.val() === 'admin' || newData.val() === 'owner'\"\n          }\n        }\n      },\n      \"Chat\": {\n        \".read\": true,\n        \"$id\": {\n          \".write\": \"!data.exists() && newData.exists()\",\n          \".validate\": \"newData.child('text').isString() && newData.child('text').val().length <= 160 && newData.child('name').isString() && newData.child('name').val().length <= 16\"\n        },\n        \".indexOn\": [\n          \"ch\"\n        ]\n      },\n      \"Online\": {\n        \".read\": true,\n        \"$n\": {\n          \".write\": true\n        }\n      },\n      \"Rooms\": {\n        \".read\": true,\n        \"$r\": {\n          \"$n\": {\n            \".write\": true\n          }\n        }\n      },\n      \"Bans\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Kicks\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Requests\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Friends\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"FriendReq\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Roles\": {\n        \".read\": true,\n        \".write\": true\n      },\n      \"Announcements\": {\n        \".read\": true,\n        \"$id\": {\n          \".write\": true,\n          \".validate\": \"newData.child('text').isString() && newData.child('text').val().length <= 180 && newData.child('by').isString() && newData.child('by').val().length <= 16\"\n        }\n      },\n      \"Games\": {\n        \".read\": true,\n        \"$u\": {\n          \".write\": true,\n          \".validate\": \"newData.hasChildren(['t','blocks','ts']) && newData.child('t').isString() && newData.child('t').val().length <= 24 && newData.child('blocks').isString() && newData.child('blocks').val().length <= 20000 && (!newData.child('script').exists() || (newData.child('script').isString() && newData.child('script').val().length <= 4000))\"\n        }\n      }\n    }\n  }\n}";
 $('rulX').onclick=()=>$('rulM').classList.add('hide');$('rulC').onclick=()=>{$('rulT').select();try{navigator.clipboard.writeText(RULES)}catch(e){document.execCommand('copy')}$('rulC').textContent='Copied!'};
 $('reqX').onclick=()=>$('reqM').classList.add('hide');$('reqBtn').onclick=openReq;
-function staffSetup(){if(staffOff){staffOff();staffOff=null}$('reqBtn').hidden=true;if(!db||!NAME||RK[ROLE]<3)return;const r=db.ref('requests'),f=s=>{reqs={};const v=s.val()||{};for(const id in v)if(ROLE==='owner'||v[id].to===ROLE)reqs[id]=v[id];const n=Object.keys(reqs).length;$('reqBtn').hidden=!n;$('reqBtn').textContent='📋 Requests ('+n+')'};r.on('value',f);staffOff=()=>r.off('value',f)}
+function staffSetup(){if(staffOff){staffOff();staffOff=null}$('reqBtn').hidden=true;if(!db||!NAME||(ROLE!=='owner'&&ROLE!=='admin'))return;const r=db.ref('requests'),f=s=>{reqs={};const v=s.val()||{};for(const id in v)if(ROLE==='owner'||v[id].to===ROLE)reqs[id]=v[id];const n=Object.keys(reqs).length;$('reqBtn').hidden=!n;$('reqBtn').textContent='📋 Requests ('+n+')'};r.on('value',f);staffOff=()=>r.off('value',f)}
 /* ---- ban / kick ---- */
-function showBan(b){clearInterval(banT);if(chOpen)closeChat();if(plOpen)closePl();if(state==='play'||state==='pause'){setState('menu');showTab('home')}$('banM').classList.remove('hide');
- const tick=()=>{const left=b.until-nowS();if(left<=0){clearInterval(banT);banT=null;$('banM').classList.add('hide');return}$('banP').textContent='Banned by '+b.by+'. Time left: '+Math.floor(left/60000)+':'+String(Math.floor(left%60000/1000)).padStart(2,'0')};banT=1;tick();if(banT)banT=setInterval(tick,1000)}
-function kicked(by){closeChat();if(plOpen)closePl();kickUntil=Date.now()+30000;if(state==='play'||state==='pause'){setState('menu');showTab('home')}info('You were kicked','Removed from the game by '+by+'. You can rejoin in 30 seconds.')}
-const _launch=launch;launch=function(id){if(!AUTHNAME){$('login').classList.remove('hide');return}if(Date.now()<kickUntil){info('You were kicked','Wait '+Math.ceil((kickUntil-Date.now())/1000)+'s before rejoining.');return}return _launch.apply(this,arguments)};
-$('banOut').onclick=()=>$('banM').classList.add('hide');
+let sessionBanned=false,forcedAliasApplied=false;
+function forceBannedSessionName(b){
+ if(forcedAliasApplied)return;forcedAliasApplied=true;sessionBanned=true;
+ const oldKey=KEY,alias=String(b.sessionAlias||('Guest_'+Math.random().toString(36).slice(2,7).toUpperCase())).slice(0,16);
+ NAME=alias;DISP=alias;
+ try{localStorage.setItem('bloxz-session-alias',alias)}catch(e){}
+ if(hbT){clearInterval(hbT);hbT=null}
+ if(chOpen)closeChat();if(plOpen)closePl();
+ if(chOff){chOff();chOff=null;chCur=''}
+ if(roff){roff();roff=null}
+ if(rkey&&oldKey&&db)db.ref('rooms/'+rkey+'/'+oldKey).remove();rkey=null;RM={};RAV.forEach(killRemote);RAV.clear();
+ if(oldKey&&db)db.ref('online/'+oldKey).remove();
+ if(state==='play'||state==='pause'||state==='win'){setState('menu');showTab('home')}
+ const greet=document.querySelector('.greet h2');if(greet)badge();else nameTag();
+}
+function showBan(b){
+ clearInterval(banT);sessionBanned=true;forceBannedSessionName(b);
+ $('banM').classList.remove('hide');$('banOut').textContent='Sign out';$('banP').style.whiteSpace='pre-line';
+ const reason=String(b.reason||'No reason provided.');
+ const tick=()=>{const left=(Number(b.until)||0)-nowS();
+  if(left<=0){if(banT){clearInterval(banT);banT=null}$('banP').textContent='Banned by '+(b.by||'staff')+'. Reason: '+reason+'\nYour session name has been changed to '+DISP+'. Sign out to return to the login screen.';$('banOut').textContent='Return to login';return}
+  $('banP').textContent='Banned by '+(b.by||'staff')+'. Reason: '+reason+'\nYour session name has been changed to '+DISP+'.';
+ };
+ tick();banT=setInterval(tick,1000)
+}
+function kicked(by,reason){closeChat();if(plOpen)closePl();kickUntil=Date.now()+30000;if(state==='play'||state==='pause'){setState('menu');showTab('home')}info('You were kicked','Removed from the game by '+(by||'staff')+'. Reason: '+String(reason||'No reason provided.')+'. You can rejoin in 30 seconds.')}
+const _launch=launch;launch=function(id){if(sessionBanned){$('banM').classList.remove('hide');return}if(!AUTHNAME){$('login').classList.remove('hide');return}if(Date.now()<kickUntil){info('You were kicked','Wait '+Math.ceil((kickUntil-Date.now())/1000)+'s before rejoining.');return}return _launch.apply(this,arguments)};
+$('banOut').onclick=()=>{try{localStorage.removeItem('bloxz-cred');localStorage.removeItem('bloxz-user');localStorage.removeItem('bloxz-session-alias')}catch(e){}try{if(KEY&&db)db.ref('online/'+KEY).remove()}catch(e){}sessionBanned=true;location.reload()};
 /* ---- presence + name ---- */
 function unlisten(){offs.forEach(f=>f());offs=[];if(hbT)clearInterval(hbT);hbT=null;ONL={};FR={};FQ={};FQold=null}
 function listen(r,ev,fn){r.on(ev,fn,netFail);offs.push(()=>r.off(ev,fn))}
@@ -1680,9 +1774,10 @@ async function netName(n){if(!db)return;if(KEY){db.ref('online/'+KEY).remove();s
  listen(db.ref('.info/serverTimeOffset'),'value',s=>soff=s.val()||0);
  if(ROLE!=='player')db.ref('roles/'+KEY).set(ROLE);
  listen(db.ref('bans/'+KEY),'value',s=>{const b=s.val();if(b&&b.until>nowS())showBan(b);else{clearInterval(banT);banT=null;$('banM').classList.add('hide')}});
- let base;listen(db.ref('kicks/'+KEY),'value',s=>{const v=s.val();if(base===undefined){base=v?v.ts:0;return}if(v&&v.ts!==base){base=v.ts;kicked(v.by)}});
+ let base;listen(db.ref('kicks/'+KEY),'value',s=>{const v=s.val();if(base===undefined){base=v?v.ts:0;return}if(v&&v.ts!==base){base=v.ts;kicked(v.by,v.reason)}});
  chatJoin(chatKey());
  listen(db.ref('online'),'value',s=>{ONL=s.val()||{};plRender()});
+ listen(db.ref('announcements').limitToLast(20),'child_added',s=>{const a=s.val();if(a&&a.text)addMsg({name:a.by||'STAFF',role:a.role||'system',text:'📢 '+String(a.text).slice(0,180)},'#ffd54a')});
  listen(db.ref('friends/'+KEY),'value',s=>{FR=s.val()||{};plRender()});
  listen(db.ref('friendReq/'+KEY),'value',s=>{FQ=s.val()||{};if(FQold)for(const k in FQ)if(!FQold[k])toast(FQ[k].n+' sent you a friend request - press Tab');FQold=FQ;plRender()});
  staffSetup();sys('Online as '+NAME+'. T = chat · Tab = players & friends')}
@@ -1692,8 +1787,7 @@ function mkRemote(k,d){const g=new THREE.Group(),cl=d.c||['#1e88e5','#f5cd30','#
  const bx=(w,h,dd,c,x,y,z,py)=>{const p=new THREE.Group();p.position.set(x,y,z);const m=new THREE.Mesh(boxGeo,new THREE.MeshLambertMaterial({color:c}));m.scale.set(w,h,dd);m.position.y=py||0;p.add(m);g.add(p);return p};
  bx(1,1,.5,cl[0],0,1.1,0);bx(.9,.9,.9,cl[1],0,2.05,0);[-.2,.2].forEach(x=>bx(.12,.16,.05,0x111111,x,2.12,.46));
  const aL=bx(.4,1,.4,cl[1],-.7,1.6,0,-.45),aR=bx(.4,1,.4,cl[1],.7,1.6,0,-.45),lL=bx(.45,1,.45,cl[2],-.25,.6,0,-.5),lR=bx(.45,1,.45,cl[2],.25,.6,0,-.5);
- const cv=document.createElement('canvas');cv.width=256;cv.height=64;const x=cv.getContext('2d');x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,8,256,48);x.fillStyle=RC[d.r]||'#fff';x.font='bold 30px sans-serif';x.textAlign='center';x.fillText((d.r&&d.r!=='player'?'['+d.r.toUpperCase()+'] ':'')+d.n+(d.p?' \u2714':''),128,44,240);
- const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv),depthTest:false,transparent:true}));sp.scale.set(3.4,.85,1);sp.position.y=3.3;sp.renderOrder=9;g.add(sp);
+ const sp=makeOverheadNameplate(d.n,d.r,d.p,{fontSize:30,height:64,padding:22,worldWidth:3.4,worldHeight:.85,y:3.3,renderOrder:9});g.add(sp);
  g.position.set(d.x,d.y,d.z);scene.add(g);return{g,aL,aR,lL,lR,ph:0,f:d.f}}
 function killRemote(a){scene.remove(a.g);a.g.traverse(o=>{if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose()}})}
 function curRoom(){if(state!=='play'&&state!=='pause')return null;if(game==='demo')return 'demo';if(game==='sr'&&SR&&SR.seed)return 'sr-'+(SR.lv===100?'custom-'+courseKey():SR.lv);if(game==='ice')return 'ice';return null}
@@ -1703,16 +1797,16 @@ const others=()=>Object.keys(RM).filter(k=>k!==KEY&&nowS()-RM[k].hb<6000);
 function netCount(){return rkey?others().length:0}
 function rloop(t){requestAnimationFrame(rloop);const dt=Math.min(.05,(t-(rloop.l||t))/1000);rloop.l=t;if(!db)return;
  const rk=curRoom();if(rk!==rkey)switchRoom(rk);
- if(rkey&&state==='play'&&KEY&&Date.now()-lastSend>100){lastSend=Date.now();db.ref('rooms/'+rkey+'/'+KEY).set({n:NAME,r:ROLE,x:+px.toFixed(2),y:+py.toFixed(2),z:+pz.toFixed(2),f:+face.toFixed(2),hb:nowS(),d:(game==='ice'&&I&&I.over)?1:0,c:[pc.torso,pc.head,pc.legs],p:isPrem()?1:0})}
+ if(rkey&&state==='play'&&KEY&&Date.now()-lastSend>100){lastSend=Date.now();db.ref('rooms/'+rkey+'/'+KEY).set({n:NAME,r:ROLE,x:+px.toFixed(2),y:+py.toFixed(2),z:+pz.toFixed(2),f:+face.toFixed(2),hb:nowS(),d:(game==='ice'&&I&&I.over)?1:0,c:[pc.torso,pc.head,pc.legs],p:isPrem()?1:0,a:avatarNetData()})}
  const ks=rkey?others():[];RAV.forEach((a,k)=>{if(ks.indexOf(k)<0){killRemote(a);RAV.delete(k)}});
- ks.forEach(k=>{const d=RM[k];let a=RAV.get(k);if(!a){a=mkRemote(k,d);RAV.set(k,a)}
+ ks.forEach(k=>{const d=RM[k],sig=JSON.stringify([d.a||null,d.c||null,d.r||'',d.n||'',d.p||0]);let a=RAV.get(k);if(a&&a.sig!==sig){killRemote(a);RAV.delete(k);a=null}if(!a){a=mkRemote(k,d);a.sig=sig;RAV.set(k,a)}
   const dx=d.x-a.g.position.x,dz=d.z-a.g.position.z,sp=Math.hypot(dx,dz)/Math.max(dt,.001),q=Math.min(1,dt*12);a.g.position.x+=dx*q;a.g.position.z+=dz*q;a.g.position.y+=(d.y-a.g.position.y)*q;
   let df=d.f-a.f;df=Math.atan2(Math.sin(df),Math.cos(df));a.f+=df*Math.min(1,dt*14);a.g.rotation.y=a.f;a.g.visible=d.d!==1;
   a.ph+=Math.min(sp,12)*dt*1.1;const sw=Math.sin(a.ph)*.9*Math.min(1,sp/5);a.lL.rotation.x=sw;a.lR.rotation.x=-sw;a.aL.rotation.x=-sw;a.aR.rotation.x=sw});
  if(game==='ice'&&state==='play'&&I&&!I.over){if(rndI!==I){rndI=I;seenOthers=false}const al=ks.filter(k=>RM[k].d!==1).length;if(al>0)seenOthers=true;else if(seenOthers)iceEnd(true)}}
 requestAnimationFrame(rloop);
 /* ---- CODE button ---- */
-const roleLabel={owner:'OWNER: verified badge and everything unlocked, /ban /kick /unban, approves requests',admin:'ADMIN: /ban and /kick, approves MOD requests',mod:'MOD: /kick, /ban goes to an ADMIN for approval',helper:'HELPER: /ban and /kick go to the OWNER for approval'};
+const roleLabel={owner:'OWNER: full permissions, /ban /kick /unban, approves requests',admin:'ADMIN: /ban, /kick, /unban, /fly, /broadcast and approves MOD requests',developer:'DEVELOPER: /fly and /broadcast. No ban or kick permissions.',mod:'MOD: /kick, /ban goes to an ADMIN for approval',helper:'HELPER: /ban and /kick go to the OWNER for approval'};
 function openCode(){$('codeM').querySelector('h2').textContent='Enter CODE';$('codeM').querySelector('p').textContent='Premium and staff codes both work here.';$('codeM').classList.remove('hide');$('codeIn').value='';$('codeMsg').textContent='';setTimeout(()=>$('codeIn').focus(),50)}
 sideBy(/Premium/).insertAdjacentHTML('afterend',"<a class='si' id='codeSide'>🔑 CODE</a>");$('codeSide').onclick=openCode;
 const _try=tryCode;
@@ -1815,7 +1909,7 @@ async function drawCommunity(){const sec=$('t-disc');if(!$('comL'))sec.insertAdj
    add('b',g.t);add('div','by '+(g.by||g.key),'color:#9be7ff;font-size:12px');add('p',g.d,'color:#bdbebe;font-size:12px;min-height:30px;overflow-wrap:anywhere');
    const b=add('button','▶ Play','padding:8px');b.className='btn';b.onclick=()=>playCourse(g);L.appendChild(d)}}
  catch(e){if(n===comN)note('Could not load courses. Check that the new Firebase rules are published. ('+(e.message||e)+')')}}
-const _onTabC=onTab;onTab=function(t){_onTabC(t);if(t==='disc'&&!tabWas)drawCommunity();tabWas=t==='disc'};
+const _onTabC=onTab;onTab=function(t){_onTabC(t);if(t==='disc'&&!tabWas)drawCommunity();if(t==='avatar'){av2BuildUI();av2PaintUI();updateAvatarPreview()}tabWas=t==='disc'};
 let tabWas=false;
 $('dq').addEventListener('input',()=>drawCommunity());
 function pubDraw(){const b=$('scPub');if(!b||!myGame)return;b.textContent=myGame.pub?'Unpublish':'Publish course';$('scPubMsg').textContent=myGame.pub?'Published. Players find it under Discover > Community courses. Your edits go live when saved.':'Not published. Only you can play it.'}
@@ -1843,7 +1937,8 @@ async function enter(p,hash){ROLE=RK[p.role]!==undefined?p.role:'player';AUTHNAM
 async function doAuth(create){if(!db){uMsg('Online database unavailable - cannot log in');return}if(!(window.crypto&&crypto.subtle)){uMsg('Open the game over https (needed to protect passwords)');return}
  const u=$('uname').value.trim(),pw=$('upass').value;if(!/^[A-Za-z0-9_]{3,16}$/.test(u)){uMsg('Username: 3-16 letters, numbers or _');return}if(pw.length<6){uMsg('Password needs 6+ characters');return}
  $('uok').disabled=$('usign').disabled=true;uMsg('Please wait...',1);
- try{const k=nk(u),cur=await getUser(k);
+ try{const k=nk(u),cur=await getUser(k),hold=(await db.ref('bans/'+k).once('value')).val();
+  if(hold&&Number(hold.reservationUntil)>nowS()){uMsg('That username is temporarily unavailable');return}
   if(create){if(cur){uMsg('That username is taken');return}const salt=hx(crypto.getRandomValues(new Uint8Array(16))),hash=await pwHash(pw,salt),p={username:u,salt,hash,role:'player',createdAt:FB.database.ServerValue.TIMESTAMP};await db.ref('users/'+k).set(p);await enter(p,hash)}
   else{if(!cur){uMsg('No such account - tap Create account');return}const h=await pwHash(pw,cur.salt);if(h!==cur.hash){uMsg('Wrong username or password');return}await enter(cur,h)}}
  catch(e){uMsg((e.message||String(e)).replace('Firebase: ',''))}finally{$('uok').disabled=$('usign').disabled=false}}
@@ -1853,7 +1948,948 @@ async function doAuth(create){if(!db){uMsg('Online database unavailable - cannot
  $('uok').onclick=()=>doAuth(false);$('usign').onclick=()=>doAuth(true);$('upass').onkeydown=$('uname').onkeydown=e=>{if(e.key==='Enter')doAuth(false)};
  let u0='',c0='';try{u0=localStorage.getItem('bloxz-user')||'';c0=localStorage.getItem('bloxz-cred')||''}catch(e){}
  if(u0)$('uname').value=u0;
- if(u0&&c0&&db){uMsg('Signing in...',1);getUser(nk(u0)).then(cur=>{if(cur&&cur.hash===c0)enter(cur,c0);else uMsg('')}).catch(e=>uMsg(e.message))}
+ if(u0&&c0&&db){uMsg('Signing in...',1);getUser(nk(u0)).then(async cur=>{const hold=(await db.ref('bans/'+nk(u0)).once('value')).val();if(hold&&Number(hold.reservationUntil)>nowS()){uMsg('That username is temporarily unavailable');return}if(cur&&cur.hash===c0)enter(cur,c0);else uMsg('')}).catch(e=>uMsg(e.message))}
  $('codeSide').insertAdjacentHTML('afterend',"<a class='si' id='outSide'>🚪 Log out</a>");
- $('outSide').onclick=()=>{try{localStorage.removeItem('bloxz-cred');localStorage.removeItem('bloxz-user')}catch(e){}try{if(KEY)db.ref('online/'+KEY).remove()}catch(e){}setTimeout(()=>location.reload(),200)}}
+ $('outSide').onclick=()=>{try{localStorage.removeItem('bloxz-cred');localStorage.removeItem('bloxz-user');localStorage.removeItem('bloxz-session-alias')}catch(e){}try{if(KEY)db.ref('online/'+KEY).remove()}catch(e){}setTimeout(()=>location.reload(),200)}}
+
+
+/* =====================================================================
+   BLOXZ AVATAR & DEVELOPER UPDATE
+   Extends the existing avatar, cosmetics, inventory, Firebase and player
+   systems without replacing the game shell or existing experience logic.
+   ===================================================================== */
+const AV2_KEY='bloxz-avatar-v2';
+const AV2_DEFAULT={style:'classic',face:'smile',outfits:[null,null,null]};
+let AV2={...AV2_DEFAULT};
+try{const saved=JSON.parse(localStorage.getItem(AV2_KEY)||'null');if(saved&&typeof saved==='object'){AV2={...AV2_DEFAULT,...saved};AV2.outfits=Array.isArray(saved.outfits)?saved.outfits.slice(0,3):[null,null,null]}}catch(e){}
+const AV2_STYLES=['classic','r15','rounded','robot'];
+const AV2_FACES=['smile','happy','cool','surprised','focused','none'];
+let FLY=false;
+let avatarWear=null,avatarDecor=null;
+const AV2_CATALOG=[
+ {id:'hair_basic',cat:'Hair',n:'Starter Sweep',p:0,c:0x5d4037},
+ {id:'hair_spiky',cat:'Hair',n:'Spiky Hair',p:60,c:0x30251e},
+ {id:'hair_swoop',cat:'Hair',n:'Side Sweep',p:75,c:0x5d4037},
+ {id:'hair_long',cat:'Hair',n:'Long Hair',p:90,c:0x3e2723},
+ {id:'hat_cap',cat:'Hat',n:'Classic Cap',p:45,c:0x1565c0},
+ {id:'hat_beanie',cat:'Hat',n:'Beanie',p:55,c:0x8e24aa},
+ {id:'hat_crown',cat:'Hat',n:'Golden Crown',p:140,c:0xffd54f},
+ {id:'face_glasses',cat:'Face',n:'Square Glasses',p:35,c:0x212121},
+ {id:'face_shades',cat:'Face',n:'Dark Shades',p:50,c:0x111827},
+ {id:'face_mask',cat:'Face',n:'Face Mask',p:40,c:0x42a5f5},
+ {id:'shirt_hoodie',cat:'Shirt',n:'Blue Hoodie',p:70,c:0x1976d2},
+ {id:'shirt_jacket',cat:'Shirt',n:'Red Jacket',p:95,c:0xc62828},
+ {id:'shirt_space',cat:'Shirt',n:'Space Suit Top',p:130,c:0x607d8b},
+ {id:'pants_jeans',cat:'Pants',n:'Blue Jeans',p:65,c:0x2456a6},
+ {id:'pants_shorts',cat:'Pants',n:'Sport Shorts',p:45,c:0x3949ab},
+ {id:'back_pack',cat:'Back',n:'Explorer Backpack',p:80,c:0x6d4c41}
+];
+AV2_CATALOG.forEach(i=>{if(!ITEMS.some(x=>x.id===i.id))ITEMS.push(i)});
+if(!own.includes('hair_basic')){own.push('hair_basic');SV()}
+const AV2_NAME={classic:'Classic Block',r15:'R15 Style',rounded:'Rounded',robot:'Robot'};
+const AV2_FACE_NAME={smile:'Classic Smile',happy:'Happy',cool:'Cool',surprised:'Surprised',focused:'Focused',none:'No Face'};
+const AV2_SLOTS=[['hair','Hair'],['hat','Hat'],['face','Face accessory'],['shirt','Shirt'],['pants','Pants'],['back','Back accessory'],['wings','Wings'],['trail','Trail']];
+const AV2_STYLE_GEO={
+ box:boxGeo,
+ sphere:new THREE.SphereGeometry(.5,14,12),
+ cylinder:new THREE.CylinderGeometry(.5,.5,1,12,1)
+};
+const AV2_BASE={
+ torso:{p:[0,1.1,0],s:[1,1,.5]},head:{p:[0,2.05,0],s:[.9,.9,.9]},
+ armL:{p:[-.7,1.6,0],s:[.4,1,.4]},armR:{p:[.7,1.6,0],s:[.4,1,.4]},
+ legL:{p:[-.25,.6,0],s:[.45,1,.45]},legR:{p:[.25,.6,0],s:[.45,1,.45]}
+};
+const AV2_PARTS={torso,head,armL,armR,legL,legR};
+function av2Mesh(parent,geo,color,pos,scale){const m=new THREE.Mesh(geo,new THREE.MeshLambertMaterial({color}));m.position.set(pos[0],pos[1],pos[2]);m.scale.set(scale[0],scale[1],scale[2]);m.castShadow=true;parent.add(m);return m}
+function av2Box(parent,color,pos,scale){return av2Mesh(parent,boxGeo,color,pos,scale)}
+function av2CleanGroup(g){if(!g)return;if(g.parent)g.parent.remove(g);g.traverse(o=>{if(o.isMesh&&o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}})}
+function av2ValidateColor(c,fallback){return typeof c==='string'&&/^#[0-9a-f]{6}$/i.test(c)?c:fallback}
+function av2StyleFor(style){return AV2_STYLES.includes(style)?style:'classic'}
+function av2FaceFor(face){return AV2_FACES.includes(face)?face:'smile'}
+function av2Item(id,cat){const v=ITEMS.find(x=>x.id===id);return v&&(!cat||v.cat.toLowerCase()===cat.toLowerCase())?v:null}
+function av2ApplyGeometry(){
+ const style=av2StyleFor(AV2.style);AV2.style=style;
+ const shape=style==='rounded'?'cylinder':'box',headShape=style==='rounded'?'sphere':'box';
+ Object.entries(AV2_PARTS).forEach(([k,g])=>{
+  const m=g.children[0];if(!m)return;
+  const cfg=AV2_BASE[k];g.position.set(...cfg.p);m.scale.set(...cfg.s);
+  m.geometry=(k==='head'?AV2_STYLE_GEO[headShape]:AV2_STYLE_GEO[shape]);
+ });
+ if(style==='r15'){
+  head.position.y=2.08;torso.position.y=1.08;torso.children[0].scale.set(.88,1.02,.48);
+  armL.position.set(-.66,1.58,0);armR.position.set(.66,1.58,0);
+  armL.children[0].scale.set(.31,.94,.32);armR.children[0].scale.set(.31,.94,.32);
+  legL.position.set(-.22,.56,0);legR.position.set(.22,.56,0);
+  legL.children[0].scale.set(.36,.94,.36);legR.children[0].scale.set(.36,.94,.36);
+  head.children[0].scale.set(.82,.82,.82);
+ }else if(style==='rounded'){
+  torso.children[0].scale.set(1.02,1,.60);
+  head.children[0].scale.set(.92,.92,.92);
+  [armL,armR].forEach(g=>g.children[0].scale.set(.42,1,.42));
+  [legL,legR].forEach(g=>g.children[0].scale.set(.47,1,.47));
+ }else{
+  Object.entries(AV2_PARTS).forEach(([k,g])=>{const b=AV2_BASE[k];g.position.set(...b.p);g.children[0].scale.set(...b.s)});
+ }
+ baseFaceMeshes.forEach(m=>m.visible=false);
+ if(avatarDecor)av2CleanGroup(avatarDecor);
+ avatarDecor=new THREE.Group();
+ const dark=0x151515,white=0xffffff;
+ const face=av2FaceFor(AV2.face);
+ const eye=(x,w=.11,h=.14,c=dark)=>av2Box(avatarDecor,c,[x,2.12,.468],[w,h,.045]);
+ if(face==='smile'){eye(-.2);eye(.2);av2Box(avatarDecor,dark,[0,1.89,.468],[.34,.055,.04])}
+ else if(face==='happy'){eye(-.2,.13,.08);eye(.2,.13,.08);av2Box(avatarDecor,dark,[0,1.89,.468],[.28,.04,.04])}
+ else if(face==='cool'){av2Box(avatarDecor,dark,[-.2,2.12,.48],[.24,.16,.055]);av2Box(avatarDecor,dark,[.2,2.12,.48],[.24,.16,.055]);av2Box(avatarDecor,dark,[0,2.12,.49],[.16,.04,.04]);av2Box(avatarDecor,dark,[0,1.89,.468],[.28,.05,.04])}
+ else if(face==='surprised'){eye(-.2,.13,.18);eye(.2,.13,.18);av2Mesh(avatarDecor,new THREE.SphereGeometry(.07,10,8),dark,[0,1.88,.47],[1,.8,.25])}
+ else if(face==='focused'){eye(-.2,.12,.1);eye(.2,.12,.1);av2Box(avatarDecor,dark,[0,1.89,.468],[.26,.035,.04])}
+ if(AV2.style==='robot'){
+  av2Box(avatarDecor,0x00e5ff,[0,2.05,.485],[.46,.13,.035]);
+  av2Box(avatarDecor,0x263238,[0,1.88,.49],[.4,.08,.05]);
+  av2Box(avatarDecor,0x90caf9,[0,2.63,0],[.12,.18,.12]);
+  av2Mesh(avatarDecor,new THREE.SphereGeometry(.09,8,6),0xff5252,[0,2.77,0],[1,1,1]);
+ }
+ avIn.add(avatarDecor);
+}
+function av2BuildWear(){
+ if(avatarWear)av2CleanGroup(avatarWear);
+ avatarWear=new THREE.Group();
+ const h=av2Item(EQ.hair,'Hair'),hat=av2Item(EQ.hat,'Hat'),face=av2Item(EQ.face,'Face'),shirt=av2Item(EQ.shirt,'Shirt'),pants=av2Item(EQ.pants,'Pants');
+ const hairCol=h?h.c:0x4e342e;
+ const add=(geo,c,p,sc)=>av2Mesh(avatarWear,geo,c,p,sc);
+ if(h&&h.id==='hair_basic'){
+  add(AV2_STYLE_GEO.sphere,hairCol,[0,2.45,-.02],[.46,.22,.46]);
+  av2Box(avatarWear,hairCol,[.24,2.27,.02],[.16,.30,.30]);
+ }else if(h&&h.id==='hair_spiky'){
+  add(AV2_STYLE_GEO.sphere,hairCol,[0,2.43,0],[.43,.23,.43]);
+  [[-.24,2.55,0],[-.08,2.65,0],[.09,2.63,0],[.25,2.55,0]].forEach((p,i)=>av2Box(avatarWear,hairCol,p,[.17,.3,.17]));
+ }else if(h&&h.id==='hair_swoop'){
+  add(AV2_STYLE_GEO.sphere,hairCol,[0,2.44,-.02],[.46,.2,.45]);
+  av2Box(avatarWear,hairCol,[.16,2.33,.33],[.42,.16,.22]);
+ }else if(h&&h.id==='hair_long'){
+  add(AV2_STYLE_GEO.sphere,hairCol,[0,2.43,-.02],[.46,.22,.45]);
+  av2Box(avatarWear,hairCol,[-.39,2.02,-.02],[.13,.74,.35]);av2Box(avatarWear,hairCol,[.39,2.02,-.02],[.13,.74,.35]);
+ }
+ if(hat){
+  if(hat.id==='hat_cap'){
+   av2Box(avatarWear,hat.c,[0,2.52,-.02],[.82,.22,.76]);av2Box(avatarWear,hat.c,[0,2.39,.32],[.92,.07,.38]);
+  }else if(hat.id==='hat_beanie'){
+   add(AV2_STYLE_GEO.sphere,hat.c,[0,2.48,0],[.48,.31,.48]);av2Box(avatarWear,hat.c,[0,2.30,0],[.91,.10,.9]);
+  }else if(hat.id==='hat_crown'){
+   av2Box(avatarWear,hat.c,[0,2.50,0],[.76,.13,.72]);
+   [-.27,-.09,.09,.27].forEach((x,i)=>av2Mesh(avatarWear,new THREE.ConeGeometry(.09,.22,4),hat.c,[x,2.67,0],[1,1,1]));
+  }
+ }
+ if(face&&face.id==='face_glasses'||face&&face.id==='face_shades'){
+  const c=face.c;av2Box(avatarWear,c,[-.2,2.12,.50],[.25,.17,.055]);av2Box(avatarWear,c,[.2,2.12,.50],[.25,.17,.055]);av2Box(avatarWear,c,[0,2.12,.51],[.16,.04,.04]);
+ }else if(face&&face.id==='face_mask')av2Box(avatarWear,face.c,[0,1.94,.51],[.58,.20,.07]);
+ if(shirt){
+  const base=torso.children[0],m=new THREE.Mesh(base.geometry,new THREE.MeshLambertMaterial({color:shirt.c})),sc=base.scale;
+  m.position.set(torso.position.x+base.position.x,torso.position.y+base.position.y,torso.position.z+base.position.z);m.scale.set(sc.x*1.025,sc.y*1.02,sc.z*1.025);m.castShadow=true;avatarWear.add(m);
+  av2Box(avatarWear,0xffffff,[0,1.1,.28],[.16,.24,.025]);
+ }
+ if(pants){
+  [legL,legR].forEach(g=>{const base=g.children[0],m=new THREE.Mesh(base.geometry,new THREE.MeshLambertMaterial({color:pants.c})),sc=base.scale;m.position.set(g.position.x+base.position.x,g.position.y+base.position.y,g.position.z+base.position.z);m.scale.set(sc.x*1.025,sc.y*1.02,sc.z*1.025);avatarWear.add(m)});
+ }
+ if(EQ.back==='back_pack'){
+  av2Box(avatarWear,0x6d4c41,[0,1.2,-.36],[.62,.76,.28]);
+  av2Box(avatarWear,0x8d6e63,[0,1.2,-.52],[.38,.36,.06]);
+ }
+ avIn.add(avatarWear);
+}
+function applyAvatarLook(){
+ av2ApplyGeometry();
+ av2BuildWear();
+ if(typeof updateAvatarPreview==='function')updateAvatarPreview();
+}
+function av2Save(){try{localStorage.setItem(AV2_KEY,JSON.stringify(AV2))}catch(e){}SV()}
+function avatarNetData(){
+ const colors={head:av2ValidateColor(pc.head,DEF.head),torso:av2ValidateColor(pc.torso,DEF.torso),arms:av2ValidateColor(pc.arms,DEF.arms),legs:av2ValidateColor(pc.legs,DEF.legs)};
+ return {style:av2StyleFor(AV2.style),face:av2FaceFor(AV2.face),eq:{hair:EQ.hair||'',hat:EQ.hat||'',face:EQ.face||'',shirt:EQ.shirt||'',pants:EQ.pants||'',back:EQ.back||'',wings:EQ.wings||'',trail:EQ.trail||''},colors};
+}
+function updateAvatarPreview(){
+ const fig=$('fig');if(!fig)return;
+ fig.dataset.style=AV2.style;fig.dataset.face=AV2.face;
+ fig.classList.remove('style-classic','style-r15','style-rounded','style-robot');fig.classList.add('style-'+AV2.style);
+ const previewEyes=fig.querySelectorAll('.fh i'),previewMouth=fig.querySelector('.fh b');previewEyes.forEach(e=>{e.style.display=AV2.face==='none'?'none':'block';e.style.height=AV2.face==='happy'?'5px':AV2.face==='surprised'?'13px':'10px';e.style.width=AV2.face==='cool'?'15px':'7px'});if(previewMouth){previewMouth.style.display=AV2.face==='none'?'none':'block';previewMouth.style.width=AV2.face==='surprised'?'7px':'24px';previewMouth.style.height=AV2.face==='surprised'?'9px':'4px';previewMouth.style.borderRadius=AV2.face==='surprised'?'50%':'2px'}
+ fig.querySelectorAll('.av2-preview-piece').forEach(e=>e.remove());
+ const piece=(cls,sty)=>{const e=document.createElement('i');e.className='av2-preview-piece '+cls;e.style.cssText=sty;fig.appendChild(e)};
+ const hair=av2Item(EQ.hair,'Hair'),hat=av2Item(EQ.hat,'Hat'),face=av2Item(EQ.face,'Face');
+ if(hair)piece('pvHair',`background:#${hair.c.toString(16).padStart(6,'0')}`);
+ if(hat)piece('pvHat',`background:#${hat.c.toString(16).padStart(6,'0')}`);
+ if(face&&face.id!=='face_mask')piece('pvGlasses',`background:#${face.c.toString(16).padStart(6,'0')}`);
+ if(EQ.shirt){const it=av2Item(EQ.shirt,'Shirt');if(it)fig.querySelector('.ft').style.background='#'+it.c.toString(16).padStart(6,'0')}else fig.querySelector('.ft').style.background='var(--torso)';
+ if(EQ.pants){const it=av2Item(EQ.pants,'Pants');if(it){fig.querySelector('.fll').style.background='#'+it.c.toString(16).padStart(6,'0');fig.querySelector('.flr').style.background='#'+it.c.toString(16).padStart(6,'0')}}else{fig.querySelector('.fll').style.background='var(--legs)';fig.querySelector('.flr').style.background='var(--legs)'}
+}
+function av2BuildUI(){
+ if($('av2'))return;
+ const root=$('t-avatar');
+ root.insertAdjacentHTML('beforeend',`<div id="av2">
+  <div class="av2Top"><div><h3>Body Style</h3><div id="av2Styles" class="av2Choices"></div></div><div><h3>Face</h3><div id="av2Faces" class="av2Choices"></div></div></div>
+  <div class="av2Wear"><div><h3>Wearables</h3><p class="av2Sub">Choose an item you own, then equip it. New cosmetics are available in Marketplace.</p><div id="av2Slots"></div><p id="av2Msg" class="av2Msg" aria-live="polite"></p><button class="btn alt" id="av2Shop" type="button">Open Marketplace</button></div>
+   <div class="av2Outfits"><h3>Saved Outfits</h3><p class="av2Sub">Save three complete looks on this device.</p><div id="av2OutfitList"></div><button class="btn alt" id="av2Random" type="button">🎲 Randomize avatar</button></div></div>
+  <div class="av2Footer"><span>Appearance changes apply to your in-game character and multiplayer preview.</span><button class="btn alt" id="av2Reset" type="button">Reset complete avatar</button></div>
+ </div>`);
+ const styleBox=$('av2Styles');AV2_STYLES.forEach(style=>{const b=document.createElement('button');b.type='button';b.className='av2Choice';b.dataset.style=style;b.textContent=AV2_NAME[style];b.onclick=()=>{AV2.style=style;av2Save();applyAvatarLook();av2PaintUI()};styleBox.appendChild(b)});
+ const faceBox=$('av2Faces');AV2_FACES.forEach(face=>{const b=document.createElement('button');b.type='button';b.className='av2Choice';b.dataset.face=face;b.textContent=AV2_FACE_NAME[face];b.onclick=()=>{AV2.face=face;av2Save();applyAvatarLook();av2PaintUI()};faceBox.appendChild(b)});
+ const slots=$('av2Slots');AV2_SLOTS.forEach(([slot,label])=>{const row=document.createElement('label');row.className='av2Slot';const title=document.createElement('span');title.textContent=label;const sel=document.createElement('select');sel.dataset.slot=slot;sel.innerHTML='<option value="">None</option>';const catMap={hair:'Hair',hat:'Hat',face:'Face',shirt:'Shirt',pants:'Pants',back:'Back',wings:'Wings',trail:'Trail'};ITEMS.filter(i=>i.cat===catMap[slot]).forEach(i=>{const o=document.createElement('option');o.value=i.id;o.textContent=i.n+(i.p?' · '+i.p+' BuxZ':' · FREE');sel.appendChild(o)});const btn=document.createElement('button');btn.type='button';btn.className='av2Equip';btn.textContent='Equip';btn.onclick=()=>av2EquipSlot(slot,sel.value);row.append(title,sel,btn);slots.appendChild(row)});
+ $('av2Shop').onclick=()=>showTab('market');$('av2Random').onclick=av2Randomize;$('av2Reset').onclick=av2Reset;
+ av2PaintUI();
+}
+function av2PaintUI(){
+ if(!$('av2'))return;
+ document.querySelectorAll('#av2Styles [data-style]').forEach(b=>b.classList.toggle('on',b.dataset.style===AV2.style));
+ document.querySelectorAll('#av2Faces [data-face]').forEach(b=>b.classList.toggle('on',b.dataset.face===AV2.face));
+ document.querySelectorAll('#av2Slots select').forEach(sel=>sel.value=EQ[sel.dataset.slot]||'');
+ const list=$('av2OutfitList');list.innerHTML='';AV2.outfits=[0,1,2].map(i=>AV2.outfits[i]||null);
+ AV2.outfits.forEach((outfit,i)=>{const row=document.createElement('div');row.className='av2OutfitRow';const label=document.createElement('b');label.textContent='Outfit '+(i+1)+(outfit?' · Saved':' · Empty');const save=document.createElement('button');save.type='button';save.textContent='Save';save.onclick=()=>av2SaveOutfit(i);const load=document.createElement('button');load.type='button';load.textContent='Load';load.disabled=!outfit;load.onclick=()=>av2LoadOutfit(i);const clear=document.createElement('button');clear.type='button';clear.textContent='Clear';clear.disabled=!outfit;clear.onclick=()=>{AV2.outfits[i]=null;av2Save();av2PaintUI()};row.append(label,save,load,clear);list.appendChild(row)});
+}
+function av2EquipSlot(slot,id){
+ const msg=$('av2Msg');if(!id){EQ[slot]=null;av2Save();applyEq();av2PaintUI();msg.textContent='Unequipped '+slot+'.';return}
+ const item=ITEMS.find(i=>i.id===id);if(!item){msg.textContent='That cosmetic is unavailable.';return}
+ if(!isOwned(id)){msg.textContent='You do not own this item yet. Buy it in Marketplace first.';return}
+ EQ[slot]=id;av2Save();applyEq();av2PaintUI();msg.textContent=item.n+' equipped.';
+}
+function av2SaveOutfit(i){
+ AV2.outfits[i]={style:AV2.style,face:AV2.face,colors:{...pc},eq:{...EQ}};av2Save();av2PaintUI();$('av2Msg').textContent='Outfit '+(i+1)+' saved.';
+}
+function av2LoadOutfit(i){const o=AV2.outfits[i];if(!o)return;AV2.style=av2StyleFor(o.style);AV2.face=av2FaceFor(o.face);if(o.colors&&typeof o.colors==='object')Object.keys(DEF).forEach(k=>pc[k]=av2ValidateColor(o.colors[k],DEF[k]));if(o.eq&&typeof o.eq==='object')EQ={...EQ,...o.eq};av2Save();applyColors();paint();applyEq();av2PaintUI();$('av2Msg').textContent='Outfit '+(i+1)+' loaded.';
+}
+function av2Randomize(){
+ const pick=a=>a[Math.floor(Math.random()*a.length)];AV2.style=pick(AV2_STYLES);AV2.face=pick(AV2_FACES);
+ const choices=AV2_CATALOG.filter(i=>isOwned(i.id));['hair','hat','face','shirt','pants'].forEach(slot=>{const cat=slot==='face'?'Face':slot[0].toUpperCase()+slot.slice(1),items=choices.filter(i=>i.cat===cat);EQ[slot]=Math.random()<.42||!items.length?null:pick(items).id});
+ const colors=pal;Object.keys(DEF).forEach(k=>pc[k]=pick(colors));av2Save();applyColors();paint();applyEq();av2PaintUI();$('av2Msg').textContent='Random avatar generated.';
+}
+function av2Reset(){AV2.style='classic';AV2.face='smile';AV2.outfits=[null,null,null];Object.assign(pc,DEF);['hair','hat','face','shirt','pants','back','wings','trail'].forEach(k=>EQ[k]=null);av2Save();applyColors();paint();applyEq();av2PaintUI();$('av2Msg').textContent='Avatar reset to the classic starter look.'}
+const _applyEqAV2=applyEq;
+applyEq=function(){_applyEqAV2();if(typeof avIn!=='undefined'){av2ApplyGeometry();av2BuildWear();if(typeof updateAvatarPreview==='function')updateAvatarPreview();av2PaintUI()}};
+const _applyColorsAV2=applyColors;
+applyColors=function(){_applyColorsAV2();if(typeof AV2!=='undefined'&&typeof avIn!=='undefined'){av2ApplyGeometry();av2BuildWear();updateAvatarPreview()}};
+
+/* Remote players use the same body style and equipped accessories as their owner. */
+function av2NetConfig(d){
+ const a=d&&d.a&&typeof d.a==='object'?d.a:{};const col=a.colors&&typeof a.colors==='object'?a.colors:{};
+ const fallback=Array.isArray(d&&d.c)?d.c:['#1e88e5','#f5cd30','#4caf50'];
+ const colors={torso:av2ValidateColor(col.torso,fallback[0]||DEF.torso),head:av2ValidateColor(col.head,fallback[1]||DEF.head),legs:av2ValidateColor(col.legs,fallback[2]||DEF.legs),arms:av2ValidateColor(col.arms,fallback[1]||DEF.arms)};
+ const eq=a.eq&&typeof a.eq==='object'?a.eq:{};
+ const allowed={};AV2_SLOTS.forEach(([slot])=>{const id=String(eq[slot]||'');const it=ITEMS.find(x=>x.id===id);if(it)allowed[slot]=it.id});
+ return {style:av2StyleFor(a.style),face:av2FaceFor(a.face),colors,eq:allowed};
+}
+function mkRemote(k,d){
+ const cfg=av2NetConfig(d),g=new THREE.Group(),cl=cfg.colors,style=cfg.style;
+ const geo=(k)=>style==='rounded'?(k==='head'?AV2_STYLE_GEO.sphere:AV2_STYLE_GEO.cylinder):boxGeo;
+ const bx=(w,h,dd,c,x,y,z,py,partName)=>{const p=new THREE.Group();p.position.set(x,y,z);const m=new THREE.Mesh(geo(partName),new THREE.MeshLambertMaterial({color:c}));m.scale.set(w,h,dd);m.position.y=py||0;m.castShadow=true;p.add(m);g.add(p);return p};
+ const bodyScale=style==='r15'?.9:1;
+ bx(bodyScale,1,.5,cl.torso,0,1.1,0,0,'torso');bx(style==='r15'?.82:.9,style==='r15'?.82:.9,style==='r15'?.82:.9,cl.head,0,2.05,0,0,'head');
+ const aL=bx(style==='r15'?.31:.4,style==='r15'?.94:1,style==='r15'?.32:.4,cl.arms,-.68,1.6,0,-.45,'arm'),aR=bx(style==='r15'?.31:.4,style==='r15'?.94:1,style==='r15'?.32:.4,cl.arms,.68,1.6,0,-.45,'arm');
+ const lL=bx(style==='r15'?.36:.45,style==='r15'?.94:1,style==='r15'?.36:.45,cl.legs,-.25,.6,0,-.5,'leg'),lR=bx(style==='r15'?.36:.45,style==='r15'?.94:1,style==='r15'?.36:.45,cl.legs,.25,.6,0,-.5,'leg');
+ const wear=new THREE.Group();g.add(wear);const add=(color,pos,sc,geometry=boxGeo)=>av2Mesh(wear,geometry,color,pos,sc);
+ const hair=av2Item(cfg.eq.hair,'Hair'),hat=av2Item(cfg.eq.hat,'Hat'),face=av2Item(cfg.eq.face,'Face'),shirt=av2Item(cfg.eq.shirt,'Shirt'),pants=av2Item(cfg.eq.pants,'Pants');
+ const ink=0x151515;if(cfg.face!=='none'){av2Box(wear,ink,[-.2,2.12,.47],[.11,cfg.face==='happy'?.07:cfg.face==='surprised'?.17:.14,.04]);av2Box(wear,ink,[.2,2.12,.47],[.11,cfg.face==='happy'?.07:cfg.face==='surprised'?.17:.14,.04]);if(cfg.face==='surprised')av2Mesh(wear,new THREE.SphereGeometry(.07,10,8),ink,[0,1.89,.47],[1,.8,.25]);else av2Box(wear,ink,[0,1.89,.47],[.3,.05,.04])}
+ if(hair){add(hair.c,[0,2.42,0],[.45,.2,.45],AV2_STYLE_GEO.sphere);if(hair.id==='hair_spiky')[-.2,0,.2].forEach(x=>add(hair.c,[x,2.61,0],[.15,.26,.15]))}
+ if(hat){if(hat.id==='hat_cap'){add(hat.c,[0,2.51,0],[.82,.2,.75]);add(hat.c,[0,2.39,.28],[.9,.06,.3])}else if(hat.id==='hat_crown'){add(hat.c,[0,2.5,0],[.76,.12,.7]);[-.2,0,.2].forEach(x=>add(hat.c,[x,2.67,0],[.1,.2,.1]))}else add(hat.c,[0,2.46,0],[.88,.3,.88],AV2_STYLE_GEO.sphere)}
+ if(face&&face.id!=='face_mask'){add(face.c,[-.2,2.12,.5],[.24,.16,.05]);add(face.c,[.2,2.12,.5],[.24,.16,.05])}else if(face)add(face.c,[0,1.94,.5],[.58,.2,.06]);
+ if(shirt)add(shirt.c,[0,1.1,.27],[.92,.94,.035]);if(pants){add(pants.c,[-.25,.55,.24],[.42,.82,.04]);add(pants.c,[.25,.55,.24],[.42,.82,.04])}
+ if(cfg.eq.back==='back_pack')add(0x6d4c41,[0,1.2,-.36],[.62,.76,.28]);
+ if(cfg.eq.back==='bk_cape')add(0xd32f2f,[0,1.1,-.34],[.9,1.2,.06]);
+ if(cfg.eq.back==='bk_jet'){add(0x78909c,[-.52,1.2,-.34],[.2,.72,.28]);add(0x78909c,[.52,1.2,-.34],[.2,.72,.28])}
+ if(cfg.eq.wings){const wi=ITEMS.find(x=>x.id===cfg.eq.wings);const wc=wi&&wi.c==='rainbow'?[0xff1744,0xff9100,0xffea00,0x00e676,0x00b0ff,0xd500f9]:[0xffffff,0xf5f5f5,0xeeeeee];[-1,1].forEach(side=>wc.forEach((c,i)=>add(c,[side*(.55+i*.11),1.55-i*.12,-.38],[.38,.12,.06])))}
+ if(style==='robot'){add(0x00e5ff,[0,2.05,.49],[.46,.13,.04]);add(0x263238,[0,1.88,.50],[.4,.08,.05]);add(0x90caf9,[0,2.63,0],[.12,.18,.12]);add(0xff5252,[0,2.77,0],[.15,.15,.15],new THREE.SphereGeometry(.5,8,6))}
+ const trail=ITEMS.find(x=>x.id===cfg.eq.trail);if(trail)add(trail.c==='rainbow'?0x00e5ff:trail.c,[0,.20,-.72],[.18,.18,.18],AV2_STYLE_GEO.sphere);
+ const sp=makeOverheadNameplate(d.n,d.r,d.p,{fontSize:30,height:64,padding:22,worldWidth:3.4,worldHeight:.85,y:3.3,renderOrder:9});g.add(sp);
+ g.position.set(d.x,d.y,d.z);scene.add(g);const sig=JSON.stringify([d.a||null,d.c||null,d.r||'',d.n||'',d.p||0]);return{g,aL,aR,lL,lR,ph:0,f:d.f,sig};
+}
+
+/* Live avatar changes rebuild a remote player only when their appearance changes. */
+const _remoteRefreshAV2=rloop;
+/* rloop's room loop is preserved; patch its existing remote construction branch via the data signature. */
+applyAvatarLook();updateAvatarPreview();
+
+/* BloxZ v1.0.0 — Roblox-inspired Avatar Editor / Shop update */
+(function(){
+'use strict';
+
+const RBX_EXTRA_ITEMS = [
+ {id:'hair_messy',cat:'Hair',n:'Textured Messy Hair',p:65,c:0x30251e},
+ {id:'hair_curls',cat:'Hair',n:'Soft Curls',p:75,c:0x3e2723},
+ {id:'hair_fringe',cat:'Hair',n:'Two-Block Fringe',p:80,c:0x4e342e},
+ {id:'hair_dreads',cat:'Hair',n:'Short Dreads',p:90,c:0x211914},
+ {id:'hair_buzz',cat:'Hair',n:'Buzz Cut',p:45,c:0x2d2926},
+ {id:'hat_blackcap',cat:'Hat',n:'Black Snapback',p:55,c:0x20242b},
+ {id:'hat_frosted_beanie',cat:'Hat',n:'Frost Beanie',p:60,c:0xe8edf2},
+ {id:'hat_headphones',cat:'Hat',n:'Studio Headphones',p:85,c:0x20242b},
+ {id:'hat_bucket',cat:'Hat',n:'Olive Bucket Hat',p:55,c:0x69734b},
+ {id:'hat_headband',cat:'Hat',n:'Court Headband',p:40,c:0xeceff1},
+ {id:'hat_racingcap',cat:'Hat',n:'Racing Cap',p:75,c:0xb7c0ca},
+ {id:'hat_blackbeanie',cat:'Hat',n:'Midnight Beanie',p:60,c:0x17191d},
+ {id:'hat_olivebeanie',cat:'Hat',n:'Olive Beanie',p:55,c:0x747b50},
+ {id:'face_slim_shades',cat:'Face',n:'Slim Black Shades',p:45,c:0x101318},
+ {id:'face_round_specs',cat:'Face',n:'Round Frames',p:45,c:0x252a31},
+ {id:'face_redvisor',cat:'Face',n:'Neon Red Visor',p:65,c:0xe53935},
+ {id:'shirt_concrete',cat:'Shirt',n:'Concrete Oversized Hoodie',p:95,c:0x59616c},
+ {id:'shirt_frosted',cat:'Shirt',n:'Frosted Puffer Jacket',p:110,c:0xb9c7d5},
+ {id:'shirt_teal',cat:'Shirt',n:'Teal Afterhours Hoodie',p:95,c:0x087e83},
+ {id:'shirt_denim',cat:'Shirt',n:'Indigo Denim Jacket',p:105,c:0x294b86},
+ {id:'shirt_varsity',cat:'Shirt',n:'Blue Varsity Jacket',p:115,c:0x2456a6},
+ {id:'shirt_court',cat:'Shirt',n:'Night Court Jersey',p:80,c:0x252a34},
+ {id:'shirt_racing',cat:'Shirt',n:'Silver Racing Jacket',p:125,c:0x9ba6b2},
+ {id:'shirt_biker',cat:'Shirt',n:'Crimson Biker Jacket',p:125,c:0x8e252d},
+ {id:'shirt_camo',cat:'Shirt',n:'Camo Courier Utility',p:90,c:0x586947},
+ {id:'shirt_midnight',cat:'Shirt',n:'Midnight Puffer',p:120,c:0x191d26},
+ {id:'shirt_olive',cat:'Shirt',n:'Olive Overshirt',p:90,c:0x777b4f},
+ {id:'shirt_cobalt',cat:'Shirt',n:'Cobalt Puffer',p:120,c:0x175da9},
+ {id:'shirt_blackpuffer',cat:'Shirt',n:'Black Puffer Jacket',p:115,c:0x17191d},
+ {id:'shirt_graypuffer',cat:'Shirt',n:'Stone Gray Puffer',p:110,c:0x858b91},
+ {id:'shirt_arcade',cat:'Shirt',n:'Arcade Pit Stop Jacket',p:130,c:0x6e35a5},
+ {id:'pants_slatecargo',cat:'Pants',n:'Slate Cargo Pants',p:85,c:0x424a55},
+ {id:'pants_frostedcargo',cat:'Pants',n:'Frost Cargo Pants',p:90,c:0xc4cbd2},
+ {id:'pants_joggers',cat:'Pants',n:'Teal Track Joggers',p:75,c:0x243a42},
+ {id:'pants_indigojeans',cat:'Pants',n:'Indigo Denim Jeans',p:80,c:0x253f73},
+ {id:'pants_black',cat:'Pants',n:'Black Straight Pants',p:70,c:0x20242b},
+ {id:'pants_shorts',cat:'Pants',n:'Court Shorts',p:55,c:0x20252e},
+ {id:'pants_graphite',cat:'Pants',n:'Graphite Racing Pants',p:80,c:0x4c5259},
+ {id:'pants_biker',cat:'Pants',n:'Biker Utility Pants',p:90,c:0x24262c},
+ {id:'pants_camo',cat:'Pants',n:'Forest Camo Cargos',p:90,c:0x526142},
+ {id:'pants_blackcargo',cat:'Pants',n:'Midnight Cargo Pants',p:85,c:0x171a20},
+ {id:'pants_olivecargo',cat:'Pants',n:'Olive Cargo Pants',p:85,c:0x747950},
+ {id:'pants_lightcargo',cat:'Pants',n:'Light Gray Cargo Pants',p:85,c:0xb8bdc3},
+ {id:'pants_dark',cat:'Pants',n:'Black Puffer Trousers',p:75,c:0x16181c},
+ {id:'pants_stonecargo',cat:'Pants',n:'Stone Gray Cargos',p:85,c:0x858b91},
+ {id:'pants_arcade',cat:'Pants',n:'Arcade Tech Trousers',p:95,c:0x2b253b},
+ {id:'shoe_white',cat:'Shoes',n:'Clean White Sneakers',p:60,c:0xf4f5f7},
+ {id:'shoe_ice',cat:'Shoes',n:'Ice Sole Sneakers',p:70,c:0xdcebf6},
+ {id:'shoe_teal',cat:'Shoes',n:'Teal Runner Sneakers',p:65,c:0x07898d},
+ {id:'shoe_black',cat:'Shoes',n:'Black Street Sneakers',p:60,c:0x20242b},
+ {id:'shoe_varsity',cat:'Shoes',n:'Varsity High Tops',p:70,c:0x294f91},
+ {id:'shoe_court',cat:'Shoes',n:'Night Court Trainers',p:65,c:0xdce0e4},
+ {id:'shoe_silver',cat:'Shoes',n:'Silver Racing Shoes',p:75,c:0xaab2bb},
+ {id:'shoe_boots',cat:'Shoes',n:'Crimson Utility Boots',p:80,c:0x292c32},
+ {id:'shoe_green',cat:'Shoes',n:'Trail Green Sneakers',p:65,c:0x536d46},
+ {id:'shoe_high',cat:'Shoes',n:'Midnight High Tops',p:75,c:0x252a35},
+ {id:'shoe_tan',cat:'Shoes',n:'Sandstone Sneakers',p:65,c:0xb38a62},
+ {id:'shoe_stealth',cat:'Shoes',n:'Stealth Black Runners',p:70,c:0x111318},
+ {id:'shoe_gray',cat:'Shoes',n:'Gray Cloud Sneakers',p:65,c:0x9299a1},
+ {id:'shoe_neon',cat:'Shoes',n:'Arcade Neon Sneakers',p:85,c:0x8f42ce},
+ {id:'neck_silver',cat:'Neck',n:'Silver Chain',p:55,c:0xc8d0d8},
+ {id:'neck_gold',cat:'Neck',n:'Gold Chain',p:65,c:0xe3b341},
+ {id:'neck_black',cat:'Neck',n:'Black Tag Necklace',p:50,c:0x282d34},
+ {id:'back_sling',cat:'Back',n:'Crossbody Sling Bag',p:75,c:0x343b45},
+ {id:'back_mini',cat:'Back',n:'Mini Tech Backpack',p:80,c:0x31516e},
+ {id:'back_pack',cat:'Back',n:'Explorer Backpack',p:80,c:0x6d4c41}
+];
+RBX_EXTRA_ITEMS.forEach(it=>{if(!ITEMS.some(x=>x.id===it.id)){ITEMS.push(it);AV2_CATALOG.push(it)}});
+[['shoes','Shoes'],['neck','Neck']].forEach(x=>{if(!AV2_SLOTS.some(s=>s[0]===x[0]))AV2_SLOTS.push(x)});
+
+const RBX_LOOKS = [
+ {id:'concrete',n:'Concrete Hoodie',v:'Urban streetwear',d:'Oversized charcoal layers, cargos and clean white kicks.',price:245,style:'r15',face:'cool',colors:{head:'#c58f68',arms:'#c58f68',torso:'#59616c',legs:'#424a55'},eq:{hair:'hair_messy',hat:'hat_blackcap',face:'face_slim_shades',shirt:'shirt_concrete',pants:'pants_slatecargo',shoes:'shoe_white',neck:'neck_silver'}},
+ {id:'frosted',n:'Frosted Cargo',v:'Winter streetwear',d:'Icy puffer jacket, pale cargos and frosted sneakers.',price:255,style:'r15',face:'smile',colors:{head:'#e0b88e',arms:'#e0b88e',torso:'#b9c7d5',legs:'#c4cbd2'},eq:{hair:'hair_curls',hat:'hat_frosted_beanie',shirt:'shirt_frosted',pants:'pants_frostedcargo',shoes:'shoe_ice',neck:'neck_silver'}},
+ {id:'teal',n:'Teal Afterhours',v:'Modern streetwear',d:'Deep teal hoodie with dark joggers and studio headphones.',price:235,style:'classic',face:'focused',colors:{head:'#a66f4d',arms:'#a66f4d',torso:'#087e83',legs:'#243a42'},eq:{hair:'hair_fringe',hat:'hat_headphones',face:'face_round_specs',shirt:'shirt_teal',pants:'pants_joggers',shoes:'shoe_teal'}},
+ {id:'indigo',n:'Indigo Denim Days',v:'Denim',d:'Layered denim with straight jeans and black street shoes.',price:225,style:'r15',face:'smile',colors:{head:'#d9a779',arms:'#d9a779',torso:'#294b86',legs:'#253f73'},eq:{hair:'hair_swoop',face:'face_round_specs',shirt:'shirt_denim',pants:'pants_indigojeans',shoes:'shoe_black'}},
+ {id:'varsity',n:'Blue Varsity',v:'Varsity',d:'Classic blue varsity jacket, black pants and bright sneakers.',price:240,style:'classic',face:'happy',colors:{head:'#e0b88e',arms:'#e0b88e',torso:'#2456a6',legs:'#20242b'},eq:{hair:'hair_messy',hat:'hat_blackcap',shirt:'shirt_varsity',pants:'pants_black',shoes:'shoe_varsity',neck:'neck_gold'}},
+ {id:'court',n:'Night Court',v:'Sporty',d:'Clean court jersey, training shorts and bright trainers.',price:195,style:'r15',face:'focused',colors:{head:'#a66f4d',arms:'#a66f4d',torso:'#252a34',legs:'#20252e'},eq:{hair:'hair_buzz',hat:'hat_headband',shirt:'shirt_court',pants:'pants_shorts',shoes:'shoe_court'}},
+ {id:'racing',n:'Silver Racing',v:'Racing',d:'Metallic racing layers with a streamlined finish.',price:255,style:'r15',face:'cool',colors:{head:'#d5a17a',arms:'#d5a17a',torso:'#9ba6b2',legs:'#4c5259'},eq:{hair:'hair_buzz',hat:'hat_racingcap',face:'face_slim_shades',shirt:'shirt_racing',pants:'pants_graphite',shoes:'shoe_silver'}},
+ {id:'biker',n:'Crimson Biker',v:'Red and black',d:'Crimson jacket, dark utility trousers and sturdy boots.',price:260,style:'classic',face:'cool',colors:{head:'#c58f68',arms:'#c58f68',torso:'#8e252d',legs:'#24262c'},eq:{hair:'hair_dreads',face:'face_slim_shades',shirt:'shirt_biker',pants:'pants_biker',shoes:'shoe_boots',back:'bk_jet'}},
+ {id:'courier',n:'Camo Courier',v:'Utility',d:'Forest utility layers, camo cargos and a travel pack.',price:240,style:'classic',face:'focused',colors:{head:'#e0b88e',arms:'#e0b88e',torso:'#586947',legs:'#526142'},eq:{hair:'hair_buzz',hat:'hat_bucket',shirt:'shirt_camo',pants:'pants_camo',shoes:'shoe_green',back:'back_pack'}},
+ {id:'midnight',n:'Midnight Puffer',v:'Dark streetwear',d:'Black puffer, dark cargos and high-top sneakers.',price:255,style:'r15',face:'cool',colors:{head:'#a66f4d',arms:'#a66f4d',torso:'#191d26',legs:'#171a20'},eq:{hair:'hair_curls',hat:'hat_blackbeanie',face:'face_slim_shades',shirt:'shirt_midnight',pants:'pants_blackcargo',shoes:'shoe_high'}},
+ {id:'olive',n:'Olive Cargo Days',v:'Casual',d:'Olive overshirt, relaxed cargo pants and sandstone sneakers.',price:235,style:'classic',face:'smile',colors:{head:'#c58f68',arms:'#c58f68',torso:'#777b4f',legs:'#747950'},eq:{hair:'hair_fringe',hat:'hat_olivebeanie',shirt:'shirt_olive',pants:'pants_olivecargo',shoes:'shoe_tan',back:'back_sling'}},
+ {id:'cobalt',n:'Cobalt Puffer Cargo',v:'Modern streetwear',d:'Cobalt puffer with light cargos and crisp white sneakers.',price:255,style:'r15',face:'happy',colors:{head:'#e0b88e',arms:'#e0b88e',torso:'#175da9',legs:'#b8bdc3'},eq:{hair:'hair_messy',hat:'hat_frosted_beanie',shirt:'shirt_cobalt',pants:'pants_lightcargo',shoes:'shoe_white'}},
+ {id:'blackpuffer',n:'Black Puffer',v:'Monochrome',d:'All-black puffer silhouette with stealth runners.',price:245,style:'classic',face:'cool',colors:{head:'#c58f68',arms:'#c58f68',torso:'#17191d',legs:'#16181c'},eq:{hair:'hair_buzz',hat:'hat_blackbeanie',face:'face_slim_shades',shirt:'shirt_blackpuffer',pants:'pants_dark',shoes:'shoe_stealth'}},
+ {id:'graycargo',n:'Gray Puffer Cargo',v:'Minimalist',d:'Stone gray layers, relaxed cargos and gray cloud sneakers.',price:250,style:'r15',face:'smile',colors:{head:'#d9a779',arms:'#d9a779',torso:'#858b91',legs:'#858b91'},eq:{hair:'hair_curls',hat:'hat_frosted_beanie',face:'face_round_specs',shirt:'shirt_graypuffer',pants:'pants_stonecargo',shoes:'shoe_gray'}},
+ {id:'arcade',n:'Arcade Pit Stop',v:'Cyber streetwear',d:'Purple tech jacket with neon accents and arcade runners.',price:275,style:'robot',face:'focused',colors:{head:'#aebbc5',arms:'#aebbc5',torso:'#6e35a5',legs:'#2b253b'},eq:{hair:'hair_spiky',hat:'hat_headphones',face:'face_redvisor',shirt:'shirt_arcade',pants:'pants_arcade',shoes:'shoe_neon',neck:'neck_gold'}}
+];
+
+const RBX_COLOR_HEX=c=>'#'+Number(c).toString(16).padStart(6,'0');
+const RBX_ESC=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let RBX_LOOK_QUERY='',RBX_CATALOG_QUERY='',RBX_CATALOG_KIND='Clothing',RBX_CATALOG_CAT='All',RBX_PREVIEW_ROT=0,RBX_PREVIEW_ZOOM=1;
+
+function rbxStyle(){
+ if(document.getElementById('rbxAvatarStyle'))return;
+ document.head.insertAdjacentHTML('beforeend',`<style id="rbxAvatarStyle">
+#t-avatar{max-width:1500px;margin:0 auto;color:#f5f6f7}
+#t-avatar>.av{display:none!important}
+#t-avatar>h2{display:none}
+#av2.rbxAvatarApp{max-width:none;margin:0;padding:0;border:0;color:#f5f6f7}
+.rbxAvatarHeading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 0 18px}
+.rbxAvatarHeading h1{font-size:30px;line-height:1.1;margin:0 0 6px;font-weight:900;letter-spacing:-.5px}
+.rbxAvatarHeading p{margin:0;color:#aeb4be;font-size:13px}
+.rbxVersion{background:#303842;color:#dce3ec;border:1px solid #48515d;border-radius:999px;padding:7px 12px;font-size:11px;font-weight:900;letter-spacing:.5px}
+.rbxAvatarTabs{display:flex;gap:6px;overflow:auto;padding:0 0 11px;border-bottom:1px solid #42464e;margin-bottom:16px;scrollbar-width:thin}
+.rbxAvatarTabs button{white-space:nowrap;border:0;border-radius:7px;background:transparent;color:#c3c8d0;padding:10px 15px;font-size:13px;font-weight:800;cursor:pointer}
+.rbxAvatarTabs button:hover{background:#2a2f36;color:#fff}
+.rbxAvatarTabs button.on{background:#fff;color:#17191d}
+.rbxAvatarLayout{display:grid;grid-template-columns:minmax(270px,350px) minmax(0,1fr);gap:18px;align-items:start}
+.rbxPreviewColumn{position:sticky;top:12px;min-width:0}
+.rbxPreviewCard{background:linear-gradient(145deg,#303a46,#20252c 68%);border:1px solid #4a535e;border-radius:14px;padding:14px;box-shadow:0 12px 28px #0003}
+.rbxPreviewTop{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#eef1f5;font-size:12px;font-weight:900;margin-bottom:10px}
+.rbxPreviewTop span:last-child{color:#9ca8b5;font-weight:700}
+.rbxPreviewStage{height:360px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:10px;background:radial-gradient(ellipse at 50% 40%,#708092 0,#3d4855 42%,#242b33 100%)}
+.rbxPreviewStage:before{content:"";position:absolute;width:250px;height:250px;border:1px solid #ffffff18;border-radius:50%;box-shadow:0 0 0 28px #ffffff08,0 0 0 58px #ffffff05}
+.rbxPreviewStage:after{content:"";position:absolute;bottom:23px;left:12%;right:12%;height:18px;border-radius:50%;background:#0005;filter:blur(10px)}
+#av2PreviewDock{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;width:100%;height:100%;perspective:900px}
+#rbxAvatarPreviewCanvas{display:block;width:100%;height:100%;position:absolute;inset:0;outline:0}
+.rbxPreviewControls{position:absolute;z-index:3;left:10px;right:10px;bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.rbxPreviewControls button{border:1px solid #ffffff35;background:#171c23cc;color:white;border-radius:7px;padding:7px 10px;font-weight:800;cursor:pointer}
+.rbxPreviewMeta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px;color:#c8d0d8;font-size:12px}
+.rbxPreviewMeta b{color:#fff}
+.rbxPreviewMeta button{background:none;color:#9ed9ff;border:0;font-size:12px;font-weight:800;cursor:pointer}
+.rbxPreviewCard #fig{width:140px;height:250px}
+.rbxPreviewCard #figw{padding:0 35px}
+.rbxPreviewCard #fig .pvHair{z-index:3}
+.rbxPreviewCard #fig .pvHat{z-index:4}
+.rbxPreviewCard #fig .pvShoes{position:absolute;bottom:0;width:32px;height:12px;border-radius:3px;box-shadow:inset 0 -3px #0003}
+.rbxPreviewCard #fig .pvShoes.left{left:31px}.rbxPreviewCard #fig .pvShoes.right{left:77px}
+.rbxPreviewCard #fig .pvNeck{position:absolute;top:57px;left:55px;width:31px;height:9px;border:3px solid var(--neck-color,#c8d0d8);border-top:0;border-radius:0 0 18px 18px}
+.rbxPreviewCard #fig .pvBack{position:absolute;top:82px;left:35px;width:70px;height:61px;border-radius:7px;opacity:.9;z-index:-1}
+.rbxPreviewCard #fig .pvFace{position:absolute;top:22px;left:42px;width:56px;height:12px;border-radius:5px;opacity:.94;z-index:5}
+.rbxAvatarContent{min-width:0;background:#20242a;border:1px solid #3b424b;border-radius:14px;padding:16px;min-height:500px}
+.rbxPanelTitle{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.rbxPanelTitle h2{font-size:20px;margin:0 0 5px;color:#fff}
+.rbxPanelTitle p{color:#aeb7c2;font-size:12px;margin:0;line-height:1.5}
+.rbxSearch{background:#14181d;border:1px solid #454d57;border-radius:8px;color:#fff;padding:10px 12px;min-width:210px;max-width:100%;outline:none}
+.rbxSearch:focus{border-color:#8bceff;box-shadow:0 0 0 2px #4a9ad544}
+.rbxLookGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.rbxLookCard,.rbxShopCard{background:#2a3038;border:1px solid #404955;border-radius:11px;overflow:hidden;min-width:0;transition:transform .15s,border-color .15s}
+.rbxLookCard:hover,.rbxShopCard:hover{transform:translateY(-2px);border-color:#91a7bd}
+.rbxLookArt{height:130px;display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 38%,#ffffff22,transparent 66%),linear-gradient(145deg,var(--look-bg,#59616c),#1c222a)}
+.rbxLookArt:after{content:"";position:absolute;bottom:12px;width:85px;height:10px;background:#0005;filter:blur(7px);border-radius:50%}
+.rbxDoll{position:relative;width:82px;height:112px;z-index:1;filter:drop-shadow(0 4px 4px #0005)}
+.rbxDoll i{position:absolute;display:block;box-shadow:inset 0 -4px #0002}
+.rbxDoll .head{left:27px;top:2px;width:29px;height:29px;border-radius:5px;background:var(--look-head,#e0b88e)}
+.rbxDoll .hair{left:25px;top:-2px;width:33px;height:12px;border-radius:8px 8px 3px 3px;background:var(--look-hair,#30251e)}
+.rbxDoll .torso{left:21px;top:34px;width:41px;height:37px;border-radius:4px;background:var(--look-shirt,#59616c)}
+.rbxDoll .arm{top:36px;width:13px;height:35px;border-radius:4px;background:var(--look-head,#e0b88e)}
+.rbxDoll .arm.l{left:6px}.rbxDoll .arm.r{right:6px}
+.rbxDoll .leg{top:73px;width:17px;height:31px;border-radius:3px;background:var(--look-pants,#252a34)}
+.rbxDoll .leg.l{left:22px}.rbxDoll .leg.r{right:21px}
+.rbxDoll .shoe{top:101px;width:20px;height:8px;border-radius:3px;background:var(--look-shoes,#f4f5f7)}
+.rbxDoll .shoe.l{left:17px}.rbxDoll .shoe.r{right:17px}
+.rbxLookTag{position:absolute;top:9px;left:9px;border-radius:99px;padding:4px 7px;background:#141820b8;color:#fff;font-size:9px;font-weight:900;letter-spacing:.4px}
+.rbxLookInfo{padding:11px}
+.rbxLookInfo h3{margin:0 0 4px!important;font-size:13px!important;color:#fff;line-height:1.25}
+.rbxLookInfo p{margin:0 0 8px;color:#b5bec8;font-size:11px;line-height:1.4;min-height:31px}
+.rbxLookFoot{display:flex;align-items:center;justify-content:space-between;gap:6px;color:#d5dce4;font-size:10px;margin-bottom:8px}
+.rbxLookActions{display:flex;gap:6px}
+.rbxLookActions button,.rbxAction{flex:1;border:0;border-radius:7px;padding:8px 7px;background:#f2f4f7;color:#15191e;font-size:11px;font-weight:900;cursor:pointer}
+.rbxLookActions button.secondary{background:#3a4653;color:#fff;border:1px solid #536171}
+.rbxLookActions button:hover,.rbxAction:hover{filter:brightness(1.08)}
+.rbxCategoryRow{display:flex;gap:6px;overflow:auto;padding:2px 0 12px;margin-bottom:10px;scrollbar-width:thin}
+.rbxCategoryRow button{white-space:nowrap;border:1px solid #48515c;background:#2b3139;color:#d1d7df;border-radius:7px;padding:8px 11px;font-size:11px;font-weight:800;cursor:pointer}
+.rbxCategoryRow button.on{background:#f2f4f7;color:#14171b;border-color:#f2f4f7}
+.rbxShopGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.rbxShopArt{height:112px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,#ffffff20,transparent 62%),linear-gradient(145deg,#465363,#252c35);position:relative}
+.rbxShopIcon{height:66px;width:66px;border-radius:16px;background:var(--item-color,#768493);display:flex;align-items:center;justify-content:center;color:#fff;font-size:31px;font-weight:900;box-shadow:inset 0 -8px #0002,0 8px 16px #0004}
+.rbxShopInfo{padding:10px}
+.rbxShopInfo h3{font-size:12px;margin:0 0 4px!important;color:#fff}
+.rbxShopInfo p{font-size:10px;color:#acb6c1;margin:0 0 8px}
+.rbxShopInfo .rbxAction{width:100%;display:block}
+.rbxShopInfo .rbxAction.owned{background:#31443b;color:#b8f0d0}
+.rbxColorArea{background:#2a3038;border:1px solid #404955;border-radius:10px;padding:13px;margin-top:14px}
+.rbxColorArea h3{font-size:14px!important;margin:0 0 9px!important}
+.rbxColorArea #pt{margin-bottom:10px}
+.rbxColorArea #pt button{border:1px solid #57616d;background:#363e48;color:white;border-radius:7px;padding:7px 10px}
+.rbxColorArea #pt button.on{background:#f3f5f7;color:#171a1f}
+.rbxColorArea #pal{grid-template-columns:repeat(8,30px)}
+.rbxColorArea .sw{width:30px;height:30px}
+.rbxColorArea #cust{width:54px;height:34px;vertical-align:middle}
+.rbxBodyGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.rbxBodyBox{background:#2a3038;border:1px solid #404955;border-radius:10px;padding:13px;min-width:0}
+.rbxBodyBox h3{font-size:14px!important;margin:0 0 10px!important}
+.rbxBodyBox .av2Choices{gap:6px}
+.rbxBodyBox .av2Choice{font-size:11px;padding:8px 9px}
+.rbxOutfitSlots{display:grid;grid-template-columns:1fr;gap:9px}
+.rbxOutfitSlot{display:grid;grid-template-columns:1fr repeat(3,auto);gap:7px;align-items:center;border:1px solid #424a54;background:#2b3139;padding:10px;border-radius:9px;font-size:12px}
+.rbxOutfitSlot button{border:0;border-radius:6px;padding:7px 9px;background:#f2f4f7;color:#171a1f;font-size:11px;font-weight:900;cursor:pointer}
+.rbxOutfitSlot button:disabled{opacity:.35;cursor:not-allowed}
+.rbxAvatarNote{font-size:11px;color:#9da8b4;line-height:1.5;margin:12px 0 0}
+.rbxEmpty{border:1px dashed #4a5561;border-radius:10px;padding:30px 15px;text-align:center;color:#aeb9c5;font-size:13px;grid-column:1/-1}
+#t-market .rbxMarketHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin:3px 0 16px}
+#t-market .rbxMarketHeader h1{font-size:28px;margin:0 0 5px}
+#t-market .rbxMarketHeader p{font-size:12px;color:#aeb7c2;margin:0}
+#rbxMarketLooks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 22px}
+#rbxMarketLooks .rbxLookArt{height:102px}
+#rbxMarketLooks .rbxLookInfo p{display:none}
+#rbxMarketLooks .rbxLookInfo{padding:9px}
+#rbxMarketLooks .rbxLookInfo h3{min-height:28px}
+#t-market .row#mkRow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;overflow:visible;padding:0}
+#t-market .gc{width:auto!important}
+#t-market .rbxMarketTools{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+#t-market .rbxShopArt{height:100px}
+#t-market .rbxShopInfo{padding:9px}
+#t-market .rbxShopInfo h3{font-size:11px}
+#t-inv .rbxInvHeader{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+#t-inv .row#invRow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;overflow:visible;padding:0}
+#t-inv .gc{width:auto!important}
+#t-avatar button:focus-visible,#t-market button:focus-visible,#t-inv button:focus-visible{outline:2px solid #9ed9ff;outline-offset:2px}
+@media(max-width:1000px){.rbxLookGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.rbxAvatarLayout{grid-template-columns:minmax(245px,300px) minmax(0,1fr)}#rbxMarketLooks{grid-template-columns:repeat(3,minmax(0,1fr))}#t-market .row#mkRow,#t-inv .row#invRow{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.rbxAvatarLayout{grid-template-columns:1fr}.rbxPreviewColumn{position:static}.rbxPreviewStage{height:320px}.rbxAvatarContent{padding:12px}.rbxLookGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.rbxShopGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.rbxBodyGrid{grid-template-columns:1fr}#rbxMarketLooks{grid-template-columns:repeat(2,minmax(0,1fr))}#t-market .row#mkRow,#t-inv .row#invRow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){.rbxAvatarHeading h1{font-size:24px}.rbxLookGrid{grid-template-columns:1fr 1fr;gap:8px}.rbxLookInfo{padding:9px}.rbxLookInfo p{font-size:10px}.rbxLookActions button{font-size:10px;padding:8px 4px}.rbxPreviewStage{height:300px}.rbxOutfitSlot{grid-template-columns:1fr repeat(3,auto);gap:4px}.rbxOutfitSlot button{padding:7px 6px}}
+</style>`);
+}
+
+function rbxLookCard(look,mode){
+ const c=look.colors||{},e=look.eq||{};const shirt=av2Item(e.shirt,'Shirt'),pants=av2Item(e.pants,'Pants'),shoes=av2Item(e.shoes,'Shoes'),hair=av2Item(e.hair,'Hair');
+ const variables=`--look-bg:${RBX_COLOR_HEX(shirt?shirt.c:0x59616c)};--look-shirt:${RBX_COLOR_HEX(shirt?shirt.c:0x59616c)};--look-pants:${RBX_COLOR_HEX(pants?pants.c:0x252a34)};--look-shoes:${RBX_COLOR_HEX(shoes?shoes.c:0xf4f5f7)};--look-head:${c.head||'#d9a779'};--look-hair:${RBX_COLOR_HEX(hair?hair.c:0x30251e)}`;
+ const ids=[...new Set(Object.values(e).filter(Boolean))];const owned=ids.every(id=>isOwned(id));
+ const action=mode==='shop'?(owned?'Wear look':'Get look · '+(isPrem()?'FREE':look.price+' BuxZ')):'Try on';
+ const actions=mode==='shop'?`<div class="rbxLookActions"><button class="secondary" data-rbx-try="${look.id}">Preview</button><button data-rbx-get="${look.id}">${action}</button></div>`:`<div class="rbxLookActions"><button data-rbx-get="${look.id}">Try on</button></div>`;
+ return `<article class="rbxLookCard" data-look-card="${look.id}"><div class="rbxLookArt" style="${variables}"><span class="rbxLookTag">${RBX_ESC(look.v.toUpperCase())}</span><div class="rbxDoll"><i class="head"></i><i class="hair"></i><i class="torso"></i><i class="arm l"></i><i class="arm r"></i><i class="leg l"></i><i class="leg r"></i><i class="shoe l"></i><i class="shoe r"></i></div></div><div class="rbxLookInfo"><h3>${RBX_ESC(look.n)}</h3><p>${RBX_ESC(look.d)}</p><div class="rbxLookFoot"><span>${RBX_ESC(AV2_NAME[look.style]||'Classic Block')}</span><b>${owned?'Owned':(isPrem()?'FREE':look.price+' BuxZ')}</b></div>${actions}</div></article>`;
+}
+function rbxApplyLook(look,save){
+ if(!look)return;
+ AV2.style=av2StyleFor(look.style);AV2.face=av2FaceFor(look.face);
+ if(look.colors)Object.keys(DEF).forEach(k=>pc[k]=av2ValidateColor(look.colors[k],DEF[k]));
+ AV2_SLOTS.forEach(([slot])=>{EQ[slot]=look.eq&&look.eq[slot]?look.eq[slot]:null});
+ ['wings','trail','back'].forEach(slot=>{if(look.eq&&Object.prototype.hasOwnProperty.call(look.eq,slot))EQ[slot]=look.eq[slot]});
+ if(save)av2Save();
+ applyColors();paint();applyEq();av2PaintUI();
+ const msg=$('av2Msg');if(msg)msg.textContent=look.n+(save?' equipped and saved.':' previewed. Save it in Outfits to keep it.');
+}
+function rbxBuyLook(look){
+ if(!look)return;
+ const ids=[...new Set(Object.values(look.eq||{}).filter(Boolean))];
+ const unowned=ids.filter(id=>!isOwned(id));
+ if(!unowned.length){rbxApplyLook(look,true);if(typeof drawMarket==='function'&&tabNow==='market')drawMarket();if(typeof drawInv==='function'&&tabNow==='inv')drawInv();return}
+ const fullIds=unowned.map(id=>ITEMS.find(it=>it.id===id)).filter(Boolean);
+ const price=isPrem()?0:Math.max(0,Math.round(look.price*unowned.length/Math.max(1,ids.length)));
+ if(!isPrem()&&bux<price){const msg=$('av2Msg')||$('mkMsg');if(msg)msg.textContent='Not enough BuxZ for this look ('+Math.floor(bux)+' / '+price+').';return}
+ if(!isPrem())bux-=price;
+ fullIds.forEach(it=>{if(!own.includes(it.id))own.push(it.id)});
+ SV();showBux();rbxApplyLook(look,true);
+ if(typeof drawMarket==='function'&&tabNow==='market')drawMarket();if(typeof drawInv==='function'&&tabNow==='inv')drawInv();
+}
+function rbxBindLookGrid(root,mode){
+ root.querySelectorAll('[data-rbx-try]').forEach(b=>b.onclick=()=>{const l=RBX_LOOKS.find(x=>x.id===b.dataset.rbxTry);rbxApplyLook(l,false)});
+ root.querySelectorAll('[data-rbx-get]').forEach(b=>b.onclick=()=>{const l=RBX_LOOKS.find(x=>x.id===b.dataset.rbxGet);if(mode==='shop')rbxBuyLook(l);else rbxApplyLook(l,false)});
+}
+function rbxShowAvatarPanel(tab){
+ document.querySelectorAll('[data-av-panel]').forEach(p=>p.hidden=p.dataset.avPanel!==tab);
+ document.querySelectorAll('#av2Tabs [data-av-tab]').forEach(b=>b.classList.toggle('on',b.dataset.avTab===tab));
+ if(tab==='Clothing'){RBX_CATALOG_KIND='Clothing';rbxDrawCatalog()}
+ if(tab==='Accessories'){RBX_CATALOG_KIND='Accessories';rbxDrawCatalogAlt()}
+ if(tab==='Looks')rbxDrawLooks();
+ if(tab==='Outfits')av2PaintUI();
+}
+function rbxDrawLooks(){
+ const grid=$('av2LooksGrid');if(!grid)return;const q=RBX_LOOK_QUERY.trim().toLowerCase();const filtered=RBX_LOOKS.filter(l=>!q||[l.n,l.v,l.d].join(' ').toLowerCase().includes(q));
+ grid.innerHTML=filtered.length?filtered.map(l=>rbxLookCard(l,'avatar')).join(''):'<div class="rbxEmpty">No looks match that search.</div>';rbxBindLookGrid(grid,'avatar');
+}
+function rbxCatalogItemsForTab(){
+ const cats=RBX_CATALOG_KIND==='Clothing'?['Shirt','Pants','Shoes']:['Hair','Hat','Face','Neck','Back','Wings','Trail'];
+ const cat=RBX_CATALOG_CAT;const q=RBX_CATALOG_QUERY.trim().toLowerCase();
+ return ITEMS.filter(it=>cats.includes(it.cat)&&(cat==='All'||it.cat===cat)&&(!q||(it.n+' '+it.cat).toLowerCase().includes(q)));
+}
+function rbxItemIcon(it){return ({Hair:'✦',Hat:'▰',Face:'◉',Shirt:'▣',Pants:'▥',Shoes:'▰',Neck:'◇',Back:'▤',Wings:'✧',Trail:'✦',Color:'◈'})[it.cat]||'◆'}
+function rbxSlotForItem(it){const map={Hair:'hair',Hat:'hat',Face:'face',Shirt:'shirt',Pants:'pants',Shoes:'shoes',Neck:'neck',Back:'back',Wings:'wings',Trail:'trail'};return map[it.cat]||null}
+function rbxItemCard(it){
+ const slot=rbxSlotForItem(it),owned=isOwned(it.id),equipped=slot&&EQ[slot]===it.id;
+ const label=equipped?'Unequip':owned?'Equip':(isPrem()?'Get · FREE':'Buy · '+it.p+' BuxZ');
+ const sub=it.cat+(owned?' · Owned':' · Cosmetic');
+ return `<article class="rbxShopCard"><div class="rbxShopArt" style="--item-color:${RBX_COLOR_HEX(it.c)}"><div class="rbxShopIcon">${rbxItemIcon(it)}</div></div><div class="rbxShopInfo"><h3>${RBX_ESC(it.n)}</h3><p>${RBX_ESC(sub)}</p><button class="rbxAction ${owned?'owned':''}" data-rbx-item="${it.id}">${label}</button></div></article>`;
+}
+function rbxDrawCatalog(){
+ const root=$('av2CatalogGridClothes')||$('av2CatalogGrid');if(!root)return;
+ const cats=RBX_CATALOG_KIND==='Clothing'?['All','Shirt','Pants','Shoes']:['All','Hair','Hat','Face','Neck','Back','Wings','Trail'];
+ const catsRoot=$('av2CatalogCatsClothes')||$('av2CatalogCats');if(catsRoot){catsRoot.innerHTML=cats.map(c=>`<button type="button" data-rbx-cat="${c}" class="${RBX_CATALOG_CAT===c?'on':''}">${c}</button>`).join('');catsRoot.querySelectorAll('[data-rbx-cat]').forEach(b=>b.onclick=()=>{RBX_CATALOG_CAT=b.dataset.rbxCat;rbxDrawCatalog()})}
+ const items=rbxCatalogItemsForTab();root.innerHTML=items.length?items.map(rbxItemCard).join(''):'<div class="rbxEmpty">No cosmetics found in this category.</div>';
+ root.querySelectorAll('[data-rbx-item]').forEach(b=>b.onclick=()=>{const it=ITEMS.find(x=>x.id===b.dataset.rbxItem);if(!it)return;const slot=rbxSlotForItem(it);if(!isOwned(it.id)){buy(it.id);if(!isOwned(it.id))return}if(slot){EQ[slot]=it.id;av2Save();applyEq();av2PaintUI()}rbxDrawCatalog();const msg=$('av2Msg');if(msg)msg.textContent=it.n+(slot?' equipped.':' added to Inventory.')});
+}
+let RBX_PREVIEW_RENDERER=null,RBX_PREVIEW_SCENE=null,RBX_PREVIEW_CAMERA=null,RBX_PREVIEW_ACTOR=null,RBX_PREVIEW_FLOOR=null;
+function rbxInitPreview3D(){
+ const canvas=$('rbxAvatarPreviewCanvas');if(!canvas||RBX_PREVIEW_RENDERER)return;
+ try{
+  RBX_PREVIEW_SCENE=new THREE.Scene();RBX_PREVIEW_SCENE.background=null;
+  RBX_PREVIEW_CAMERA=new THREE.PerspectiveCamera(32,1,.1,100);RBX_PREVIEW_CAMERA.position.set(0,1.1,7.2);RBX_PREVIEW_CAMERA.lookAt(0,1.05,0);
+  RBX_PREVIEW_RENDERER=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});RBX_PREVIEW_RENDERER.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));RBX_PREVIEW_RENDERER.setClearColor(0x000000,0);
+  let previewDrag=false,previewLastX=0;canvas.style.cursor='grab';canvas.addEventListener('pointerdown',e=>{previewDrag=true;previewLastX=e.clientX;canvas.style.cursor='grabbing';try{canvas.setPointerCapture(e.pointerId)}catch(_){}});canvas.addEventListener('pointermove',e=>{if(!previewDrag)return;const dx=e.clientX-previewLastX;previewLastX=e.clientX;RBX_PREVIEW_ROT=(RBX_PREVIEW_ROT+dx*.65)%360});const stopPreviewDrag=()=>{previewDrag=false;canvas.style.cursor='grab'};canvas.addEventListener('pointerup',stopPreviewDrag);canvas.addEventListener('pointercancel',stopPreviewDrag);
+  RBX_PREVIEW_SCENE.add(new THREE.HemisphereLight(0xffffff,0x55606e,1.45));
+  const key=new THREE.DirectionalLight(0xffffff,1.45);key.position.set(-3,5,5);RBX_PREVIEW_SCENE.add(key);
+  const rim=new THREE.DirectionalLight(0x82baff,.7);rim.position.set(3,2,-4);RBX_PREVIEW_SCENE.add(rim);
+  RBX_PREVIEW_FLOOR=new THREE.Mesh(new THREE.CircleGeometry(1.25,40),new THREE.MeshLambertMaterial({color:0x8995a2,transparent:true,opacity:.35}));RBX_PREVIEW_FLOOR.rotation.x=-Math.PI/2;RBX_PREVIEW_FLOOR.position.y=-.43;RBX_PREVIEW_SCENE.add(RBX_PREVIEW_FLOOR);
+  rbxRefreshPreview3D();
+  const tick=()=>{requestAnimationFrame(tick);if(!RBX_PREVIEW_RENDERER||!RBX_PREVIEW_SCENE)return;const dock=$('av2PreviewDock');if(!dock||$('t-avatar').hidden)return;const rect=dock.getBoundingClientRect();if(rect.width<2||rect.height<2)return;const w=Math.max(1,Math.floor(rect.width)),h=Math.max(1,Math.floor(rect.height));if(canvas.width!==Math.floor(w*(RBX_PREVIEW_RENDERER.getPixelRatio()||1))||canvas.height!==Math.floor(h*(RBX_PREVIEW_RENDERER.getPixelRatio()||1))){RBX_PREVIEW_RENDERER.setSize(w,h,false);RBX_PREVIEW_CAMERA.aspect=w/h;RBX_PREVIEW_CAMERA.updateProjectionMatrix()}if(RBX_PREVIEW_ACTOR)RBX_PREVIEW_ACTOR.rotation.y=RBX_PREVIEW_ROT*Math.PI/180;RBX_PREVIEW_CAMERA.position.z=7.2/RBX_PREVIEW_ZOOM;RBX_PREVIEW_CAMERA.lookAt(0,1.05,0);RBX_PREVIEW_RENDERER.render(RBX_PREVIEW_SCENE,RBX_PREVIEW_CAMERA)};requestAnimationFrame(tick);
+ }catch(err){console.warn('BloxZ 3D avatar preview unavailable:',err);const fig=$('figw');if(fig)canvas.parentElement.appendChild(fig);canvas.hidden=true;}
+}
+function rbxRefreshPreview3D(){
+ if(!RBX_PREVIEW_SCENE||typeof avIn==='undefined')return;
+ if(RBX_PREVIEW_ACTOR){RBX_PREVIEW_SCENE.remove(RBX_PREVIEW_ACTOR);RBX_PREVIEW_ACTOR.traverse(o=>{if(o.isMesh){/* shared avatar materials/geometries remain owned by the live model */}})}
+ RBX_PREVIEW_ACTOR=avIn.clone(true);RBX_PREVIEW_ACTOR.position.set(0,0,0);RBX_PREVIEW_SCENE.add(RBX_PREVIEW_ACTOR);
+}
+
+function rbxBuildAvatarUI(){
+ rbxStyle();if($('av2'))return;
+ const root=$('t-avatar');if(!root)return;
+ root.insertAdjacentHTML('beforeend',`<div id="av2" class="rbxAvatarApp">
+  <div class="rbxAvatarHeading"><div><h1>Avatar Editor</h1><p>Build your BloxZ look. Try a featured fit or customize every detail.</p></div><span class="rbxVersion">BLOXZ · v1.0.0 RELEASE</span></div>
+  <nav id="av2Tabs" class="rbxAvatarTabs"><button type="button" data-av-tab="Looks" class="on">Featured Looks</button><button type="button" data-av-tab="Body">Body</button><button type="button" data-av-tab="Wearables">Wearables</button><button type="button" data-av-tab="Outfits">Saved Outfits</button></nav>
+  <div class="rbxAvatarLayout"><aside class="rbxPreviewColumn"><div class="rbxPreviewCard"><div class="rbxPreviewTop"><span>LIVE PREVIEW</span><span>YOUR AVATAR</span></div><div class="rbxPreviewStage"><div id="av2PreviewDock"><canvas id="rbxAvatarPreviewCanvas"></canvas></div><div class="rbxPreviewControls"><button type="button" id="rbxRotateLeft" aria-label="Rotate left">↶</button><button type="button" id="rbxZoomOut">−</button><button type="button" id="rbxZoomIn">+</button><button type="button" id="rbxRotateRight" aria-label="Rotate right">↷</button></div></div><div class="rbxPreviewMeta"><span>Style: <b id="rbxPreviewStyle">Classic Block</b></span><button type="button" id="rbxPreviewRandom">Randomize</button></div></div><p class="rbxAvatarNote">Changes update your in-game character. Multiplayer players see the cosmetics supported by their client version.</p></aside>
+   <main class="rbxAvatarContent">
+    <section data-av-panel="Looks"><div class="rbxPanelTitle"><div><h2>Featured Fits</h2><p>15 outfit inspirations, ready to preview or unlock.</p></div><input id="rbxLookSearch" class="rbxSearch" placeholder="Search outfits…" maxlength="48"></div><div id="av2LooksGrid" class="rbxLookGrid"></div></section>
+    <section data-av-panel="Body" hidden><div class="rbxPanelTitle"><div><h2>Body &amp; Colors</h2><p>Choose a body shape, face and your own color palette.</p></div></div><div class="rbxBodyGrid"><div class="rbxBodyBox"><h3>Body Style</h3><div id="av2Styles" class="av2Choices"></div></div><div class="rbxBodyBox"><h3>Face</h3><div id="av2Faces" class="av2Choices"></div></div></div><div class="rbxColorArea"><h3>Body Colors</h3><div class="rbxAvatarNote" style="margin:0 0 9px">Select a body part, then choose a color.</div><div id="rbxBodyPartDock"></div><div id="rbxPaletteDock"></div><div id="rbxColorInputDock"></div></div></section>
+    <section data-av-panel="Wearables" hidden><div class="rbxPanelTitle"><div><h2>Wearables</h2><p>Browse hair, hats, faces, tops, bottoms, shoes and accessories in one place.</p></div><input id="rbxCatalogSearchWearables" class="rbxSearch" placeholder="Search all wearables…" maxlength="48"></div><div id="av2CatalogCats" class="rbxCategoryRow"></div><div id="av2CatalogGrid" class="rbxShopGrid"></div></section>
+    <section data-av-panel="Outfits" hidden><div class="rbxPanelTitle"><div><h2>Saved Outfits</h2><p>Save up to three complete BloxZ looks on this device.</p></div><button type="button" class="rbxAction" id="rbxSaveCurrent">Save Current Look</button></div><div id="av2OutfitList" class="rbxOutfitSlots"></div><p class="rbxAvatarNote">Saving stores your body style, face, colors and equipped cosmetics.</p></section>
+    <p id="av2Msg" class="av2Msg" aria-live="polite"></p>
+    <div class="rbxAvatarNote" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><button type="button" class="rbxAction" id="av2Shop">Open Avatar Shop</button><button type="button" class="rbxAction" id="av2Reset">Reset Avatar</button></div>
+   </main></div></div>`);
+ rbxInitPreview3D();
+ const pt=$('pt'),pal=$('pal'),cust=$('cust');if(pt)$('rbxBodyPartDock').appendChild(pt);if(pal)$('rbxPaletteDock').appendChild(pal);if(cust)$('rbxColorInputDock').appendChild(cust);
+ const rst=$('rst');if(rst)rst.remove();
+ const styleBox=$('av2Styles');AV2_STYLES.forEach(style=>{const b=document.createElement('button');b.type='button';b.className='av2Choice';b.dataset.style=style;b.textContent=AV2_NAME[style];b.onclick=()=>{AV2.style=style;av2Save();applyAvatarLook();av2PaintUI();rbxUpdatePreviewMeta()};styleBox.appendChild(b)});
+ const faceBox=$('av2Faces');AV2_FACES.forEach(face=>{const b=document.createElement('button');b.type='button';b.className='av2Choice';b.dataset.face=face;b.textContent=AV2_FACE_NAME[face];b.onclick=()=>{AV2.face=face;av2Save();applyAvatarLook();av2PaintUI()};faceBox.appendChild(b)});
+ root.querySelectorAll('#av2Tabs [data-av-tab]').forEach(b=>b.onclick=()=>rbxShowAvatarPanel(b.dataset.avTab));
+ $('rbxLookSearch').oninput=e=>{RBX_LOOK_QUERY=e.target.value;rbxDrawLooks()};
+ $('rbxCatalogSearchWearables').oninput=e=>{RBX_CATALOG_KIND='All';RBX_CATALOG_QUERY=e.target.value;RBX_CATALOG_CAT='All';rbxDrawCatalog()};
+ $('rbxRotateLeft').onclick=()=>rbxRotate(-35);$('rbxRotateRight').onclick=()=>rbxRotate(35);$('rbxZoomIn').onclick=()=>rbxZoom(.1);$('rbxZoomOut').onclick=()=>rbxZoom(-.1);
+ $('rbxPreviewRandom').onclick=av2Randomize;$('rbxSaveCurrent').onclick=()=>{const slot=AV2.outfits.findIndex(x=>!x);if(slot<0){const msg=$('av2Msg');if(msg)msg.textContent='All three outfit slots are full. Use Save on a slot to replace it.';return}av2SaveOutfit(slot)};
+ $('av2Shop').onclick=()=>showTab('market');$('av2Reset').onclick=av2Reset;
+ av2PaintUI();rbxDrawLooks();rbxUpdatePreviewMeta();
+}
+function rbxDrawCatalogAlt(){
+ const old=$('av2CatalogCats'),oldGrid=$('av2CatalogGrid');if(old)old.id='av2CatalogCatsClothes';if(oldGrid)oldGrid.id='av2CatalogGridClothes';
+ const section=document.querySelector('[data-av-panel="Accessories"]');if(!section)return;
+ let cats=section.querySelector('#av2CatalogCatsAlt'),grid=section.querySelector('#av2CatalogGridAlt');
+ if(!cats||!grid)return;
+ const categories=['All','Hair','Hat','Face','Neck','Back','Wings','Trail'];cats.innerHTML=categories.map(c=>`<button type="button" data-rbx-cat-alt="${c}" class="${RBX_CATALOG_CAT===c?'on':''}">${c}</button>`).join('');
+ cats.querySelectorAll('[data-rbx-cat-alt]').forEach(b=>b.onclick=()=>{RBX_CATALOG_CAT=b.dataset.rbxCatAlt;rbxDrawCatalogAlt()});
+ const q=RBX_CATALOG_QUERY.trim().toLowerCase();const items=ITEMS.filter(it=>categories.slice(1).includes(it.cat)&&(RBX_CATALOG_CAT==='All'||it.cat===RBX_CATALOG_CAT)&&(!q||(it.n+' '+it.cat).toLowerCase().includes(q)));
+ grid.innerHTML=items.length?items.map(rbxItemCard).join(''):'<div class="rbxEmpty">No accessories found.</div>';
+ grid.querySelectorAll('[data-rbx-item]').forEach(b=>b.onclick=()=>rbxEquipOrBuyItem(b.dataset.rbxItem));
+}
+function rbxEquipOrBuyItem(id){const it=ITEMS.find(x=>x.id===id);if(!it)return;const slot=rbxSlotForItem(it);if(slot&&EQ[slot]===id){EQ[slot]=null;av2Save();applyEq();av2PaintUI();const msg=$('av2Msg');if(msg)msg.textContent=it.n+' unequipped.'}else{if(!isOwned(id)){buy(id);if(!isOwned(id))return}if(slot){EQ[slot]=id;av2Save();applyEq();av2PaintUI()}const msg=$('av2Msg');if(msg)msg.textContent=it.n+(slot?' equipped.':' added to Inventory.')}if(RBX_CATALOG_KIND==='Accessories')rbxDrawCatalogAlt();else rbxDrawCatalog();if(tabNow==='market')drawMarket();if(tabNow==='inv')drawInv();}
+function rbxRotate(delta){RBX_PREVIEW_ROT=(RBX_PREVIEW_ROT+delta)%360;const f=$('fig');if(f){f.style.setProperty('--rbx-rot',RBX_PREVIEW_ROT+'deg');f.style.setProperty('--rbx-zoom',RBX_PREVIEW_ZOOM)}}
+function rbxZoom(delta){RBX_PREVIEW_ZOOM=Math.max(.75,Math.min(1.3,RBX_PREVIEW_ZOOM+delta));const f=$('fig');if(f){f.style.setProperty('--rbx-rot',RBX_PREVIEW_ROT+'deg');f.style.setProperty('--rbx-zoom',RBX_PREVIEW_ZOOM)}}
+function rbxUpdatePreviewMeta(){const e=$('rbxPreviewStyle');if(e)e.textContent=AV2_NAME[AV2.style]||'Classic Block';}
+
+/* Replace the previous basic avatar editor builder with the full BloxZ editor. */
+av2BuildUI=rbxBuildAvatarUI;
+av2PaintUI=function(){
+ if(!$('av2'))return;
+ document.querySelectorAll('#av2Styles [data-style]').forEach(b=>b.classList.toggle('on',b.dataset.style===AV2.style));
+ document.querySelectorAll('#av2Faces [data-face]').forEach(b=>b.classList.toggle('on',b.dataset.face===AV2.face));
+ const list=$('av2OutfitList');if(list){list.innerHTML='';AV2.outfits=[0,1,2].map(i=>AV2.outfits[i]||null);AV2.outfits.forEach((outfit,i)=>{
+  const row=document.createElement('div');row.className='rbxOutfitSlot';const label=document.createElement('b');label.textContent='Outfit '+(i+1)+(outfit?' · Saved':' · Empty');
+  const save=document.createElement('button');save.type='button';save.textContent='Save';save.onclick=()=>av2SaveOutfit(i);
+  const load=document.createElement('button');load.type='button';load.textContent='Wear';load.disabled=!outfit;load.onclick=()=>av2LoadOutfit(i);
+  const clear=document.createElement('button');clear.type='button';clear.textContent='Clear';clear.disabled=!outfit;clear.onclick=()=>{AV2.outfits[i]=null;av2Save();av2PaintUI()};row.append(label,save,load,clear);list.appendChild(row);
+ })}
+ rbxUpdatePreviewMeta();
+};
+av2EquipSlot=rbxEquipOrBuyItem;
+av2SaveOutfit=function(i){if(i<0||i>2)return;AV2.outfits[i]={style:AV2.style,face:AV2.face,colors:{...pc},eq:{...EQ}};av2Save();av2PaintUI();const msg=$('av2Msg');if(msg)msg.textContent='Outfit '+(i+1)+' saved.'};
+av2LoadOutfit=function(i){const o=AV2.outfits[i];if(!o)return;AV2.style=av2StyleFor(o.style);AV2.face=av2FaceFor(o.face);if(o.colors&&typeof o.colors==='object')Object.keys(DEF).forEach(k=>pc[k]=av2ValidateColor(o.colors[k],DEF[k]));if(o.eq&&typeof o.eq==='object'){AV2_SLOTS.forEach(([slot])=>EQ[slot]=o.eq[slot]||null);['wings','trail','back'].forEach(k=>EQ[k]=o.eq[k]||null)}av2Save();applyColors();paint();applyEq();av2PaintUI();const msg=$('av2Msg');if(msg)msg.textContent='Outfit '+(i+1)+' loaded.'};
+av2Randomize=function(){const pick=a=>a[Math.floor(Math.random()*a.length)];AV2.style=pick(AV2_STYLES);AV2.face=pick(AV2_FACES);const owned=RBX_EXTRA_ITEMS.filter(i=>isOwned(i.id));['hair','hat','face','shirt','pants','shoes','neck'].forEach(slot=>{const cat=({hair:'Hair',hat:'Hat',face:'Face',shirt:'Shirt',pants:'Pants',shoes:'Shoes',neck:'Neck'})[slot];const arr=owned.filter(i=>i.cat===cat);EQ[slot]=Math.random()<.35||!arr.length?null:pick(arr).id});Object.keys(DEF).forEach(k=>pc[k]=pick(pal));av2Save();applyColors();paint();applyEq();av2PaintUI();const msg=$('av2Msg');if(msg)msg.textContent='Random avatar created.'};
+av2Reset=function(){AV2.style='classic';AV2.face='smile';Object.assign(pc,DEF);AV2_SLOTS.forEach(([slot])=>EQ[slot]=null);['back','wings','trail'].forEach(k=>EQ[k]=null);av2Save();applyColors();paint();applyEq();av2PaintUI();const msg=$('av2Msg');if(msg)msg.textContent='Avatar reset to the original BloxZ look. Your saved outfits were kept.'};
+
+updateAvatarPreview=function(){
+ const fig=$('fig');if(!fig)return;
+ fig.dataset.style=AV2.style;fig.classList.remove('style-classic','style-r15','style-rounded','style-robot');fig.classList.add('style-'+AV2.style);
+ fig.querySelectorAll('.av2-preview-piece').forEach(e=>e.remove());
+ const piece=(cls,sty)=>{const e=document.createElement('i');e.className='av2-preview-piece '+cls;e.style.cssText=sty;fig.appendChild(e)};
+ const h=av2Item(EQ.hair,'Hair'),hat=av2Item(EQ.hat,'Hat'),fa=av2Item(EQ.face,'Face'),sh=av2Item(EQ.shirt,'Shirt'),pa=av2Item(EQ.pants,'Pants'),shoes=av2Item(EQ.shoes,'Shoes'),neck=av2Item(EQ.neck,'Neck'),back=av2Item(EQ.back,'Back');
+ if(h)piece('pvHair',`background:${RBX_COLOR_HEX(h.c)}`);
+ if(hat)piece('pvHat',`background:${RBX_COLOR_HEX(hat.c)}`);
+ if(fa)piece('pvFace',`background:${RBX_COLOR_HEX(fa.c)}`);
+ if(sh)fig.querySelector('.ft').style.background=RBX_COLOR_HEX(sh.c);else fig.querySelector('.ft').style.background=pc.torso;
+ if(pa){fig.querySelector('.fll').style.background=RBX_COLOR_HEX(pa.c);fig.querySelector('.flr').style.background=RBX_COLOR_HEX(pa.c)}else{fig.querySelector('.fll').style.background=pc.legs;fig.querySelector('.flr').style.background=pc.legs}
+ if(shoes){piece('pvShoes left',`background:${RBX_COLOR_HEX(shoes.c)}`);piece('pvShoes right',`background:${RBX_COLOR_HEX(shoes.c)}`)}
+ if(neck)piece('pvNeck',`--neck-color:${RBX_COLOR_HEX(neck.c)}`);
+ if(back)piece('pvBack',`background:${RBX_COLOR_HEX(back.c)}`);
+ fig.querySelectorAll('.fh i').forEach((e,i)=>{e.style.display=AV2.face==='none'?'none':'block';e.style.height=AV2.face==='happy'?'5px':AV2.face==='surprised'?'13px':'10px';e.style.width=AV2.face==='cool'?'15px':'7px'});
+ const m=fig.querySelector('.fh b');if(m){m.style.display=AV2.face==='none'?'none':'block';m.style.width=AV2.face==='surprised'?'7px':'24px';m.style.height=AV2.face==='surprised'?'9px':'4px'}
+ fig.style.setProperty('--rbx-rot',RBX_PREVIEW_ROT+'deg');fig.style.setProperty('--rbx-zoom',RBX_PREVIEW_ZOOM);
+ rbxUpdatePreviewMeta();rbxRefreshPreview3D();
+};
+
+/* Outfit geometry shared by the in-game avatar and remote players. */
+function rbxBuildWearGeometry(parent,cfg){
+ const e=cfg.eq||{},add=(color,pos,scale,geo=boxGeo)=>av2Mesh(parent,geo,color,pos,scale),box=(color,pos,scale)=>av2Box(parent,color,pos,scale);
+ const hair=av2Item(e.hair,'Hair'),hat=av2Item(e.hat,'Hat'),face=av2Item(e.face,'Face'),shirt=av2Item(e.shirt,'Shirt'),pants=av2Item(e.pants,'Pants'),shoes=av2Item(e.shoes,'Shoes'),neck=av2Item(e.neck,'Neck');
+ const dark=0x15191f;
+ if(cfg.face!=='none'){
+  const eyeH=cfg.face==='happy'?.07:cfg.face==='surprised'?.17:cfg.face==='focused'?.10:.14;
+  box(dark,[-.2,2.12,.475],[.11,eyeH,.045]);box(dark,[.2,2.12,.475],[.11,eyeH,.045]);
+  if(cfg.face==='surprised')add(dark,[0,1.89,.48],[.08,.08,.04],new THREE.SphereGeometry(.5,8,6));else box(dark,[0,1.89,.475],[.3,.05,.04]);
+ }
+ if(face){
+  if(face.id.includes('shades')||face.id==='face_glasses'||face.id==='face_round_specs'){
+   const frame=face.c;box(frame,[-.2,2.12,.51],[.26,.17,.055]);box(frame,[.2,2.12,.51],[.26,.17,.055]);box(frame,[0,2.12,.52],[.14,.035,.04]);
+   if(face.id==='face_round_specs'){add(frame,[-.2,2.12,.54],[.13,.13,.02],new THREE.TorusGeometry(.48,.07,6,16));add(frame,[.2,2.12,.54],[.13,.13,.02],new THREE.TorusGeometry(.48,.07,6,16))}
+  }else if(face.id==='face_mask')box(face.c,[0,1.94,.52],[.58,.20,.07]);
+  else if(face.id==='face_redvisor'){box(face.c,[0,2.12,.52],[.78,.18,.06]);box(0x3d1720,[0,2.02,.52],[.64,.04,.04])}
+ }
+ if(hair&&hair.id!=='hair_bald'){const c=hair.c;
+  const dome=()=>add(c,[0,2.455,-.025],[.475,.205,.455],new THREE.SphereGeometry(.5,24,16,0,Math.PI*2,0,Math.PI/2));
+  if(hair.id==='hair_spiky'||hair.id==='hair_messy'){
+   add(c,[0,2.425,-.015],[.46,.19,.45],AV2_STYLE_GEO.sphere);
+   const spikes=[[-.29,2.54,-.02,-.42],[ -.14,2.61,-.01,-.2],[0,2.65,-.02,0],[.15,2.61,-.01,.2],[.29,2.54,-.02,.42]];
+   spikes.forEach(([x,y,z,r])=>{const p=add(c,[x,y,z],[.15,.27,.15],new THREE.ConeGeometry(.5,1,8));p.rotation.z=r});
+   if(hair.id==='hair_messy'){add(c,[.17,2.335,.345],[.32,.12,.16],AV2_STYLE_GEO.sphere)}
+  }else if(hair.id==='hair_curls'){
+   dome();[-.34,-.19,-.04,.12,.28,.39].forEach((x,i)=>add(c,[x,2.48+(i%2)*.035,.12],[.115,.13,.12],AV2_STYLE_GEO.sphere));
+   [-.34,.34].forEach(x=>add(c,[x,2.30,-.02],[.105,.22,.12],AV2_STYLE_GEO.sphere));
+  }else if(hair.id==='hair_dreads'){
+   add(c,[0,2.43,-.02],[.46,.2,.45],AV2_STYLE_GEO.sphere);
+   [-.32,-.19,-.06,.08,.21,.33].forEach((x,i)=>{const d=add(c,[x,2.25+(i%2)*.025,.105],[.065,.34,.07],new THREE.CylinderGeometry(.7,1,1,8));d.rotation.z=(i-2.5)*.055});
+  }else if(hair.id==='hair_buzz'){
+   add(c,[0,2.465,-.02],[.465,.115,.45],new THREE.SphereGeometry(.5,24,12,0,Math.PI*2,0,Math.PI/2));
+  }else if(hair.id==='hair_fringe'||hair.id==='hair_swoop'){
+   dome();
+   const sweep=add(c,[hair.id==='hair_swoop'?.13:-.02,2.34,.31],[.31,.14,.19],AV2_STYLE_GEO.sphere);sweep.rotation.z=hair.id==='hair_swoop'?.22:-.12;
+   if(hair.id==='hair_fringe')add(c,[.22,2.30,.31],[.19,.13,.17],AV2_STYLE_GEO.sphere);
+  }else if(hair.id==='hair_long'){
+   dome();[-.39,.39].forEach((x)=>{const lock=add(c,[x,2.04,-.01],[.14,.55,.34],AV2_STYLE_GEO.cylinder);lock.rotation.z=x<0?-.04:.04});
+  }else{
+   dome();add(c,[.27,2.31,.10],[.13,.24,.15],AV2_STYLE_GEO.sphere);
+  }
+ }
+ if(hat){const c=hat.c;
+  if(hat.id==='hat_cap'||hat.id==='hat_blackcap'||hat.id==='hat_racingcap'){
+   const crown=add(c,[0,2.47,-.015],[.48,.28,.46],new THREE.SphereGeometry(.5,24,16,0,Math.PI*2,0,Math.PI/2));
+   add(c,[0,2.405,.285],[.49,.045,.30],new THREE.SphereGeometry(.5,24,12));
+   if(hat.id==='hat_racingcap')add(0xe53935,[0,2.49,.405],[.10,.025,.018],AV2_STYLE_GEO.sphere);
+  }else if(hat.id.includes('beanie')){
+   add(c,[0,2.455,-.005],[.48,.29,.46],new THREE.SphereGeometry(.5,24,16,0,Math.PI*2,0,Math.PI/2));
+   const cuff=add(c,[0,2.31,0],[.47,.085,.47],new THREE.CylinderGeometry(.48,.48,.18,24));
+  }else if(hat.id==='hat_bucket'){
+   add(c,[0,2.47,0],[.39,.27,.39],new THREE.CylinderGeometry(.42,.39,.52,24));
+   add(c,[0,2.35,0],[.55,.045,.54],new THREE.CylinderGeometry(.55,.50,.08,28));
+  }else if(hat.id==='hat_headband'){
+   const band=add(c,[0,2.20,0],[1,1,1],new THREE.TorusGeometry(.45,.045,8,28,Math.PI));band.rotation.x=Math.PI/2;
+  }else if(hat.id==='hat_headphones'){
+   const band=add(c,[0,2.25,0],[1,1,1],new THREE.TorusGeometry(.46,.065,10,32,Math.PI));band.rotation.y=Math.PI/2;
+   [-.46,.46].forEach(x=>{add(c,[x,2.13,.015],[.14,.22,.16],AV2_STYLE_GEO.cylinder);add(0x39414b,[x,2.13,.105],[.105,.16,.035],AV2_STYLE_GEO.sphere)});
+  }else if(hat.id==='hat_crown'){
+   add(c,[0,2.40,0],[.43,.045,.42],new THREE.CylinderGeometry(.43,.43,.09,24));
+   [-.27,-.09,.09,.27].forEach((x,i)=>add(c,[x,2.56,0],[.075,.19,.075],new THREE.ConeGeometry(.5,1,5)));
+  }else{
+   add(c,[0,2.47,0],[.47,.25,.45],new THREE.SphereGeometry(.5,24,16,0,Math.PI*2,0,Math.PI/2));
+  }
+ }
+ if(shirt){const c=shirt.c;
+  box(c,[0,1.1,.005],[1.035,1.035,.535]);
+  box(c,[-.7,1.15,0],[.43,.88,.43]);box(c,[.7,1.15,0],[.43,.88,.43]);
+  const detail=shirt.id.includes('varsity')?0xf2f3f5:shirt.id.includes('biker')?0x17191d:shirt.id.includes('arcade')?0x21d4e8:shirt.id.includes('camo')?0x98a56d:0xdce2e8;
+  if(shirt.id.includes('hoodie')||shirt.id.includes('puffer')){
+   box(c,[0,1.68,-.29],[.68,.44,.19]);
+   if(shirt.id.includes('puffer'))[.83,1.08,1.33].forEach(y=>box(detail,[0,y,.285],[.94,.025,.025]));
+   else{box(detail,[-.18,.93,.29],[.24,.20,.025]);box(detail,[.18,.93,.29],[.24,.20,.025])}
+  }else if(shirt.id.includes('varsity')){
+   box(detail,[-.34,1.15,.29],[.035,.9,.025]);box(detail,[.34,1.15,.29],[.035,.9,.025]);box(0xffffff,[0,1.1,.30],[.04,.8,.02]);
+  }else if(shirt.id.includes('racing')){
+   box(detail,[-.35,1.15,.29],[.07,.72,.025]);box(0xe53935,[.35,1.15,.29],[.055,.72,.025]);
+  }else if(shirt.id.includes('denim')){
+   box(detail,[0,1.15,.29],[.035,.86,.025]);box(detail,[-.31,1.32,.29],[.18,.13,.025]);box(detail,[.31,1.32,.29],[.18,.13,.025]);
+  }else if(shirt.id.includes('biker')){
+   box(detail,[0,1.15,.30],[.035,.9,.025]);box(detail,[.25,1.35,.30],[.2,.035,.025]);
+  }else if(shirt.id.includes('court')){
+   box(detail,[0,1.15,.29],[.08,.65,.025]);box(0xffffff,[-.33,1.15,.29],[.06,.6,.025]);box(0xffffff,[.33,1.15,.29],[.06,.6,.025]);
+  }else if(shirt.id.includes('arcade')){
+   box(detail,[0,1.15,.30],[.5,.055,.025]);box(0xffd54f,[0,1.28,.30],[.22,.035,.025]);
+  }else{
+   box(detail,[0,1.15,.29],[.035,.82,.025]);
+  }
+ }
+ if(pants){const c=pants.c;box(c,[-.25,.10,.005],[.475,.99,.49]);box(c,[.25,.10,.005],[.475,.99,.49]);
+  if(pants.id.includes('cargo')||pants.id.includes('camo')){[ -.25,.25].forEach(x=>{box(c,[x,.15,.26],[.18,.25,.04]);box(dark,[x,.15,.285],[.12,.025,.015])})}
+  if(pants.id.includes('racing')||pants.id.includes('arcade')){box(0xffffff,[-.25,.1,.26],[.045,.65,.025]);box(0x21d4e8,[.25,.1,.26],[.045,.65,.025])}
+  if(pants.id.includes('shorts')){box(0xffffff,[-.25,-.1,.26],[.035,.22,.025]);box(0xffffff,[.25,-.1,.26],[.035,.22,.025])}
+ }
+ if(shoes){const c=shoes.c;[-.25,.25].forEach((x,i)=>{box(c,[x,-.31,.12],[.52,.20,.68]);box(0xe8edf2,[x,-.425,.14],[.54,.055,.68]);box(shoes.id.includes('neon')?0x21d4e8:0x9da5ad,[x,-.28,.40],[.34,.09,.16])})}
+ if(neck){const ring=new THREE.Mesh(new THREE.TorusGeometry(.23,.025,7,24),new THREE.MeshLambertMaterial({color:neck.c}));ring.position.set(0,1.57,.30);ring.rotation.x=0;parent.add(ring);box(neck.c,[0,1.39,.32],[.09,.13,.035])}
+ if(e.back==='back_pack'||e.back==='back_mini'||e.back==='back_sling'){
+  const it=av2Item(e.back,'Back'),c=it?it.c:0x6d4c41;
+  if(e.back==='back_sling'){box(c,[.27,1.25,-.31],[.24,.62,.16]);box(c,[.06,1.56,.18],[.12,.55,.06])}
+  else{box(c,[0,1.2,-.39],[e.back==='back_mini'?.52:.66,e.back==='back_mini'?.62:.78,.26]);box(0x8795a3,[0,1.2,-.54],[.34,.28,.035])}
+ }
+ if(e.back==='bk_cape'){box(0xd32f2f,[0,1.05,-.37],[.94,1.35,.07])}
+ if(e.back==='bk_jet'){box(0x78909c,[-.54,1.23,-.36],[.22,.76,.3]);box(0x78909c,[.54,1.23,-.36],[.22,.76,.3]);box(0xff7043,[-.54,.74,-.43],[.14,.24,.15]);box(0xff7043,[.54,.74,-.43],[.14,.24,.15])}
+}
+
+av2BuildWear=function(){
+ if(avatarWear)av2CleanGroup(avatarWear);
+ avatarWear=new THREE.Group();const localEq={...EQ};
+ if(localEq.back==='bk_cape'||localEq.back==='bk_jet')localEq.back='';
+ rbxBuildWearGeometry(avatarWear,{style:AV2.style,face:AV2.face,eq:localEq});avIn.add(avatarWear);
+};
+avatarNetData=function(){
+ const colors={head:av2ValidateColor(pc.head,DEF.head),torso:av2ValidateColor(pc.torso,DEF.torso),arms:av2ValidateColor(pc.arms,DEF.arms),legs:av2ValidateColor(pc.legs,DEF.legs)};
+ const eq={};AV2_SLOTS.forEach(([slot])=>eq[slot]=EQ[slot]||'');['wings','trail','back'].forEach(k=>eq[k]=EQ[k]||'');
+ return {style:av2StyleFor(AV2.style),face:av2FaceFor(AV2.face),eq,colors};
+};
+av2NetConfig=function(d){
+ const a=d&&d.a&&typeof d.a==='object'?d.a:{},col=a.colors&&typeof a.colors==='object'?a.colors:{};
+ const fallback=Array.isArray(d&&d.c)?d.c:['#1e88e5','#f5cd30','#4caf50'];
+ const colors={torso:av2ValidateColor(col.torso,fallback[0]||DEF.torso),head:av2ValidateColor(col.head,fallback[1]||DEF.head),legs:av2ValidateColor(col.legs,fallback[2]||DEF.legs),arms:av2ValidateColor(col.arms,fallback[1]||DEF.arms)};
+ const eq=a.eq&&typeof a.eq==='object'?a.eq:{};const allowed={};AV2_SLOTS.forEach(([slot])=>{const id=String(eq[slot]||'');const it=ITEMS.find(x=>x.id===id);if(it)allowed[slot]=it.id});['back','wings','trail'].forEach(slot=>{const id=String(eq[slot]||'');if(ITEMS.some(x=>x.id===id))allowed[slot]=id});
+ return {style:av2StyleFor(a.style),face:av2FaceFor(a.face),colors,eq:allowed};
+};
+mkRemote=function(k,d){
+ const cfg=av2NetConfig(d),g=new THREE.Group(),c=cfg.colors,style=cfg.style;
+ const shape=style==='rounded'?'cylinder':'box',headShape=style==='rounded'?'sphere':'box';
+ const part=(w,h,dep,color,x,y,z,py,which)=>{const p=new THREE.Group();p.position.set(x,y,z);const m=new THREE.Mesh(which==='head'?(headShape==='sphere'?AV2_STYLE_GEO.sphere:boxGeo):(shape==='cylinder'?AV2_STYLE_GEO.cylinder:boxGeo),new THREE.MeshLambertMaterial({color}));m.scale.set(w,h,dep);m.position.y=py||0;m.castShadow=true;p.add(m);g.add(p);return p};
+ const r15=style==='r15';
+ part(r15?.88:1,1,.5,c.torso,0,1.1,0,0,'torso');part(r15?.82:.9,r15?.82:.9,r15?.82:.9,c.head,0,2.05,0,0,'head');
+ const aL=part(r15?.31:.4,r15?.94:1,r15?.32:.4,c.arms,-.68,1.6,0,-.45,'arm'),aR=part(r15?.31:.4,r15?.94:1,r15?.32:.4,c.arms,.68,1.6,0,-.45,'arm');
+ const lL=part(r15?.36:.45,r15?.94:1,r15?.36:.45,c.legs,-.25,.6,0,-.5,'leg'),lR=part(r15?.36:.45,r15?.94:1,r15?.36:.45,c.legs,.25,.6,0,-.5,'leg');
+ const wear=new THREE.Group();g.add(wear);rbxBuildWearGeometry(wear,cfg);
+ if(style==='robot'){av2Box(wear,0x00e5ff,[0,2.05,.49],[.46,.13,.04]);av2Box(wear,0x263238,[0,1.88,.5],[.4,.08,.05]);av2Box(wear,0x90caf9,[0,2.63,0],[.12,.18,.12]);}
+ const sp=makeOverheadNameplate(d.n,d.r,d.p,{fontSize:30,height:64,padding:22,worldWidth:3.4,worldHeight:.85,y:3.3,renderOrder:9});g.add(sp);
+ g.position.set(d.x,d.y,d.z);scene.add(g);const sig=JSON.stringify([d.a||null,d.c||null,d.r||'',d.n||'',d.p||0]);return{g,aL,aR,lL,lR,ph:0,f:d.f,sig};
+};
+
+/* Avatar Shop and Inventory use the same catalog and BuxZ ownership data. */
+const _rbxOriginalBuy=buy;
+buy=function(id){const it=ITEMS.find(x=>x.id===id);if(!it)return;if(isOwned(id))return;if(!isPrem()&&bux<it.p){const msg=$('mkMsg')||$('av2Msg');if(msg)msg.textContent='Not enough BuxZ ('+Math.floor(bux)+' / '+it.p+').';return}if(!isPrem())bux-=it.p;own.push(id);SV();showBux();if(tabNow==='market')drawMarket();if(tabNow==='inv')drawInv()};
+
+drawMarket=function(){
+ const sec=$('t-market');if(!sec)return;const oldTitle=sec.querySelector(':scope > h2');if(oldTitle)oldTitle.remove();const oldIntro=sec.querySelector(':scope > p:not(#mkMsg)');if(oldIntro)oldIntro.remove();
+ if(!$('rbxMarketHeader'))sec.insertAdjacentHTML('afterbegin',`<div class="rbxMarketHeader" id="rbxMarketHeader"><div><h1>Avatar Shop</h1><p>Featured outfits and wearable cosmetics for your BloxZ avatar.</p></div><input id="rbxShopSearch" class="rbxSearch" placeholder="Search the Avatar Shop…" maxlength="48"></div><h3 style="margin:14px 0 8px;font-size:17px">Featured Fits</h3><div id="rbxMarketLooks"></div><div class="rbxMarketTools"><div><b>Browse Items</b><div id="rbxMarketCats" class="rbxCategoryRow"></div></div></div>`);
+ if(!$('rbxMarketLooks'))return;
+ const q=String($('rbxShopSearch')&&$('rbxShopSearch').value||'').trim().toLowerCase();
+ const looks=RBX_LOOKS.filter(l=>!q||[l.n,l.v,l.d].join(' ').toLowerCase().includes(q));$('rbxMarketLooks').innerHTML=looks.map(l=>rbxLookCard(l,'shop')).join('');rbxBindLookGrid($('rbxMarketLooks'),'shop');
+ const cats=['All','Hair','Hat','Face','Shirt','Pants','Shoes','Neck','Back','Wings','Trail'];const catsRoot=$('rbxMarketCats');catsRoot.innerHTML=cats.map(c=>`<button type="button" data-shop-cat="${c}" class="${RBX_MARKET_CAT===c?'on':''}">${c}</button>`).join('');catsRoot.querySelectorAll('[data-shop-cat]').forEach(b=>b.onclick=()=>{RBX_MARKET_CAT=b.dataset.shopCat;drawMarket()});
+ const grid=$('mkRow');grid.className='row';const items=ITEMS.filter(i=(!q||(i.n+' '+i.cat).toLowerCase().includes(q))&&(RBX_MARKET_CAT==='All'||i.cat===RBX_MARKET_CAT));grid.innerHTML=items.length?items.map(rbxItemCard).join(''):'<div class="rbxEmpty">No items match your search.</div>';
+ grid.querySelectorAll('[data-rbx-item]').forEach(b=>b.onclick=()=>rbxEquipOrBuyItem(b.dataset.rbxItem));
+ const oldSearch=$('rbxShopSearch');if(oldSearch&&!oldSearch.dataset.bound){oldSearch.dataset.bound='1';oldSearch.oninput=()=>drawMarket()}
+};
+let RBX_MARKET_CAT='All';
+
+drawInv=function(){
+ const sec=$('t-inv'),grid=$('invRow');if(!grid)return;
+ const items=ITEMS.filter(i=>isOwned(i.id));
+ if(!sec.querySelector('.rbxInvHeader')){const oldTitle=sec.querySelector(':scope > h2');if(oldTitle)oldTitle.remove();sec.insertAdjacentHTML('afterbegin',`<div class="rbxInvHeader"><div><h2 style="margin:0 0 5px">Inventory</h2><p style="margin:0;color:#aeb7c2;font-size:12px">Cosmetics you've unlocked. Equip an item or open the Avatar Editor to build a complete look.</p></div><button class="rbxAction" id="rbxOpenEditor">Open Avatar Editor</button></div>`)}
+ const header=sec.querySelector('.rbxInvHeader');if(header&&!header.dataset.bound){header.dataset.bound='1';const b=header.querySelector('#rbxOpenEditor');if(b)b.onclick=()=>showTab('avatar')}
+ grid.className='row';grid.innerHTML=items.length?items.map(it=>{const slot=rbxSlotForItem(it),equipped=slot&&EQ[slot]===it.id;return `<article class="rbxShopCard"><div class="rbxShopArt" style="--item-color:${RBX_COLOR_HEX(it.c)}"><div class="rbxShopIcon">${rbxItemIcon(it)}</div></div><div class="rbxShopInfo"><h3>${RBX_ESC(it.n)}</h3><p>${RBX_ESC(it.cat)} · Owned</p><button class="rbxAction ${equipped?'owned':''}" data-inv-item="${it.id}" ${equipped?'disabled':''}>${equipped?'Equipped':'Equip'}</button></div></article>`}).join(''):'<div class="rbxEmpty">Your Inventory is empty. Visit the Avatar Shop to find cosmetics.</div>';
+ grid.querySelectorAll('[data-inv-item]').forEach(b=>b.onclick=()=>rbxEquipOrBuyItem(b.dataset.invItem));
+};
+
+/* Keep the full 15-look showcase available on initial avatar navigation. */
+const _rbxOnTab=onTab;
+onTab=function(t){_rbxOnTab(t);if(t==='avatar'){av2BuildUI();rbxShowAvatarPanel('Looks');updateAvatarPreview();rbxUpdatePreviewMeta()}if(t==='market')drawMarket();if(t==='inv')drawInv()};
+
+/* Navigation labels retain BloxZ branding and Roblox-like naming. */
+const topMarket=[...document.querySelectorAll('.nl')].find(x=>x.textContent.trim()==='Marketplace');if(topMarket)topMarket.textContent='Avatar Shop';
+const sideShop=[...document.querySelectorAll('.si')].find(x=>x.textContent.trim()==='Marketplace'||x.textContent.trim()==='🛒 Blox Shop');if(sideShop)sideShop.textContent='🛍 Avatar Shop';
+
+/* Full local catalog initialization; the existing multiplayer loop picks up the richer data payload. */
+rbxBuildAvatarUI();
+updateAvatarPreview();
+
+
+/* BloxZ avatar polish: classic starter, Bald option, readable catalog, real cosmetic silhouettes. */
+(function(){
+ 'use strict';
+ const bald={id:'hair_bald',cat:'Hair',n:'Bald',p:0,c:0xc49a78};
+ if(!ITEMS.some(x=>x.id===bald.id)){ITEMS.unshift(bald);AV2_CATALOG.unshift(bald)}
+ if(!own.includes('hair_bald')){own.push('hair_bald');SV()}
+ // A first-time player always starts as the classic yellow-head / blue-torso / green-legs avatar.
+ // Existing saved customizations are preserved; no featured outfit is auto-equipped.
+ if(!localStorage.getItem('bloxz-eq')){EQ={};SV()}
+ if(!localStorage.getItem(AV2_KEY)){AV2={...AV2_DEFAULT,style:'classic',face:'smile',outfits:[null,null,null]};av2Save()}
+
+ // Draw a category-specific miniature of the actual wearable rather than a generic symbol.
+ function itemSvg(it){
+  const color=typeof it.c==='number'?RBX_COLOR_HEX(it.c):'#b7c2ce';
+  const dark='#202733',light='#eef2f6',skin='#e3b58f',stroke='#101720';
+  const id=it.id||'';let art='';
+  if(it.cat==='Hair'){
+   if(id==='hair_bald') art=`<path d="M37 66 Q31 22 64 15 Q97 22 91 66 Q82 75 64 75 Q46 75 37 66Z" fill="${skin}" stroke="${stroke}" stroke-width="3"/><path d="M43 38 Q48 19 64 18 Q80 19 85 38" fill="none" stroke="#f5d7bd" stroke-width="3" opacity=".7"/>`;
+   else art=`<path d="M29 61 Q25 23 64 17 Q103 23 99 61 L90 53 Q83 34 64 35 Q44 34 38 54Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M37 54 Q46 43 57 46 L54 65 Q43 72 34 66Z" fill="${color}"/><path d="M63 25 Q76 18 89 34" fill="none" stroke="#ffffff" stroke-width="3" opacity=".32"/>`;
+   if(id.includes('spiky')||id.includes('messy'))art+=`<path d="M34 43 L26 24 L46 34 L48 15 L62 31 L75 13 L79 34 L98 25 L89 49" fill="${color}" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/>`;
+   if(id.includes('curls'))art+=`<g fill="${color}" stroke="${stroke}" stroke-width="2"><circle cx="37" cy="34" r="10"/><circle cx="52" cy="24" r="10"/><circle cx="68" cy="22" r="10"/><circle cx="84" cy="31" r="10"/><circle cx="94" cy="43" r="9"/></g>`;
+   if(id.includes('dreads'))art+=`<g stroke="${stroke}" stroke-width="2" fill="${color}"><path d="M37 43 Q32 65 40 78 L47 76 L47 43Z"/><path d="M52 36 Q47 66 55 83 L62 82 L62 37Z"/><path d="M69 36 Q68 68 76 80 L83 77 L79 37Z"/><path d="M84 43 Q84 65 92 74 L98 68 L93 42Z"/></g>`;
+   if(id.includes('buzz'))art=`<path d="M31 49 Q30 21 64 19 Q98 21 97 49 Q86 38 64 38 Q43 38 31 49Z" fill="${color}" stroke="${stroke}" stroke-width="3"/>`;
+  }else if(it.cat==='Hat'){
+   if(id.includes('beanie'))art=`<path d="M30 59 Q27 20 64 18 Q101 20 98 59Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M29 54 Q64 47 99 54 L98 67 Q64 73 30 67Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M46 27 Q60 19 78 28" fill="none" stroke="#fff" opacity=".35" stroke-width="4"/>`;
+   else if(id==='hat_bucket')art=`<path d="M43 24 Q64 13 85 24 L91 56 L37 56Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M25 55 Q64 47 103 55 L111 67 Q64 79 17 67Z" fill="${color}" stroke="${stroke}" stroke-width="3"/>`;
+   else if(id==='hat_headphones')art=`<path d="M29 59 V48 Q29 15 64 15 Q99 15 99 48 V59" fill="none" stroke="${color}" stroke-width="10"/><rect x="21" y="48" width="18" height="29" rx="6" fill="${color}" stroke="${stroke}" stroke-width="3"/><rect x="89" y="48" width="18" height="29" rx="6" fill="${color}" stroke="${stroke}" stroke-width="3"/>`;
+   else if(id==='hat_headband')art=`<path d="M26 60 Q28 15 64 15 Q100 15 102 60" fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round"/>`;
+   else if(id==='hat_crown')art=`<path d="M23 67 L29 27 L49 47 L64 19 L80 47 L99 27 L105 67Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M23 67 H105 V78 H23Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><circle cx="64" cy="58" r="6" fill="#fff1a8"/>`;
+   else art=`<path d="M28 49 Q31 18 64 18 Q97 18 100 49 L105 57 Q64 67 23 57Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M57 53 Q77 47 109 58 Q109 69 79 70 L51 65Z" fill="${color}" stroke="${stroke}" stroke-width="3"/>`;
+  }else if(it.cat==='Face'){
+   if(id.includes('mask'))art=`<path d="M24 43 Q64 31 104 43 L99 72 Q64 88 29 72Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M28 51 L10 42 M100 51 L118 42" stroke="${color}" stroke-width="5"/>`;
+   else if(id.includes('visor'))art=`<path d="M17 38 Q64 24 111 38 L103 61 Q64 71 25 61Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M26 47 H102" stroke="#ffb4ae" stroke-width="3"/>`;
+   else art=`<g fill="none" stroke="${color}" stroke-width="7"><rect x="16" y="35" width="43" height="31" rx="9"/><rect x="69" y="35" width="43" height="31" rx="9"/><path d="M59 46 Q64 40 69 46"/></g><path d="M20 41 H54 M74 41 H108" stroke="#fff" stroke-width="2" opacity=".3"/>`;
+  }else if(it.cat==='Shirt'){
+   art=`<path d="M39 17 L52 10 H76 L89 17 L115 34 L102 56 L91 50 V84 H37 V50 L26 56 L13 34Z" fill="${color}" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/><path d="M52 11 Q64 25 76 11" fill="none" stroke="${light}" stroke-width="4"/><path d="M64 25 V82" stroke="#ffffff" stroke-width="3" opacity=".35"/>`;
+   if(id.includes('puffer'))art+=`<path d="M38 38 H90 M38 51 H90 M38 64 H90" stroke="#fff" stroke-width="3" opacity=".4"/>`;
+   if(id.includes('varsity'))art+=`<path d="M37 20 V80 M91 20 V80" stroke="#f4f6f8" stroke-width="4"/>`;
+  }else if(it.cat==='Pants'){
+   art=`<path d="M28 14 H100 L106 82 H72 L64 43 L56 82 H22Z" fill="${color}" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/><path d="M28 24 H100 M64 25 V47" stroke="#fff" stroke-width="3" opacity=".35"/>`;
+   if(id.includes('cargo'))art+=`<g fill="${color}" stroke="${stroke}" stroke-width="2"><rect x="20" y="43" width="20" height="19" rx="3"/><rect x="88" y="43" width="20" height="19" rx="3"/></g>`;
+  }else if(it.cat==='Shoes'){
+   art=`<g stroke="${stroke}" stroke-width="3" stroke-linejoin="round"><path d="M8 49 L31 43 L49 59 L59 66 L58 79 H9 Q3 73 8 49Z" fill="${color}"/><path d="M68 49 L91 43 L109 59 L119 66 L118 79 H69 Q63 73 68 49Z" fill="${color}"/><path d="M8 70 H58 V80 H9Z M68 70 H118 V80 H69Z" fill="#f1f3f6"/></g><path d="M24 58 L42 58 M84 58 L102 58" stroke="#fff" stroke-width="3"/>`;
+  }else if(it.cat==='Neck'){
+   art=`<path d="M33 26 Q64 89 95 26" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round"/><path d="M64 61 L76 75 L64 89 L52 75Z" fill="${color}" stroke="${stroke}" stroke-width="2"/>`;
+  }else if(it.cat==='Back'){
+   art=`<path d="M39 20 Q64 10 89 20 L103 36 L98 81 H30 L25 36Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M44 23 Q64 35 84 23 M39 49 H89 V73 H39Z" fill="none" stroke="#fff" stroke-width="3" opacity=".4"/>`;
+   if(id.includes('sling'))art+=`<path d="M30 19 L92 80" stroke="#d7dce2" stroke-width="8"/>`;
+  }else if(it.cat==='Wings'){
+   art=`<path d="M61 48 Q25 9 11 29 Q7 55 45 75 L63 64Z M67 48 Q103 9 117 29 Q121 55 83 75 L65 64Z" fill="${color}" stroke="${stroke}" stroke-width="3"/><path d="M16 38 L48 62 M112 38 L80 62" stroke="#fff" stroke-width="3" opacity=".55"/>`;
+  }else{
+   art=`<path d="M19 67 Q35 35 64 50 Q92 65 109 30" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round"/><circle cx="19" cy="67" r="7" fill="${color}"/>`;
+  }
+  return `<svg class="rbxItemSvg" viewBox="0 0 128 96" role="img" aria-label="${RBX_ESC(it.n)} product preview" xmlns="http://www.w3.org/2000/svg"><ellipse cx="64" cy="84" rx="42" ry="5" fill="#000" opacity=".22"/>${art}</svg>`;
+ }
+
+ // Clear, calmer Avatar Editor proportions and spacing.
+ const polish=document.createElement('style');polish.id='rbxAvatarPolish';polish.textContent=`
+ #t-avatar{max-width:1320px!important;padding:0 8px 24px!important}
+ .rbxAvatarHeading{margin-bottom:13px!important}.rbxAvatarHeading h1{font-size:27px!important}
+ .rbxAvatarTabs{gap:8px!important;margin-bottom:14px!important;padding-bottom:9px!important}
+ .rbxAvatarTabs button{padding:10px 17px!important;border-radius:9px!important}
+ .rbxAvatarLayout{grid-template-columns:minmax(245px,295px) minmax(0,1fr)!important;gap:14px!important}
+ .rbxPreviewCard{padding:12px!important}.rbxPreviewStage{height:318px!important}
+ .rbxAvatarContent{padding:15px!important;background:#1d2229!important;border-color:#343c46!important}
+ .rbxPanelTitle{margin-bottom:16px!important}.rbxPanelTitle h2{font-size:21px!important}
+ .rbxLookGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+ .rbxLookArt{height:155px!important}.rbxLookInfo{padding:12px!important}.rbxLookInfo h3{font-size:13px!important}
+ .rbxShopGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:13px!important}
+ .rbxShopArt{height:136px!important;background:radial-gradient(circle at 50% 36%,#69798b 0,#303a46 72%)!important}
+ .rbxThumbStage{height:100%;width:100%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 35%,#ffffff16,transparent 62%)}
+ .rbxItemSvg{width:124px;height:104px;overflow:visible;filter:drop-shadow(0 7px 7px #0005)}
+ .rbxShopInfo{padding:11px!important}.rbxShopInfo h3{font-size:12px!important;line-height:1.35!important;min-height:30px}
+ .rbxShopInfo p{font-size:11px!important;margin-bottom:10px!important}
+ .rbxShopInfo .rbxAction{padding:10px!important;font-size:11px!important}
+ .rbxCategoryRow{gap:7px!important;padding-bottom:13px!important}
+ .rbxCategoryRow button{padding:9px 13px!important;font-size:12px!important;border-radius:9px!important}
+ .rbxSearch{min-width:230px!important;padding:11px 13px!important}
+ .rbxBodyBox,.rbxColorArea{padding:15px!important}
+ .rbxAvatarNote{font-size:12px!important}
+ @media(max-width:1040px){.rbxAvatarLayout{grid-template-columns:minmax(220px,260px) minmax(0,1fr)!important}.rbxShopGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+ @media(max-width:760px){.rbxAvatarLayout{grid-template-columns:1fr!important}.rbxPreviewColumn{position:relative!important;top:auto!important}.rbxPreviewStage{height:290px!important}.rbxAvatarContent{padding:12px!important}.rbxLookGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.rbxShopGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+ @media(max-width:440px){.rbxLookGrid,.rbxShopGrid{grid-template-columns:1fr!important}.rbxLookArt{height:145px!important}.rbxSearch{min-width:0!important;width:100%!important}}
+ `;document.head.appendChild(polish);
+
+ // Consolidate the two previous wearables tabs into one browser.
+ const nav=document.querySelector('#av2Tabs');
+ if(nav){
+  const clothes=nav.querySelector('[data-av-tab="Clothing"]');
+  const accessories=nav.querySelector('[data-av-tab="Accessories"]');
+  if(clothes){clothes.dataset.avTab='Wearables';clothes.textContent='Wearables';}
+  if(accessories)accessories.remove();
+  const sec=document.querySelector('[data-av-panel="Clothing"]');
+  const oldAcc=document.querySelector('[data-av-panel="Accessories"]');
+  if(sec){sec.dataset.avPanel='Wearables';const h=sec.querySelector('h2');if(h)h.textContent='Wearables';const p=sec.querySelector('.rbxPanelTitle p');if(p)p.textContent='Hair, hats, faces, tops, bottoms, shoes and accessories — all in one catalog.';const oldSearch=sec.querySelector('#rbxCatalogSearchClothes');if(oldSearch){oldSearch.id='rbxCatalogSearchWearables';oldSearch.placeholder='Search all wearables…';}}
+  if(oldAcc)oldAcc.remove();
+ }
+ const allPanels=[...document.querySelectorAll('[data-av-panel]')];
+ rbxShowAvatarPanel=function(tab){allPanels.forEach(p=>p.hidden=p.dataset.avPanel!==tab);document.querySelectorAll('#av2Tabs [data-av-tab]').forEach(b=>b.classList.toggle('on',b.dataset.avTab===tab));if(tab==='Wearables')rbxDrawCatalog();if(tab==='Looks')rbxDrawLooks();if(tab==='Outfits')av2PaintUI()};
+ document.querySelectorAll('#av2Tabs [data-av-tab]').forEach(b=>b.onclick=()=>rbxShowAvatarPanel(b.dataset.avTab));
+ const search=$('rbxCatalogSearchWearables');if(search)search.oninput=e=>{RBX_CATALOG_QUERY=e.target.value;RBX_CATALOG_CAT='All';rbxDrawCatalog()};
+ RBX_CATALOG_KIND='All';
+ rbxCatalogItemsForTab=function(){const cats=['Hair','Hat','Face','Shirt','Pants','Shoes','Neck','Back','Wings','Trail'];const q=String(RBX_CATALOG_QUERY||'').trim().toLowerCase();return ITEMS.filter(it=>cats.includes(it.cat)&&(RBX_CATALOG_CAT==='All'||it.cat===RBX_CATALOG_CAT)&&(!q||(it.n+' '+it.cat).toLowerCase().includes(q)))};
+ rbxDrawCatalog=function(){const root=$('av2CatalogGrid'),catsRoot=$('av2CatalogCats');if(!root||!catsRoot)return;const cats=['All','Hair','Hat','Face','Shirt','Pants','Shoes','Neck','Back','Wings','Trail'];catsRoot.innerHTML=cats.map(c=>`<button type="button" data-rbx-cat="${c}" class="${RBX_CATALOG_CAT===c?'on':''}">${c==='Shirt'?'Tops':c==='Pants'?'Bottoms':c==='Hat'?'Hats':c==='Face'?'Face items':c==='Hair'?'Hair':c}</button>`).join('');catsRoot.querySelectorAll('[data-rbx-cat]').forEach(b=>b.onclick=()=>{RBX_CATALOG_CAT=b.dataset.rbxCat;rbxDrawCatalog()});const items=rbxCatalogItemsForTab();root.innerHTML=items.length?items.map(rbxItemCard).join(''):'<div class="rbxEmpty">No wearables found. Try another category or search.</div>';root.querySelectorAll('[data-rbx-item]').forEach(b=>b.onclick=()=>{rbxEquipOrBuyItem(b.dataset.rbxItem);rbxDrawCatalog()})};
+
+ // Product preview thumbnails: a different, recognizable silhouette for each catalog item.
+ rbxItemCard=function(it){const slot=rbxSlotForItem(it),owned=isOwned(it.id),equipped=slot&&EQ[slot]===it.id;const label=equipped?'Unequip':owned?'Equip':(isPrem()?'Get · FREE':'Buy · '+it.p+' BuxZ');const sub=it.cat+(it.id==='hair_bald'?' · No hair':owned?' · Owned':' · Cosmetic');return `<article class="rbxShopCard"><div class="rbxShopArt" style="--item-color:${typeof it.c==='number'?RBX_COLOR_HEX(it.c):'#b7c2ce'}"><div class="rbxThumbStage">${itemSvg(it)}</div></div><div class="rbxShopInfo"><h3>${RBX_ESC(it.n)}</h3><p>${RBX_ESC(sub)}</p><button class="rbxAction ${equipped?'owned':''}" data-rbx-item="${RBX_ESC(it.id)}">${label}</button></div></article>`};
+ drawInv=function(){const sec=$('t-inv'),grid=$('invRow');if(!grid)return;const items=ITEMS.filter(i=>isOwned(i.id));if(!sec.querySelector('.rbxInvHeader')){const oldTitle=sec.querySelector(':scope > h2');if(oldTitle)oldTitle.remove();sec.insertAdjacentHTML('afterbegin',`<div class="rbxInvHeader"><div><h2 style="margin:0 0 5px">Inventory</h2><p style="margin:0;color:#aeb7c2;font-size:12px">Cosmetics you have unlocked. Equip them or open the Avatar Editor for your full look.</p></div><button class="rbxAction" id="rbxOpenEditor">Open Avatar Editor</button></div>`)}const header=sec.querySelector('.rbxInvHeader');if(header&&!header.dataset.bound){header.dataset.bound='1';const b=header.querySelector('#rbxOpenEditor');if(b)b.onclick=()=>showTab('avatar')}grid.className='row';grid.innerHTML=items.length?items.map(rbxItemCard).join(''):'<div class="rbxEmpty">Your Inventory is empty. Visit the Avatar Shop to find cosmetics.</div>';grid.querySelectorAll('[data-rbx-item]').forEach(b=>b.onclick=()=>{rbxEquipOrBuyItem(b.dataset.rbxItem);drawInv()})};
+
+ // Ensure Bald is a usable free hair choice and the starter stays the classic avatar.
+ const hairSelect=document.querySelector('#av2Slots select[data-slot="hair"]');if(hairSelect&&!hairSelect.querySelector('option[value="hair_bald"]')){const o=document.createElement('option');o.value='hair_bald';o.textContent='Bald · FREE';hairSelect.insertBefore(o,hairSelect.options[1]||null)}
+ if(AV2.style==null)AV2.style='classic';
+ // Update the featured description and preview label to make the starter state explicit.
+ const note=document.querySelector('.rbxPreviewMeta');if(note){const lab=note.querySelector('span');if(lab&&AV2.style==='classic'&&!Object.values(EQ).some(Boolean))lab.setAttribute('aria-label','Classic starter avatar')}
+ if(typeof applyAvatarLook==='function')applyAvatarLook();else if(typeof updateAvatarPreview==='function')updateAvatarPreview();
+})();
+
+})();
+
 </script></body></html>
